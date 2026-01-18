@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0", >
+  <title>Movictel</title>
+  <link rel="stylesheet" href="css/flip.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+
+<!-- Swiper CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+
+
+</head>
+<body>
+  <div id="preloader">
+    <img src="images/logo/logo.gif" alt="Loading...">
+  </div>
+
+ 
+<header id="main-header">
+  <div class="container">
+
+    <div class="logo">
+      <a href="index.html">
+        <img src="images/logo/Movictel 12 sept 25-01-01.png" alt="Movictel Logo">
+      </a>
+    </div>
+
+    <div class="menu-toggle" id="menuToggle">
+      <i class="fas fa-bars"></i>
+    </div>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav>
+      <ul class="menu">
+
+        <li><a href="index.html">Home</a></li>
+
+       <li class="dropdown">
+  <a href="services.html">Services</a>
+  <ul class="dropdown-menu">
+
+    <!-- MARKETING -->
+    <li class="has-submenu">
+      <a href="#">Marketing</a>
+      <ul class="submenu">
+        <li><a href="services.html#social-media-marketing">Social Media Marketing</a></li>
+        <li><a href="services.html#google-meta-ads">Google & Meta Ads</a></li>
+        <li><a href="services.html#brand-awareness">Brand Awareness Campaigns</a></li>
+        <li><a href="services.html#seo-online-visibility">SEO & Online Visibility</a></li>
+        <li><a href="services.html#content-writing">Content Writing</a></li>
+      </ul>
+    </li>
+
+    <!-- PROMOTE -->
+    <li class="has-submenu">
+      <a href="#">Promote</a>
+      <ul class="submenu">
+        <li><a href="services.html#bulk-sms">Bulk SMS</a></li>
+        <li><a href="services.html#rcs-sms">RCS SMS</a></li>
+        <li><a href="services.html#voice-sms">Voice SMS</a></li>
+        <li><a href="services.html#whatsapp-api">WhatsApp Business API</a></li>
+      </ul>
+    </li>
+
+    <!-- DEVELOPMENT -->
+    <li class="has-submenu">
+      <a href="#">Development</a>
+      <ul class="submenu">
+        <li><a href="services.html#website-development">Website Development</a></li>
+        <li><a href="services.html#app-development">App Development</a></li>
+        <li><a href="services.html#landing-pages">Landing Pages</a></li>
+      </ul>
+    </li>
+
+  </ul>
+</li>
+
+
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="aboutus.html">About Us</a></li>
+        <li><a href="contact.html">Contact</a></li>
+
+      </ul>
+    </nav>
+
+    <div class="social-icons">
+      <a href="#"><i class="fab fa-facebook-f"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-linkedin-in"></i></a>
+      <a href="#"><i class="fab fa-x-twitter"></i></a>
+    </div>
+
+  </div>
+</header>
+
+  
+
+  <!-- SLIDER -->
+  <section class="home-slider">
+  <div class="swiper">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide">
+        <div class="overlay"></div>
+        <div class="slide-content">
+          <h1>🚀 Power Your Brand with Smart Digital Marketing</h1>
+          <p>We craft strategies that bring visibility, engagement, and growth. From startups to enterprises – we help every business shine online.</p>
+          
+          <!-- Gooey Button Replacement -->
+           <a href="contact.html"><button class="c-button c-button--gooey">
+           
+            Get Started
+            <div class="c-button__blobs">
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </button></a>
+
+          <!-- Gooey SVG Filter -->
+          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="display: block; height: 0; width: 0;">
+            <defs>
+              <filter id="goo">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"></feGaussianBlur>
+                <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo"></feColorMatrix>
+                <feBlend in="SourceGraphic" in2="goo"></feBlend>
+              </filter>
+            </defs>
+          </svg>
+
+          <style>
+            .c-button {
+              color: #000;
+              font-weight: 700;
+              font-size: 16px;
+              text-decoration: none;
+              padding: 0.9em 1.6em;
+              cursor: pointer;
+              display: inline-block;
+              vertical-align: middle;
+              position: relative;
+              z-index: 1;
+            }
+
+            .c-button--gooey {
+              color:  #833AB4;
+              text-transform: uppercase;
+              letter-spacing: 2px;
+              border: 4px solid #833AB4;
+              border-radius: 50px;
+              position: relative;
+              transition: all 700ms ease;
+              overflow: hidden;
+            }
+
+            .c-button--gooey .c-button__blobs {
+              height: 100%;
+              filter: url(#goo);
+              overflow: hidden;
+              position: absolute;
+              top: 0;
+              left: 0;
+              bottom: -3px;
+              right: -1px;
+              z-index: -1;
+            }
+
+            .c-button--gooey .c-button__blobs div {
+              background-color: #833AB4; 
+              width: 34%;
+              height: 100%;
+              border-radius: 100%;
+              position: absolute;
+              transform: scale(1.4) translateY(125%) translateZ(0);
+              transition: all 700ms ease;
+            }
+
+            .c-button--gooey .c-button__blobs div:nth-child(1) { left: -5%; }
+            .c-button--gooey .c-button__blobs div:nth-child(2) { left: 30%; transition-delay: 60ms; }
+            .c-button--gooey .c-button__blobs div:nth-child(3) { left: 66%; transition-delay: 25ms; }
+
+            .c-button--gooey:hover { color: #fff; }
+            .c-button--gooey:hover .c-button__blobs div {
+              transform: scale(1.4) translateY(0) translateZ(0);
+            }
+          </style>
+
+        </div>
+
+        <!-- Rotating Image -->
+        <div class="slide-image">
+          <img src="images/9019105-removebg-preview.png" alt="Rotating Image">
+        </div>
+      </div>
+
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+<!-- Home Slider -->
+<!-- Home Hero Slider -->
+
+  <!-- Hero Slider -->
+  <!-- <div class="slider">
+    
+    <img class="slide active" src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d" alt="Digital Marketing Team">
+  <img class="slide" src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d" alt="Social Media Marketing">
+  <img class="slide" src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d" alt="Creative Strategy">
+  
+   
+    <a class="prev" onclick="changeSlide(-1)">&#10094;</a>
+    <a class="next" onclick="changeSlide(1)">&#10095;</a>
+  
+   
+    <div class="dots">
+      <span class="dot active" onclick="currentSlide(0)"></span>
+      <span class="dot" onclick="currentSlide(1)"></span>
+      <span class="dot" onclick="currentSlide(2)"></span>
+    </div>
+  </div> -->
+
+  <!-- Middle Content -->
+ <section class="who-we-are">
+  <div class="container">
+    <!-- Left Side (Text) -->
+    <div class="text-content">
+      <h2>Who We Are</h2>
+      <p>
+        We are a Digital Marketing & IVR Solutions Agency helping brands grow smarter. From IVR, Bulk SMS, RCS & WhatsApp Messaging to Web & App Development, we deliver powerful tools that connect you with your audience. <br>
+        🚀 Experts in Real Estate Lead Generation — turning campaigns into conversions!
+      </p>
+
+      <!-- Fixed Hover Animation Button -->
+      <a href="aboutus.html"><button class="button">
+        <span class="actual-text">Know More</span>
+        <span class="hover-text">Know More</span>
+      </button></a>
+
+      <!-- Scoped CSS -->
+      <style>
+        .button {
+          position: relative;
+          background: transparent;
+          border: none;
+          padding: 0;
+          cursor: pointer;
+          font-family: Arial, sans-serif;
+          font-size: 1.5em;
+          text-transform: uppercase;
+          letter-spacing: 2px;
+          -webkit-text-stroke: 1px #242d3f;
+          color: transparent;
+          display: inline-block;
+          overflow: hidden;
+        }
+
+        .actual-text {
+          display: block;
+          color: transparent;
+          -webkit-text-stroke: 1px #242d3f;
+        }
+
+        .hover-text {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 0;
+          color: #1e37b3;
+          overflow: hidden;
+          white-space: nowrap;
+          border-right: 4px solid #1e37b3;
+          transition: width 0.5s;
+          -webkit-text-stroke: 1px #1e37b3;
+        }
+
+        .button:hover .hover-text {
+          width: 100%;
+          filter: drop-shadow(0 0 23px #1e37b3);
+        }
+      </style>
+    </div>
+
+    <!-- Right Side (Rotating Image) -->
+    <div class="image-content">
+      <img src="images/h1-whowe.png" alt="Agency Team">
+    </div>
+  </div>
+</section>
+
+
+  <!-- festival offer slider -->
+  <section class="festival-offers">
+    <h2>🎊 Festival Special Offers</h2>
+    <p class="sub-text">Celebrate with us & enjoy exclusive service discounts!</p>
+  
+    <div class="swiper offerSwiper">
+      <div class="swiper-wrapper">
+  
+        <!-- Slide 1 -->
+        <div class="swiper-slide">
+          <div class="offer-card festival-bg" style="background-image: url('images/19483797.jpg');">
+            <div class="offer-overlay"></div>
+            <div class="offer-content">
+              <h3>✨ Happy Diwali ✨</h3>
+              <p>Light up your business growth with <strong>20% OFF</strong> on IVR Services.</p>
+              <a href="services.html" class="btn">Grab Offer</a>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Slide 2 -->
+        <div class="swiper-slide">
+          <div class="offer-card festival-bg" style="background-image: url('images/19483797.jpg');">
+            <div class="offer-overlay"></div>
+            <div class="offer-content">
+              <h3>✨ Happy Diwali ✨</h3>
+              <p>Light up your business growth with <strong>20% OFF</strong> on IVR Services.</p>
+              <a href="services.html" class="btn">Grab Offer</a>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Slide 3 -->
+        <div class="swiper-slide">
+          <div class="offer-card festival-bg" style="background-image: url('images/19483797.jpg');">
+            <div class="offer-overlay"></div>
+            <div class="offer-content">
+              <h3>✨ Happy Diwali ✨</h3>
+              <p>Light up your business growth with <strong>20% OFF</strong> on IVR Services.</p>
+              <a href="services.html" class="btn">Grab Offer</a>
+            </div>
+          </div>
+        </div>
+  
+      </div>
+  
+      <!-- Navigation -->
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </section>
+  
+  
+  <!-- our service -->
+<section class="services-section">
+
+  <style>
+  .services-section {
+    padding: 80px 20px;
+    background: #f4f6fb;
+    font-family: Arial, sans-serif;
+  }
+
+  .section-heading {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .section-heading h2 {
+    font-size: 2.5rem;
+    color: #242d3f;
+  }
+
+  .underline {
+    width: 80px;
+    height: 4px;
+    background: #1e37b3;
+    margin: 12px auto 0;
+    border-radius: 4px;
+  }
+
+  .services-grid {
+    max-width: 1100px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+
+  .service-card {
+    background: linear-gradient(
+      145deg,
+      rgba(var(--color), 0.18),
+      rgba(var(--color), 0.06)
+    );
+    border: 1px solid rgba(var(--color), 0.6);
+    border-radius: 22px;
+    padding: 30px 26px 34px;
+    box-shadow: 0 20px 45px rgba(0,0,0,0.15);
+    transition: all 0.35s ease;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .service-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 30px 65px rgba(0,0,0,0.25);
+  }
+
+  .service-card h3 {
+    font-size: 1.6rem;
+    margin-bottom: 12px;
+    color: rgb(var(--color));
+  }
+
+  .service-card p {
+    font-size: 0.95rem;
+    color: #242d3f;
+    line-height: 1.55;
+    margin-bottom: 20px;
+    min-height: 72px;
+  }
+
+  .sub-services {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .sub-services li {
+    display: grid;
+    grid-template-columns: 18px 1fr;
+    align-items: center;
+    column-gap: 12px;
+    padding: 12px 16px;
+    border-radius: 12px;
+    background: rgba(var(--color), 0.16);
+    color: #242d3f;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .sub-services li::before {
+    content: "▶";
+    font-size: 0.75rem;
+    color: rgb(var(--color));
+  }
+
+  .sub-services li:hover {
+    background: rgba(var(--color), 0.95);
+    color: #fff;
+    transform: translateX(6px);
+  }
+
+  .sub-services li:hover::before {
+    color: #fff;
+  }
+
+  @media (max-width: 900px) {
+    .services-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .services-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  </style>
+
+  <!-- ===== HEADING ===== -->
+  <div class="section-heading">
+    <h2>Our Services</h2>
+    <div class="underline"></div>
+  </div>
+
+  <!-- ===== SERVICES GRID ===== -->
+  <div class="services-grid">
+
+    <!-- MARKETING -->
+    <div class="service-card" style="--color:36,45,63;">
+      <h3>Marketing</h3>
+      <p>Build visibility, trust, and conversions with strategic marketing.</p>
+      <ul class="sub-services">
+        <li><a href="services.html#social-media-marketing">Social Media Marketing</a></li>
+        <li><a href="services.html#google-meta-ads">Google & Meta Ads</a></li>
+        <li><a href="services.html#brand-awareness">Brand Awareness Campaigns</a></li>
+        <li><a href="services.html#seo-online-visibility">SEO & Online Visibility</a></li>
+        <li><a href="services.html#content-writing">Content Writing</a></li>
+      </ul>
+    </div>
+
+    <!-- PROMOTE -->
+    <div class="service-card" style="--color:30,55,179;">
+      <h3>Promote</h3>
+      <p>Engage customers instantly with powerful messaging solutions.</p>
+      <ul class="sub-services">
+        <li><a href="services.html#bulk-sms">Bulk SMS (Promotional & Transactional)</a></li>
+        <li><a href="services.html#rcs-sms">RCS SMS</a></li>
+        <li><a href="services.html#voice-sms">Voice SMS</a></li>
+        <li><a href="services.html#whatsapp-api">Meta Verified WhatsApp API</a></li>
+      </ul>
+    </div>
+
+    <!-- DEVELOPMENT -->
+    <div class="service-card" style="--color:131,58,180;">
+      <h3>Development</h3>
+      <p>Design and develop high-performing digital platforms.</p>
+      <ul class="sub-services">
+        <li><a href="services.html#website-development">Website Design & Development</a></li>
+        <li><a href="services.html#app-development">App Design & Development</a></li>
+        <li><a href="services.html#landing-pages">Landing Pages</a></li>
+      </ul>
+    </div>
+
+  </div>
+  </div>
+
+</section>
+
+   <!-- ivr top service section -->
+ <!-- <section class="ivr-section">
+  <div class="ivr-container">
+
+    //Left Side: IVR Info
+    <div class="ivr-content">
+      <h2>IVR Solutions – <span>Smart Communication for Your Business</span></h2>
+      <p>
+        Movictel provides advanced IVR (Interactive Voice Response) solutions 
+        that help businesses automate calls, improve customer experience, and 
+        boost efficiency. Perfect for startups, enterprises & service-based 
+        industries.
+      </p>
+
+      //Features in Cards
+      <div class="ivr-features">
+        <div class="ivr-card">
+          <i class="fas fa-headset"></i>
+          <h3>24/7 Customer Support</h3>
+          <p>Automated system ensures customers are assisted anytime.</p>
+        </div>
+        <div class="ivr-card">
+          <i class="fas fa-random"></i>
+          <h3>Call Routing</h3>
+          <p>Direct calls to the right department without delays.</p>
+        </div>
+        <div class="ivr-card">
+          <i class="fas fa-chart-line"></i>
+          <h3>Analytics & Reports</h3>
+          <p>Track call performance & customer behavior easily.</p>
+        </div>
+      </div>
+    </div>
+
+    //Right Side: Enquiry Form
+    <div class="ivr-form-box">
+      <h3>Enquire for IVR Solutions</h3>
+      <form class="ivr-form">
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Email Address" required>
+        <input type="text" placeholder="Phone Number" required>
+        <textarea placeholder="Your Requirement" rows="4"></textarea>
+        <button type="submit">Submit Enquiry</button>
+      </form>
+    </div>
+
+  </div>
+</section> -->
+
+<!-- fiture instury -->
+<section class="case-elegant">
+
+  <div class="case-header">
+    <h2>FEATURED CASE STUDIES</h2>
+    <p class="highlight">Customizable For All Industries</p>
+    <p class="subtext">We Work On These Industries.</p>
+  </div>
+
+  <div class="case-wrapper">
+
+    <!-- Card -->
+    <div class="case-item">
+      <div class="case-thumb">
+        <img src="images/4334329.jpg" alt="Real Estate">
+      </div>
+
+      <span class="case-index">01</span>
+
+      <h3>Real Estate Industry</h3>
+      <p>
+        Drive property sales and customer engagement with tailored communication tools.
+      </p>
+
+   <a href="javascript:void(0)" class="know-more-btn" data-industry="realestate">
+  Know More 
+</a>
+
+
+    </div>
+
+    <!-- Card -->
+    <div class="case-item">
+      <div class="case-thumb">
+        <img src="images/5836.jpg" alt="Education">
+      </div>
+
+      <span class="case-index">02</span>
+
+      <h3>Education Industry</h3>
+      <p>
+        Empower institutions with smart communication tools to connect with students.
+      </p>
+
+      <a href="javascript:void(0)" class="know-more-btn" data-industry="realestate">
+  Know More 
+</a>
+
+
+    </div>
+
+    <!-- Card -->
+    <div class="case-item">
+      <div class="case-thumb">
+        <img src="images/4885941.jpg" alt="Healthcare">
+      </div>
+
+      <span class="case-index">03</span>
+
+      <h3>Healthcare Industry</h3>
+      <p>
+        Engage patients and provide updates with secure & effective communication tools.
+      </p>
+
+      <a href="javascript:void(0)" class="know-more-btn" data-industry="realestate">
+  Know More 
+</a>
+
+
+    </div>
+
+    <!-- Card -->
+    <div class="case-item">
+      <div class="case-thumb">
+        <img src="images/car_showroom_04.jpg" alt="Automobile">
+      </div>
+
+      <span class="case-index">04</span>
+
+      <h3>Automobile Industry</h3>
+      <p>
+        Accelerate automobile business with customer-focused communication solutions.
+      </p>
+
+     <a href="javascript:void(0)" class="know-more-btn" data-industry="realestate">
+  Know More 
+</a>
+
+
+    </div>
+
+  </div>
+</section>
+<!-- Popup Overlay -->
+<div class="case-popup-overlay" id="casePopup">
+  <div class="case-popup">
+
+    <button class="popup-close">&times;</button>
+
+    <span class="popup-tag" id="popupTag">Industry</span>
+    <h2 id="popupTitle"></h2>
+
+    <p class="popup-intro" id="popupIntro"></p>
+
+    <div class="popup-sections">
+      <div class="popup-box">
+        <h4>Challenges</h4>
+        <p id="popupChallenge"></p>
+      </div>
+
+      <div class="popup-box">
+        <h4>Our Solution</h4>
+        <p id="popupSolution"></p>
+      </div>
+
+      <div class="popup-box highlight">
+        <h4>Key Benefits</h4>
+        <ul id="popupBenefits"></ul>
+      </div>
+    </div>
+
+    <a href="services.html" class="popup-cta">
+      View Services →
+    </a>
+
+  </div>
+</div>
+
+
+
+<!-- ivr service  -->
+<!-- <section class="about-ivr">
+  <div class="container">
+    <div class="about-content">
+     
+      <div class="about-text">
+        <h1>Hire The Best IVR Service Provider in Lucknow</h1>
+        <h2>Why Movictel is a trusted name for IVR service provider</h2>
+        <p>
+          Movictel offers cutting-edge cloud IVR solutions that simplify 
+          customer interactions, enhance call management, and improve 
+          overall business communication. With 24/7 support and customized 
+          solutions, we ensure your business stays ahead in delivering 
+          excellent customer service.
+        </p>
+        <p>
+          From small businesses to enterprises, our IVR services are 
+          scalable and designed to handle thousands of concurrent calls 
+          seamlessly. This ensures your customers never face delays and 
+          your brand image stays strong.
+        </p>
+        
+      </div>
+
+      
+      <div class="about-image">
+        <img src="images/7712594.jpg" alt="IVR Solutions">
+      </div>
+    </div>
+  </div>
+</section> -->
+
+<!-- About us swction -->
+<section class="about-section">
+  <div class="about-container">
+
+    <!-- LEFT CONTENT -->
+    <div class="about-content">
+      <span class="about-badge">About Us</span>
+
+      <h2>
+        Smart Digital Communication<br>
+        <span>For Growing Businesses</span>
+      </h2>
+
+      <p>
+        We are a leading provider of digital communication and marketing solutions,
+        helping businesses connect with their customers more effectively.
+      </p>
+
+      <p>
+        With expertise in <strong>IVR, SMS, WhatsApp, RCS</strong> and
+        <strong>Digital Marketing</strong>, we deliver innovative,
+        result-driven strategies across industries.
+      </p>
+
+      <a href="about.html" class="about-btn">Discover More</a>
+    </div>
+
+    <!-- RIGHT IMAGE -->
+    <div class="about-visual">
+      <div class="illustration-card">
+        <img src="images/8597911.jpg" alt="Team Illustration">
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+
+<!-- FAQ Section -->
+<section class="faq-section">
+  <div class="container">
+    <h2>Frequently Asked Questions</h2>
+    <h3>Cloud Communication Platform – FAQ’s</h3>
+
+    <div class="faq-container">
+
+      <!-- FAQ 1 -->
+      <div class="faq-item">
+        <button class="faq-question">
+          What cloud-based IVR service would you recommend?
+          <span class="icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            <b>Ans:-</b> When it comes to cloud-based IVR services, one that stands out is Movictel. With its flexible and scalable platform, it offers advanced features like speech recognition and natural language processing. Its user-friendly interface and robust analytics make it an ideal choice for businesses of all sizes.
+          </p>
+        </div>
+      </div>
+
+      <!-- FAQ 2 -->
+      <div class="faq-item">
+        <button class="faq-question">
+          What is IVR full form and IVR for call center?
+          <span class="icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+           <b> Ans:-</b> IVR full form is Interactive Voice Response. It is a technology used in call centers and telephony systems to automate interactions with callers. IVR systems use pre-recorded voice prompts and menus to provide callers with options and gather input through their telephone keypad or voice recognition.
+            In a call center setting, IVR serves as an automated receptionist that helps direct and assist callers..
+          </p>
+        </div>
+      </div>
+
+      <!-- FAQ 3 -->
+      <div class="faq-item">
+        <button class="faq-question">
+          What are the advantages and disadvantages of bulk SMS?
+          <span class="icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+           <b> Ans:- Advantages of Bulk SMS:</b> <br>
+
+            <b>1:- Wide Reach:</b> Bulk SMS allows you to reach a large number of recipients instantly. It is an effective way to communicate with a large audience, whether it's customers, employees, or members of an organization. <br>
+            <b>2:- Cost-Effective:</b> Bulk SMS is generally more cost-effective compared to other marketing and communication channels such as print media or phone calls. It offers a lower cost per message, especially when sending messages in large volumes. <br>
+            <b>3:- High Open Rates:</b> SMS messages typically have high open rates since most people have their mobile phones within close proximity. This makes bulk SMS an effective way to ensure that your messages are seen and read by the recipients.
+          </p> <br>
+          <p>
+           <b>Ans:- Disadvantages of Bulk SMS:</b>  <br>
+
+            <b>1:- Character Limitations:</b> SMS messages are limited to a specific number of characters (usually 160 characters). This can restrict the amount of information you can convey in a single message and may require you to be concise and precise in your communication. <br>
+            <b>2:- No Multimedia Support:</b> SMS messages are text-based and do not support multimedia content such as images, videos, or audio files. If you need to deliver rich media content, bulk SMS may not be suitable. <br>
+            <b>3:- Opt-Out Requests:</b> Sending bulk SMS messages to recipients who have not explicitly consented or opted-in can lead to compliance issues. It is important to have proper consent mechanisms in place and provide recipients with an option to opt-out if they no longer wish to receive messages.
+          </p>
+        </div>
+      </div>
+
+      <!-- FAQ 4 -->
+      <div class="faq-item">
+        <button class="faq-question">
+          What is bulk SMS marketing?
+          <span class="icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            <b>Ans:-</b> Bulk SMS Marketing is a powerful communication tool that allows businesses to send promotional, transactional, or informational text messages to a large number of customers at once. It is widely used for marketing campaigns, customer engagement, reminders, and instant alerts because of its high open rates and instant delivery. <br>
+
+            1. With Bulk SMS, you can: <br>
+            
+            2. Reach thousands of customers in seconds <br>
+            
+            3. Share offers, discounts, and updates instantly <br>
+            
+            4. Ensure 99% delivery rate with measurable reports <br>
+            
+            5. Personalize messages for better engagement <br>
+            
+            👉 In short, Bulk SMS Marketing helps businesses connect with their audience quickly, effectively, and at a very low cost.
+          </p>
+        </div>
+      </div>
+
+      <!-- FAQ 5 -->
+      <!-- <div class="faq-item">
+        <button class="faq-question">
+          How do I get started with Movictel Cloud Communication?
+          <span class="icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            Simply connect with our team, discuss your requirements, and we’ll set up your cloud
+            communication system with full onboarding and training support.
+          </p>
+        </div>
+      </div> -->
+
+    </div>
+  </div>
+</section>
+
+<!-- Testimonial  -->
+
+<section class="testimonials">
+  <div class="bg-orbs">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <div class="container">
+    <div class="testimonials-header">
+      <h2>Loved by Growing Businesses</h2>
+      <p>Real stories from teams scaling with Movictel</p>
+    </div>
+
+    <div class="swiper testimonialSwiper">
+      <div class="swiper-wrapper">
+
+        <div class="swiper-slide">
+          <div class="testimonial-card tilt">
+            <div class="card-glow"></div>
+            <span class="quote">“</span>
+            <p>
+              Movictel’s IVR and bulk SMS transformed our customer communication.
+              Engagement and satisfaction increased instantly.
+            </p>
+            <div class="author">
+              <img src="images/profile.png" alt="">
+              <div>
+                <h4>Rahul Sharma</h4>
+                <span>E-commerce Marketing Head</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="swiper-slide">
+          <div class="testimonial-card tilt">
+            <div class="card-glow"></div>
+            <span class="quote">“</span>
+            <p>
+              WhatsApp automation helped us build direct customer relationships.
+              Reliable, fast, and extremely effective.
+            </p>
+            <div class="author">
+              <img src="images/profile.png" alt="">
+              <div>
+                <h4>Pooja Verma</h4>
+                <span>CEO, Healthcare Startup</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="swiper-slide">
+          <div class="testimonial-card tilt">
+            <div class="card-glow"></div>
+            <span class="quote">“</span>
+            <p>
+              Their cloud communication platform scales effortlessly.
+              Support quality is world-class.
+            </p>
+            <div class="author">
+              <img src="images/profile.png" alt="">
+              <div>
+                <h4>Arjun Mehta</h4>
+                <span>Operations Manager</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+</section>
+
+
+  <!-- Footer -->
+ <footer class="site-footer">
+  <div class="footer-container">
+
+    <!-- Column 1: Logo & About -->
+    <div class="footer-col">
+      <div class="footer-logo">
+        <img src="images/logo/Movictel 12 sept 25-01-01.png" alt="Movictel Logo">
+      </div>
+      <p class="footer-about">
+        Movictel is a growth-driven digital solutions company offering
+        Marketing, Messaging & Development services to help businesses
+        connect, engage & scale faster.
+      </p>
+      <div class="footer-social">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-x-twitter"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+      </div>
+    </div>
+
+    <!-- Column 2: Quick Links -->
+    <div class="footer-col">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="aboutus.html">About Us</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+
+    <!-- Column 3: Services -->
+   <!-- Column 3: Services -->
+<div class="footer-col services-col">
+  <h3>Our Services</h3>
+
+  <div class="services-grid">
+
+    <!-- MARKETING -->
+    <div class="footer-service-group">
+      <span class="service-heading">Marketing</span>
+      <ul>
+        <li><a href="services.html#social-media-marketing">Social Media Marketing</a></li>
+        <li><a href="services.html#google-meta-ads">Google & Meta Ads</a></li>
+        <li><a href="services.html#brand-awareness">Brand Awareness Campaigns</a></li>
+        <li><a href="services.html#seo-online-visibility">SEO & Online Visibility</a></li>
+        <li><a href="services.html#content-writing">Content Writing</a></li>
+      </ul>
+    </div>
+
+    <!-- PROMOTE -->
+    <div class="footer-service-group">
+      <span class="service-heading">Promote</span>
+      <ul>
+        <li><a href="services.html#bulk-sms">Bulk SMS</a></li>
+        <li><a href="services.html#rcs-sms">RCS SMS</a></li>
+        <li><a href="services.html#voice-sms">Voice SMS</a></li>
+        <li><a href="services.html#whatsapp-api">WhatsApp Business API</a></li>
+      </ul>
+    </div>
+
+    <!-- DEVELOPMENT -->
+    <div class="footer-service-group">
+      <span class="service-heading">Development</span>
+      <ul>
+        <li><a href="services.html#website-development">Website Development</a></li>
+        <li><a href="services.html#app-development">App Development</a></li>
+        <li><a href="services.html#landing-pages">Landing Pages</a></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+
+
+  <!-- Bottom Bar -->
+  <div class="footer-bottom">
+    <p>© 2025 Movictel. All Rights Reserved.</p>
+  </div>
+</footer>
+
+  
+ <!-- Mobile Menu Script (ADD ONLY) -->
+<script>
+  const menuToggle = document.getElementById("menuToggle");
+  const navMenu = document.querySelector("header nav");
+
+  menuToggle.addEventListener("click", () => {
+    navMenu.classList.toggle("active");
+    menuToggle.classList.toggle("active");
+  });
+
+  document.querySelectorAll(".tilt").forEach(card => {
+  card.addEventListener("mousemove", e => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const rotateX = ((y / rect.height) - 0.5) * 10;
+    const rotateY = ((x / rect.width) - 0.5) * -10;
+
+    card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  });
+
+  card.addEventListener("mouseleave", () => {
+    card.style.transform = "rotateX(0) rotateY(0)";
+  });
+});
+
+
+
+const popup = document.getElementById("casePopup");
+
+const title = document.getElementById("popupTitle");
+const tag = document.getElementById("popupTag");
+const intro = document.getElementById("popupIntro");
+const challenge = document.getElementById("popupChallenge");
+const solution = document.getElementById("popupSolution");
+const benefits = document.getElementById("popupBenefits");
+
+const data = {
+  realestate: {
+    tag: "Real Estate",
+    title: "Real Estate Industry",
+    intro: "Helping real estate businesses convert leads faster and build long-term buyer trust through intelligent communication.",
+    challenge: "Managing high lead volumes, delayed follow-ups, and poor buyer engagement often results in lost sales opportunities.",
+    solution: "We provide automated messaging, CRM integration, instant follow-ups, and personalized buyer journeys.",
+    benefits: [
+      "Faster lead response time",
+      "Higher property inquiry conversions",
+      "Automated site-visit reminders",
+      "Improved customer trust"
+    ]
+  },
+
+  education: {
+    tag: "Education",
+    title: "Education Industry",
+    intro: "Connecting institutions, students, and parents with reliable, scalable communication solutions.",
+    challenge: "Manual communication causes delays in admissions, updates, and student engagement.",
+    solution: "Smart notification systems, admission alerts, and student engagement workflows.",
+    benefits: [
+      "Streamlined admissions",
+      "Improved student communication",
+      "Automated alerts & reminders",
+      "Better parent engagement"
+    ]
+  },
+
+  healthcare: {
+    tag: "Healthcare",
+    title: "Healthcare Industry",
+    intro: "Secure, timely, and reliable patient communication that enhances care delivery.",
+    challenge: "Missed appointments, delayed updates, and lack of patient follow-ups.",
+    solution: "Automated appointment reminders, secure alerts, and real-time patient notifications.",
+    benefits: [
+      "Reduced no-shows",
+      "Improved patient experience",
+      "Secure communication",
+      "Operational efficiency"
+    ]
+  },
+
+  automobile: {
+    tag: "Automobile",
+    title: "Automobile Industry",
+    intro: "Driving sales and after-sales engagement through customer-centric communication.",
+    challenge: "Low test-drive conversions and weak after-sales follow-ups.",
+    solution: "Lead automation, service reminders, and customer lifecycle messaging.",
+    benefits: [
+      "Higher test-drive bookings",
+      "Improved service retention",
+      "Customer loyalty growth",
+      "Sales process automation"
+    ]
+  }
+};
+
+document.querySelectorAll(".know-more-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const d = data[btn.dataset.industry];
+    tag.innerText = d.tag;
+    title.innerText = d.title;
+    intro.innerText = d.intro;
+    challenge.innerText = d.challenge;
+    solution.innerText = d.solution;
+
+    benefits.innerHTML = "";
+    d.benefits.forEach(b => {
+      benefits.innerHTML += `<li>${b}</li>`;
+    });
+
+    popup.classList.add("active");
+  });
+});
+
+popup.addEventListener("click", e => {
+  if (e.target === popup || e.target.classList.contains("popup-close")) {
+    popup.classList.remove("active");
+  }
+});
+
+
+
+
+</script>
+
+  
+</body>
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="js/script.js"></script>
+
+</html>

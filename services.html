@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Service Details</title>
+   <link rel="stylesheet" href="css/flip.css">
+  <link rel="stylesheet" href="css/style.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<!-- Swiper CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+ <style>
+:root {
+  --ig-blue: #1e37b3;
+  --ig-purple: #833AB4;
+  --ig-pink: #C13584;
+  --ig-light: #FFDC80;
+
+  --ig-dark: #242d3f;
+  --ig-gray: #838494;
+  --ig-lightGray: #c8c9ce;
+  --white: #ffffff;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f6fb;
+  color: var(--ig-dark);
+}
+
+.blog-hero {
+  height:40vh;
+  background: linear-gradient(135deg, #d9dff0 0%, #dfcbe7 100%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  overflow:hidden;
+  border-radius: 0 0 50px 50px;
+}
+
+.blog-hero h1 {
+  color:var(--ig-blue);
+  font-size:3.5rem;
+  font-weight:800;
+  text-transform:uppercase;
+  text-align:center;
+  letter-spacing:3px;
+  background:var(--ig-blue);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation: heroFade 1.5s ease forwards;
+}
+
+@keyframes heroFade {
+  from { opacity:0; transform:translateY(-20px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 20px;
+}
+
+
+
+/* ===== SECTION ===== */
+.service-section {
+  padding: 90px 0;
+  border-bottom: 1px solid var(--ig-lightGray);
+}
+
+.service-header {
+  margin-bottom: 50px;
+  
+}
+
+
+.service-header h2 {
+  font-size: 2.8rem;
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+
+.service-header p {
+  font-size: 1.1rem;
+  color: var(--ig-gray);
+  max-width: 800px;
+  line-height: 1.7;
+}
+
+/* ===== CTA ===== */
+.service-cta {
+  display: inline-block;
+  margin-top: 24px;
+  padding: 14px 36px;
+  border-radius: 30px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.service-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+}
+
+/* ===== SUB SERVICE GRID ===== */
+.subservice-grid {
+  margin-top: 50px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 26px;
+}
+
+.subservice-card {
+  background: #fff;
+  border-radius: 22px;
+  padding: 26px;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.1);
+  border-top: 4px solid var(--accent);
+  transition: 0.35s ease;
+}
+
+.subservice-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.18);
+}
+
+.subservice-card h4 {
+  font-size: 1.4rem;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.subservice-card p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--ig-gray);
+  margin-bottom: 18px;
+}
+
+.subservice-card a {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.subservice-card a:hover {
+  text-decoration: underline;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .subservice-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .service-header h2 {
+    font-size: 2.2rem;
+  }
+
+  .subservice-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+</style>
+</head>
+
+<body>
+<header id="main-header">
+  <div class="container">
+
+    <div class="logo">
+      <a href="index.html">
+        <img src="images/logo/Movictel 12 sept 25-01-01.png" alt="Movictel Logo">
+      </a>
+    </div>
+
+    <div class="menu-toggle" id="menuToggle">
+      <i class="fas fa-bars"></i>
+    </div>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav>
+      <ul class="menu">
+
+        <li><a href="index.html">Home</a></li>
+
+        <li class="dropdown">
+          <a href="services.html">Services</a>
+          <ul class="dropdown-menu">
+
+            <!-- MARKETING -->
+            <li class="has-submenu">
+              <a href="#">Marketing</a>
+              <ul class="submenu">
+                <li><a href="#">Social Media Marketing</a></li>
+                <li><a href="#">Google & Meta Ads</a></li>
+                <li><a href="#">Brand Awareness Campaigns</a></li>
+                <li><a href="#">SEO & Online Visibility</a></li>
+                <li><a href="#">Content Writing</a></li>
+              </ul>
+            </li>
+
+            <!-- PROMOTE -->
+            <li class="has-submenu">
+              <a href="#">Promote</a>
+              <ul class="submenu">
+                <li><a href="#">Bulk SMS</a></li>
+                <li><a href="#">RCS SMS</a></li>
+                <li><a href="#">Voice SMS</a></li>
+                <li><a href="#">WhatsApp Business API</a></li>
+              </ul>
+            </li>
+
+            <!-- DEVELOPMENT -->
+            <li class="has-submenu">
+              <a href="#">Development</a>
+              <ul class="submenu">
+                <li><a href="#">Website Development</a></li>
+                <li><a href="#">App Development</a></li>
+                <li><a href="#">Landing Pages</a></li>
+              </ul>
+            </li>
+
+          </ul>
+        </li>
+
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="aboutus.html">About Us</a></li>
+        <li><a href="contact.html">Contact</a></li>
+
+      </ul>
+    </nav>
+
+    <div class="social-icons">
+      <a href="#"><i class="fab fa-facebook-f"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-linkedin-in"></i></a>
+      <a href="#"><i class="fab fa-x-twitter"></i></a>
+    </div>
+
+  </div>
+</header>
+
+  <!-- HERO BANNER -->
+  <section class="blog-hero">
+    <h1>OUR SERVICES</h1>
+  </section>
+
+
+
+<!-- ================= MARKETING ================= -->
+<section class="service-section" style="--accent:#242d3f; --accent-dark:#111827;">
+<div class="container">
+
+<div class="service-header">
+<h2>Marketing Services</h2>
+<p>
+Our marketing solutions are designed to help businesses build visibility,
+establish trust, and convert audiences through consistent and data-driven strategies.
+</p>
+<a href="contact.html" class="service-cta">Talk to Marketing Expert</a>
+</div>
+
+<div class="subservice-grid">
+
+<div class="subservice-card" id="social-media-marketing">
+<h4>Social Media Marketing</h4>
+<p>
+We manage and grow your brand presence across social platforms with
+content planning, engagement strategies, and performance tracking.
+</p>
+<a href="contact.html">Learn More →</a>
+</div>
+
+<div class="subservice-card" id="google-meta-ads">
+<h4>Google & Meta Ads</h4>
+<p>
+High-performing paid advertising campaigns optimized for reach,
+leads, and ROI across Google, Facebook, and Instagram.
+</p>
+<a href="contact.html">Learn More →</a>
+</div>
+
+<div class="subservice-card" id="brand-awareness">
+<h4>Brand Awareness Campaigns</h4>
+<p>
+Strategic campaigns focused on improving brand recall, credibility,
+and audience trust across digital channels.
+</p>
+<a href="contact.html">Learn More →</a>
+</div>
+
+<div class="subservice-card" id="seo-online-visibility">
+<h4>SEO & Online Visibility</h4>
+<p>
+Improve organic rankings, website traffic, and long-term online presence
+through ethical SEO strategies.
+</p>
+<a href="contact.html">Learn More →</a>
+</div>
+
+<div class="subservice-card"  id="content-writing">
+<h4>Content Writing</h4>
+<p>
+High-quality content tailored for websites, ads, blogs, and social media
+to support brand messaging and conversions.
+</p>
+<a href="contact.html">Learn More →</a>
+</div>
+
+</div>
+</div>
+</section>
+
+<!-- ================= PROMOTE ================= -->
+<section class="service-section" style="--accent:#1e37b3; --accent-dark:#142693;">
+<div class="container">
+
+<div class="service-header">
+<h2>Promotional Communication</h2>
+<p>
+Engage customers instantly using secure, scalable, and high-delivery
+communication solutions built for modern businesses.
+</p>
+<a href="contact.html" class="service-cta">Request Demo</a>
+</div>
+
+<div class="subservice-grid">
+
+<div class="subservice-card" id="bulk-sms">
+<h4>Bulk SMS</h4>
+<p>
+Promotional and transactional SMS solutions with high delivery rates
+for alerts, offers, and notifications.
+</p>
+<a href="contact.html">Learn More →</a>
+</div>
+
+<div class="subservice-card" id="rcs-sms">
+<h4>RCS Messaging</h4>
+<p>
+Rich Communication Services with branded messages, images, buttons,
+and interactive customer engagement.
+</p>
+<a href="contact.html">Learn More →</a>
+</div>
+
+<div class="subservice-card" id="voice-sms">
+<h4>Voice SMS</h4>
+<p>
+Automated voice messages for alerts, reminders, and campaigns,
+ideal for reaching users instantly.
+</p>
+<a href="contact.html">Learn More →</a>
+</div>
+
+<div class="subservice-card" id="whatsapp-api">
+<h4>WhatsApp Business API</h4>
+<p>
+Meta-verified WhatsApp messaging for customer support, notifications,
+and conversational commerce.
+</p>
+<a href="contact.html">Learn More →</a>
+</div>
+
+</div>
+</div>
+</section>
+
+<!-- ================= DEVELOPMENT ================= -->
+<section class="service-section" style="--accent:#833AB4; --accent-dark:#5f2d88;">
+<div class="container">
+
+<div class="service-header" >
+<h2>Design & Development</h2>
+<p>
+We build fast, secure, and scalable digital platforms focused on user
+experience and business growth.
+</p>
+<a href="contact.html" class="service-cta">Start Your Project</a>
+</div>
+
+<div class="subservice-grid">
+
+<div class="subservice-card" id="website-development">
+<h4>Website Design & Development</h4>
+<p>
+Modern, responsive, and SEO-friendly websites designed to convert visitors
+into customers.
+</p>
+<a href="contact.html">Learn More →</a>
+</div>
+
+<div class="subservice-card" id="app-development">
+<h4>Mobile App Development</h4>
+<p>
+Custom mobile applications built for performance, scalability,
+and seamless user experience.
+</p>
+<a href="contact.html">Learn More →</a>
+</div>
+
+<div class="subservice-card " id="landing-pages">
+<h4>Landing Pages</h4>
+<p>
+High-converting landing pages optimized for ads, campaigns,
+and lead generation.
+</p>
+<a href="contact.html">Learn More →</a>
+</div>
+
+</div>
+</div>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-container">
+
+    <!-- Column 1: Logo & About -->
+    <div class="footer-col">
+      <div class="footer-logo">
+        <img src="images/logo/Movictel 12 sept 25-01-01.png" alt="Movictel Logo">
+      </div>
+      <p class="footer-about">
+        Movictel is a growth-driven digital solutions company offering
+        Marketing, Messaging & Development services to help businesses
+        connect, engage & scale faster.
+      </p>
+      <div class="footer-social">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-x-twitter"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+      </div>
+    </div>
+
+    <!-- Column 2: Quick Links -->
+    <div class="footer-col">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="aboutus.html">About Us</a></li>
+        <li><a href="services.html">Services</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+
+    <!-- Column 3: Services -->
+   <!-- Column 3: Services -->
+<div class="footer-col services-col">
+  <h3>Our Services</h3>
+
+  <div class="services-grid">
+
+    <div class="footer-service-group">
+      <span class="service-heading">Marketing</span>
+      <ul>
+        <li><a href="#">Social Media Marketing</a></li>
+        <li><a href="#">Google & Meta Ads</a></li>
+        <li><a href="#">SEO & Content Writing</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-service-group">
+      <span class="service-heading">Promote</span>
+      <ul>
+        <li><a href="#">Bulk SMS</a></li>
+        <li><a href="#">RCS SMS</a></li>
+        <li><a href="#">WhatsApp Business API</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-service-group">
+      <span class="service-heading">Development</span>
+      <ul>
+        <li><a href="#">Website Development</a></li>
+        <li><a href="#">App Development</a></li>
+        <li><a href="#">Landing Pages</a></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+
+  <!-- Bottom Bar -->
+  <div class="footer-bottom">
+    <p>© 2025 Movictel. All Rights Reserved.</p>
+  </div>
+</footer>
+  <!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="js/script.js"></script>  
+
+</body>
+</html>

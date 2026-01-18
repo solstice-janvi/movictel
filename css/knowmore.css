@@ -1,0 +1,96 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  background: #f9f9f9;
+  color: #333;
+}
+
+.services-section {
+  padding: 80px 20px;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  color: #fff;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+.section-title span {
+  color: #00c6ff;
+}
+
+.section-subtitle {
+  font-size: 1.1rem;
+  margin-bottom: 50px;
+  color: #ddd;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+}
+
+.service-card {
+  background: #1e293b;
+  padding: 30px 20px;
+  border-radius: 15px;
+  transition: all 0.4s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.service-card i {
+  font-size: 40px;
+  color: #00c6ff;
+  margin-bottom: 20px;
+  transition: transform 0.4s ease;
+}
+
+.service-card h3 {
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+  color: #fff;
+}
+
+.service-card p {
+  font-size: 0.95rem;
+  color: #ccc;
+  line-height: 1.5;
+}
+
+.service-card:hover {
+  transform: translateY(-10px);
+  background: #0f172a;
+}
+
+.service-card:hover i {
+  transform: scale(1.2) rotate(10deg);
+  color: #38bdf8;
+}
+
+/* Swiper Responsive Fix */
+.swiper {
+  padding: 40px 10px;
+}
+
+.swiper-slide {
+  width: auto;
+}
+
+@media (max-width: 768px) {
+  .swiper-slide {
+    padding: 20px;
+    text-align: center;
+  }
+
+  .swiper-slide h3 {
+    font-size: 1.2rem;
+  }
+
+  .swiper-slide p {
+    font-size: 0.9rem;
+  }
+}
