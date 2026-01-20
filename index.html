@@ -100,20 +100,61 @@
   </div>
 </header>
 
-  
+  <!-- Full Width Stack Carousel -->
+<!-- Services Stack Carousel -->
+<section class="services-carousel">
 
-  <!-- SLIDER -->
-  <section class="home-slider">
-  <div class="swiper">
-    <div class="swiper-wrapper">
-      <div class="swiper-slide">
-        <div class="overlay"></div>
-        <div class="slide-content">
-          <h1>🚀 Power Your Brand with Smart Digital Marketing</h1>
-          <p>We craft strategies that bring visibility, engagement, and growth. From startups to enterprises – we help every business shine online.</p>
-          
-          <!-- Gooey Button Replacement -->
-           <a href="contact.html"><button class="c-button c-button--gooey">
+  <div class="services-container">
+    <div class="services-slide">
+
+      <div class="service-item" style="background-image:url('images/4334329.jpg')">
+        
+        <div class="service-content">
+          <h2>Digital </br>Marketing</h2>
+          <p>SEO, PPC, Social Media Marketing, Lead Funnels</p>
+          <a href="services.html"><button>Explore Service</button></a>
+        </div>
+      </div>
+
+      <div class="service-item" style="background-image:url('images/5836.jpg')">
+       
+        <div class="service-content">
+          <h2>Communication </br> APIs</h2>
+          <p>Bulk SMS, WhatsApp API, Email Automation</p>
+          <a href="services.html"><button>Explore Service</button></a>
+        </div>
+      </div>
+
+      <div class="service-item" style="background-image:url('images/4885941.jpg')">
+       
+        <div class="service-content">
+          <h2>IVR </br>Solutions</h2>
+          <p>Inbound IVR, Outbound Calling, Call Analytics</p>
+          <a href="services.html"><button>Explore Service</button></a>
+        </div>
+      </div>
+
+      <div class="service-item" style="background-image:url('images/car_showroom_04.jpg')">
+       
+        <div class="service-content">
+          <h2>Web</br> Development</h2>
+          <p>Corporate Websites, Landing Pages, CRM Portals</p>
+          <a href="services.html"><button>Explore Service</button></a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Navigation -->
+    <div class="services-nav">
+      <button class="services-prev">◁</button>
+      <button class="services-next">▷</button>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="services-cta">
+   <a href="contact.html"><button class="c-button c-button--gooey">
            
             Get Started
             <div class="c-button__blobs">
@@ -122,8 +163,6 @@
               <div></div>
             </div>
           </button></a>
-
-          <!-- Gooey SVG Filter -->
           <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="display: block; height: 0; width: 0;">
             <defs>
               <filter id="goo">
@@ -137,6 +176,7 @@
           <style>
             .c-button {
               color: #000;
+              margin: 0;
               font-weight: 700;
               font-size: 16px;
               text-decoration: none;
@@ -190,26 +230,15 @@
               transform: scale(1.4) translateY(0) translateZ(0);
             }
           </style>
-
-        </div>
-
-        <!-- Rotating Image -->
-        <div class="slide-image">
-          <img src="images/9019105-removebg-preview.png" alt="Rotating Image">
-        </div>
-      </div>
-
-      <div class="swiper-button-next"></div>
-      <div class="swiper-button-prev"></div>
-      <div class="swiper-pagination"></div>
-    </div>
   </div>
+
 </section>
 
 
 
   
 
+  
 <!-- Home Slider -->
 <!-- Home Hero Slider -->
 
@@ -586,90 +615,56 @@
     <p class="subtext">We Work On These Industries.</p>
   </div>
 
-  <div class="case-wrapper">
-
-    <!-- Card -->
-    <div class="case-item">
-      <div class="case-thumb">
-        <img src="images/4334329.jpg" alt="Real Estate">
+  <div class="carousel-container">
+    <button class="nav-arrow left">‹</button>
+    <div class="carousel-track">
+      <div class="card" data-index="0">
+        <div class="img"><img src="images/4334329.jpg" alt="Real Estate"></div>
+        <h3>Real Estate</h3>
+        <p>Drive property sales and customer engagement with tailored tools.</p>
+        <a href="javascript:void(0)" class="know-more-btn" data-industry="realestate">Know More</a>
       </div>
 
-      <span class="case-index">01</span>
-
-      <h3>Real Estate Industry</h3>
-      <p>
-        Drive property sales and customer engagement with tailored communication tools.
-      </p>
-
-   <a href="javascript:void(0)" class="know-more-btn" data-industry="realestate">
-  Know More 
-</a>
-
-
-    </div>
-
-    <!-- Card -->
-    <div class="case-item">
-      <div class="case-thumb">
-        <img src="images/5836.jpg" alt="Education">
+      <div class="card" data-index="1">
+        <div class="img"><img src="images/5836.jpg" alt="Education"></div>
+        <h3>Education</h3>
+        <p>Empower institutions with smart communication tools for students.</p>
+        <a href="javascript:void(0)" class="know-more-btn" data-industry="education">Know More</a>
       </div>
 
-      <span class="case-index">02</span>
-
-      <h3>Education Industry</h3>
-      <p>
-        Empower institutions with smart communication tools to connect with students.
-      </p>
-
-      <a href="javascript:void(0)" class="know-more-btn" data-industry="realestate">
-  Know More 
-</a>
-
-
-    </div>
-
-    <!-- Card -->
-    <div class="case-item">
-      <div class="case-thumb">
-        <img src="images/4885941.jpg" alt="Healthcare">
+      <div class="card" data-index="2">
+        <div class="img"><img src="images/4885941.jpg" alt="Healthcare"></div>
+        <h3>Healthcare</h3>
+        <p>Engage patients with secure and effective communication solutions.</p>
+        <a href="javascript:void(0)" class="know-more-btn" data-industry="healthcare">Know More</a>
       </div>
 
-      <span class="case-index">03</span>
-
-      <h3>Healthcare Industry</h3>
-      <p>
-        Engage patients and provide updates with secure & effective communication tools.
-      </p>
-
-      <a href="javascript:void(0)" class="know-more-btn" data-industry="realestate">
-  Know More 
-</a>
-
-
-    </div>
-
-    <!-- Card -->
-    <div class="case-item">
-      <div class="case-thumb">
-        <img src="images/car_showroom_04.jpg" alt="Automobile">
+      <div class="card" data-index="3">
+        <div class="img"><img src="images/car_showroom_04.jpg" alt="Automobile"></div>
+        <h3>Automobile</h3>
+        <p>Accelerate business with customer-focused communication solutions.</p>
+        <a href="javascript:void(0)" class="know-more-btn" data-industry="automobile">Know More</a>
       </div>
-
-      <span class="case-index">04</span>
-
-      <h3>Automobile Industry</h3>
-      <p>
-        Accelerate automobile business with customer-focused communication solutions.
-      </p>
-
-     <a href="javascript:void(0)" class="know-more-btn" data-industry="realestate">
-  Know More 
-</a>
-
-
     </div>
+    <button class="nav-arrow right">›</button>
+  </div>
 
+  <div class="member-info">
+    <h2 class="member-name">Real Estate Industry</h2>
+    <p class="member-role">Industry Focus</p>
+  </div>
+
+  <div class="dots">
+    <div class="dot active" data-index="0"></div>
+    <div class="dot" data-index="1"></div>
+    <div class="dot" data-index="2"></div>
+    <div class="dot" data-index="3"></div>
   </div>
 </section>
+
+
+
+
 <!-- Popup Overlay -->
 <div class="case-popup-overlay" id="casePopup">
   <div class="case-popup">
@@ -1164,6 +1159,13 @@ popup.addEventListener("click", e => {
   }
 });
 
+
+const next = document.querySelector(".services-next");
+const prev = document.querySelector(".services-prev");
+const slide = document.querySelector(".services-slide");
+
+next.onclick = () => slide.appendChild(slide.firstElementChild);
+prev.onclick = () => slide.prepend(slide.lastElementChild);
 
 
 
