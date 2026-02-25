@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movictel CMS - Admin Login</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <script>
+    tailwind.config = {
+      theme: { 
+        extend: { 
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          colors: {
+            gray: {
+              50: '#fafafa',
+              100: '#f4f4f5',
+              200: '#e4e4e7',
+              300: '#d4d4d8',
+              400: '#a1a1aa',
+              500: '#71717a',
+              600: '#52525b',
+              700: '#3f3f46',
+              800: '#27272a',
+              900: '#18181b',
+            }
+          },
+          animation: {
+            'fade-in-up': 'fadeInUp 0.4s ease-out forwards',
+            'slide-in-right': 'slideInRight 0.3s ease-out forwards',
+          },
+          keyframes: {
+            fadeInUp: {
+              '0%': { opacity: '0', transform: 'translateY(15px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            slideInRight: {
+              '0%': { opacity: '0', transform: 'translateX(20px)' },
+              '100%': { opacity: '1', transform: 'translateX(0)' },
+            }
+          }
+        } 
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #fafafa;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Custom Form Elements */
+    .input-modern { 
+      width: 100%; 
+      padding: 0.6rem 0.8rem; 
+      background-color: #ffffff; 
+      border: 1px solid #e4e4e7; 
+      border-radius: 0.5rem; 
+      outline: none; 
+      transition: all 0.2s ease; 
+      color: #18181b; 
+      font-size: 0.875rem;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+    }
+    .input-modern:focus { 
+      border-color: #18181b; 
+      box-shadow: 0 0 0 2px rgba(24, 24, 27, 0.1); 
+    }
+    
+    .label-modern { 
+      display: block; 
+      font-size: 0.75rem; 
+      font-weight: 500; 
+      color: #71717a; 
+      margin-bottom: 0.3rem;
+    }
+
+    /* Tabs Logic */
+    .tab-content { display: none; }
+    .tab-content.active { display: block; animation: fadeInUp 0.4s ease-out forwards; }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #d4d4d8; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: #a1a1aa; }
+
+    /* Toggle Switch Styles */
+    .toggle-checkbox:checked {
+      right: 0;
+      border-color: #18181b;
+    }
+    .toggle-checkbox:checked + .toggle-label {
+      background-color: #18181b;
+    }
+  </style>
+</head>
+<body class="h-screen w-full text-gray-900 overflow-hidden text-base bg-gray-50">
+
+  <!-- LOGIN OVERLAY -->
+  <div id="login-overlay" class="fixed inset-0 bg-gray-50 z-50 flex items-center justify-center transition-opacity duration-300">
+      <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-200 max-w-sm w-full mx-4">
+          <div class="text-center mb-8">
+              <h1 class="text-2xl font-bold tracking-tight text-black flex items-center justify-center gap-2">
+                  Movictel <span class="bg-gray-100 text-gray-600 text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider font-semibold border border-gray-200">Admin</span>
+              </h1>
+              <p class="text-sm text-gray-500 mt-2">Secure access restricted to authorized personnel</p>
+          </div>
+          <form id="login-form" class="space-y-5">
+              <div>
+                  <label class="label-modern">Email Address</label>
+                  <input type="email" id="admin-email" class="input-modern" placeholder="admin@movictel.com" required>
+              </div>
+              <div>
+                  <label class="label-modern">Password</label>
+                  <input type="password" id="admin-password" class="input-modern" placeholder="••••••••" required>
+              </div>
+              <div id="login-error" class="text-red-500 text-xs font-medium hidden text-center bg-red-50 p-2 rounded border border-red-100"></div>
+              <button type="submit" id="login-btn" class="w-full bg-black hover:bg-gray-800 text-white font-medium py-2.5 rounded-lg transition-colors flex justify-center items-center shadow-sm active:scale-95">
+                  Sign In to CMS
+              </button>
+          </form>
+      </div>
+  </div>
+
+  <!-- APP WRAPPER (Hidden by default until logged in) -->
+  <div id="app-wrapper" class="hidden h-screen w-full">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white border-r border-gray-200 flex flex-col z-40 shrink-0">
+        <div class="h-16 flex items-center px-6 border-b border-gray-100">
+            <h1 class="text-xl font-bold tracking-tight text-black flex items-center gap-2">
+              Movictel <span class="bg-gray-100 text-gray-600 text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider font-semibold border border-gray-200">CMS</span>
+            </h1>
+        </div>
+        
+        <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+            <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Home Sections</p>
+            
+            <a href="#" onclick="switchTab('visibility-settings')" class="nav-link active-nav flex items-center px-3 py-2 rounded-lg bg-gray-100 text-black font-medium transition-all group" data-tab="visibility-settings">
+                <i class="fas fa-eye w-5 text-center text-gray-500 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm">Global Visibility</span>
+            </a>
+            <a href="#" onclick="switchTab('hero-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group" data-tab="hero-settings">
+                <i class="fas fa-images w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm">Hero Slider</span>
+            </a>
+            <a href="#" onclick="switchTab('about-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group" data-tab="about-settings">
+                <i class="fas fa-address-card w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm">Who We Are</span>
+            </a>
+            <a href="#" onclick="switchTab('offers-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group" data-tab="offers-settings">
+                <i class="fas fa-gift w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm">Active Offers</span>
+            </a>
+            <a href="#" onclick="switchTab('services-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group" data-tab="services-settings">
+                <i class="fas fa-cogs w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm">Services Grid</span>
+            </a>
+            <a href="#" onclick="switchTab('cases-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group" data-tab="cases-settings">
+                <i class="fas fa-briefcase w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm">Case Studies</span>
+            </a>
+            <a href="#" onclick="switchTab('homeabout-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group" data-tab="homeabout-settings">
+                <i class="fas fa-info-circle w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm">Home About Block</span>
+            </a>
+            <a href="#" onclick="switchTab('clients-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group" data-tab="clients-settings">
+                <i class="fas fa-building w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm">Client Logos</span>
+            </a>
+            <a href="#" onclick="switchTab('testimonials-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group" data-tab="testimonials-settings">
+                <i class="fas fa-star w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm">Testimonials</span>
+            </a>
+            <a href="#" onclick="switchTab('faqs-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group mb-4" data-tab="faqs-settings">
+                <i class="fas fa-question-circle w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm">FAQs</span>
+            </a>
+
+            <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 mt-6">Internal Pages</p>
+            <a href="#" onclick="switchTab('servicepages-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group" data-tab="servicepages-settings">
+                <i class="fas fa-cubes w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm">Service Details</span>
+            </a>
+            <a href="#" onclick="switchTab('aboutpage-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group" data-tab="aboutpage-settings">
+                <i class="fas fa-users w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm">About Us Page</span>
+            </a>
+            <a href="#" onclick="switchTab('blogpage-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group" data-tab="blogpage-settings">
+                <i class="fas fa-blog w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm">Blog Page</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 flex flex-col h-screen overflow-hidden bg-gray-50">
+        
+        <!-- Top Header -->
+        <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 shrink-0 sticky top-0 z-30">
+            <div>
+              <h2 id="current-tab-title" class="text-lg font-semibold text-gray-900 tracking-tight">Global Visibility</h2>
+            </div>
+            <div class="flex gap-4 items-center">
+              <button id="logout-btn" class="text-sm font-medium text-red-500 hover:text-red-700 transition-colors flex items-center gap-1.5 mr-2">
+                <i class="fas fa-sign-out-alt"></i> Logout
+              </button>
+              <div class="w-px h-6 bg-gray-200"></div>
+              <a href="index.html" target="_blank" class="text-sm font-medium text-gray-600 hover:text-black transition-colors flex items-center gap-2">
+                View Live Site <i class="fas fa-arrow-up-right-from-square text-xs"></i>
+              </a>
+              <button onclick="saveData()" class="bg-black hover:bg-gray-800 active:scale-95 text-white px-5 py-2 rounded-md text-sm font-medium transition-all shadow-sm flex items-center gap-2 ml-2">
+                  Save Changes
+              </button>
+            </div>
+        </header>
+
+        <!-- Toast Notification -->
+        <div id="toast-notification" class="fixed top-20 right-8 bg-black text-white px-5 py-3 rounded-lg shadow-lg transform translate-x-10 opacity-0 transition-all duration-300 z-50 flex items-center gap-3">
+            <i class="fas fa-check-circle text-white"></i>
+            <span class="text-sm font-medium">Changes published successfully</span>
+        </div>
+
+        <!-- Scrollable Content -->
+        <div class="flex-1 overflow-y-auto p-8 scroll-smooth">
+            <div class="max-w-4xl mx-auto pb-20">
+                
+                <!-- VISIBILITY -->
+                <div id="visibility-settings" class="tab-content active">
+                    <div class="bg-white border border-gray-200 rounded-xl p-8 shadow-sm">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-6">Manage Section Visibility</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-16" id="visibility-toggles">
+                            <!-- Injected via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HERO -->
+                <div id="hero-settings" class="tab-content">
+                    <div id="hero-forms">
+                        <!-- Injected via JS -->
+                    </div>
+                </div>
+
+                <!-- WHO WE ARE (ABOUT) -->
+                <div id="about-settings" class="tab-content">
+                    <div class="bg-white border border-gray-200 rounded-xl p-8 shadow-sm space-y-5">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Home 'Who We Are' Block</h3>
+                        <div><label class="label-modern">Headline</label><input type="text" id="about-title" class="input-modern"></div>
+                        <div><label class="label-modern">Content Paragraph</label><textarea id="about-text" rows="4" class="input-modern"></textarea></div>
+                        <div><label class="label-modern">Image Asset URL</label><input type="text" id="about-image" class="input-modern"></div>
+                    </div>
+                </div>
+
+                <!-- FESTIVAL OFFERS -->
+                <div id="offers-settings" class="tab-content">
+                    <div class="bg-white border border-gray-200 rounded-xl p-8 mb-6 shadow-sm grid grid-cols-2 gap-5">
+                        <div><label class="label-modern">Section Heading</label><input type="text" id="offers-heading" class="input-modern"></div>
+                        <div><label class="label-modern">Section Subtext</label><input type="text" id="offers-subtext" class="input-modern"></div>
+                    </div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-semibold text-gray-900">Promotional Cards</h3>
+                        <button onclick="addOffer()" class="text-sm font-medium text-black bg-white border border-gray-200 px-4 py-2 rounded-md hover:bg-gray-50 transition-colors shadow-sm">+ Add Offer</button>
+                    </div>
+                    <div id="offers-container" class="space-y-4"></div>
+                </div>
+
+                <!-- SERVICES SUMMARY -->
+                <div id="services-settings" class="tab-content">
+                    <div class="bg-white border border-gray-200 rounded-xl p-8 mb-6 shadow-sm">
+                        <label class="label-modern">Section Heading</label><input type="text" id="services-heading" class="input-modern">
+                    </div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-semibold text-gray-900">Main Categories</h3>
+                        <button onclick="addService()" class="text-sm font-medium text-black bg-white border border-gray-200 px-4 py-2 rounded-md hover:bg-gray-50 transition-colors shadow-sm">+ Add Category</button>
+                    </div>
+                    <div id="services-container" class="space-y-4"></div>
+                </div>
+
+                <!-- CASE STUDIES -->
+                <div id="cases-settings" class="tab-content">
+                    <div class="bg-white border border-gray-200 rounded-xl p-8 mb-6 shadow-sm grid grid-cols-2 gap-5">
+                        <div><label class="label-modern">Heading</label><input type="text" id="cases-heading" class="input-modern"></div>
+                        <div><label class="label-modern">Highlight Label</label><input type="text" id="cases-highlight" class="input-modern"></div>
+                        <div class="col-span-2"><label class="label-modern">Subtext</label><input type="text" id="cases-subtext" class="input-modern"></div>
+                    </div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-semibold text-gray-900">Case Study Items</h3>
+                        <button onclick="addCase()" class="text-sm font-medium text-black bg-white border border-gray-200 px-4 py-2 rounded-md hover:bg-gray-50 transition-colors shadow-sm">+ Add Case Study</button>
+                    </div>
+                    <div id="cases-container" class="space-y-4"></div>
+                </div>
+
+                <!-- HOME ABOUT US (LOWER) -->
+                <div id="homeabout-settings" class="tab-content">
+                    <div class="bg-white border border-gray-200 rounded-xl p-8 shadow-sm space-y-5">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Lower About Section</h3>
+                        <div class="grid grid-cols-2 gap-5">
+                          <div><label class="label-modern">Badge Text</label><input type="text" id="ha-badge" class="input-modern"></div>
+                          <div><label class="label-modern">Button Label</label><input type="text" id="ha-btnText" class="input-modern"></div>
+                          <div class="col-span-2"><label class="label-modern">Headline (HTML Allowed)</label><input type="text" id="ha-title" class="input-modern"></div>
+                          <div class="col-span-2"><label class="label-modern">Paragraph 1</label><textarea id="ha-p1" rows="3" class="input-modern"></textarea></div>
+                          <div class="col-span-2"><label class="label-modern">Paragraph 2</label><textarea id="ha-p2" rows="3" class="input-modern"></textarea></div>
+                          <div><label class="label-modern">Button Link</label><input type="text" id="ha-btnLink" class="input-modern"></div>
+                          <div><label class="label-modern">Image Asset URL</label><input type="text" id="ha-image" class="input-modern"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CLIENTS STRIP -->
+                <div id="clients-settings" class="tab-content">
+                    <div class="bg-white border border-gray-200 rounded-xl p-8 mb-6 shadow-sm">
+                        <label class="label-modern">Section Heading</label><input type="text" id="clients-heading" class="input-modern">
+                    </div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-semibold text-gray-900">Client Logos</h3>
+                        <button onclick="addClient()" class="text-sm font-medium text-black bg-white border border-gray-200 px-4 py-2 rounded-md hover:bg-gray-50 transition-colors shadow-sm">+ Add Client</button>
+                    </div>
+                    <div id="clients-container" class="grid grid-cols-1 gap-4"></div>
+                </div>
+
+                <!-- TESTIMONIALS -->
+                <div id="testimonials-settings" class="tab-content">
+                    <div class="bg-white border border-gray-200 rounded-xl p-8 mb-6 shadow-sm grid grid-cols-2 gap-5">
+                        <div><label class="label-modern">Section Heading</label><input type="text" id="testi-heading" class="input-modern"></div>
+                        <div class="col-span-2"><label class="label-modern">Description Text</label><input type="text" id="testi-text" class="input-modern"></div>
+                    </div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-semibold text-gray-900">User Reviews</h3>
+                        <button onclick="addTestimonial()" class="text-sm font-medium text-black bg-white border border-gray-200 px-4 py-2 rounded-md hover:bg-gray-50 transition-colors shadow-sm">+ Add Review</button>
+                    </div>
+                    <div id="testimonials-container" class="space-y-4"></div>
+                </div>
+
+                <!-- FAQS -->
+                <div id="faqs-settings" class="tab-content">
+                    <div class="bg-white border border-gray-200 rounded-xl p-8 mb-6 shadow-sm grid grid-cols-2 gap-5">
+                        <div><label class="label-modern">Main Heading</label><input type="text" id="faq-heading" class="input-modern"></div>
+                        <div><label class="label-modern">Subtext</label><input type="text" id="faq-subheading" class="input-modern"></div>
+                    </div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-semibold text-gray-900">Questions & Answers</h3>
+                        <button onclick="addFaq()" class="text-sm font-medium text-black bg-white border border-gray-200 px-4 py-2 rounded-md hover:bg-gray-50 transition-colors shadow-sm">+ Add FAQ</button>
+                    </div>
+                    <div id="faqs-container" class="space-y-4"></div>
+                </div>
+
+                <!-- INNER: DETAILED SERVICE PAGES -->
+                <div id="servicepages-settings" class="tab-content">
+                    <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm mb-6 flex items-start gap-4">
+                        <div class="text-blue-500 mt-1"><i class="fas fa-info-circle"></i></div>
+                        <p class="text-sm text-gray-600 leading-relaxed">Changes made here automatically update the <strong>Service Catalog</strong> on the frontend, as well as the dynamic links in the main navigation dropdowns and footer columns.</p>
+                    </div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-semibold text-gray-900">Detailed Services Catalog</h3>
+                        <button onclick="addDetailedService()" class="text-sm font-medium text-white bg-black hover:bg-gray-800 px-4 py-2 rounded-md transition-colors shadow-sm">+ New Service</button>
+                    </div>
+                    <div id="detailed-services-container" class="space-y-6 mb-8"></div>
+                </div>
+
+                <!-- INNER: ABOUT US PAGE -->
+                <div id="aboutpage-settings" class="tab-content">
+                    <div class="bg-white border border-gray-200 rounded-xl p-8 shadow-sm space-y-5 mb-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Page Intro</h3>
+                        <div><label class="label-modern">Banner Title</label><input type="text" id="ap-hero-title" class="input-modern"></div>
+                        <div><label class="label-modern">Who We Are - Heading</label><input type="text" id="ap-who-title" class="input-modern"></div>
+                        <div><label class="label-modern">Who We Are - Paragraph</label><textarea id="ap-who-text" rows="4" class="input-modern"></textarea></div>
+                        <div><label class="label-modern">Main Image URL</label><input type="text" id="ap-who-image" class="input-modern"></div>
+                    </div>
+                    
+                    <div class="bg-white border border-gray-200 rounded-xl p-8 mb-6 shadow-sm">
+                        <label class="label-modern">Values Section Heading</label><input type="text" id="ap-values-heading" class="input-modern">
+                    </div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-semibold text-gray-900">Mission & Core Values</h3>
+                        <button onclick="addAboutValue()" class="text-sm font-medium text-black bg-white border border-gray-200 px-4 py-2 rounded-md hover:bg-gray-50 transition-colors shadow-sm">+ Add Value</button>
+                    </div>
+                    <div id="ap-values-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8"></div>
+                    
+                    <div class="bg-white border border-gray-200 rounded-xl p-8 mb-6 shadow-sm">
+                        <label class="label-modern">Team Section Heading</label><input type="text" id="ap-team-heading" class="input-modern">
+                    </div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-semibold text-gray-900">Team Roster</h3>
+                        <button onclick="addAboutTeam()" class="text-sm font-medium text-black bg-white border border-gray-200 px-4 py-2 rounded-md hover:bg-gray-50 transition-colors shadow-sm">+ Add Member</button>
+                    </div>
+                    <div id="ap-team-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                </div>
+
+                <!-- INNER: BLOG PAGE -->
+                <div id="blogpage-settings" class="tab-content">
+                    <div class="bg-white border border-gray-200 rounded-xl p-8 shadow-sm space-y-5 mb-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-2">Blog Headers</h3>
+                        <div><label class="label-modern">Banner Title</label><input type="text" id="bp-hero-title" class="input-modern"></div>
+                        <div><label class="label-modern">Grid Section Heading</label><input type="text" id="bp-section-heading" class="input-modern"></div>
+                    </div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-semibold text-gray-900">Articles</h3>
+                        <button onclick="addBlogCard()" class="text-sm font-medium text-black bg-white border border-gray-200 px-4 py-2 rounded-md hover:bg-gray-50 transition-colors shadow-sm">+ Add Article</button>
+                    </div>
+                    <div id="bp-cards-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8"></div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+  </div> <!-- End App Wrapper -->
+
+  <script>
+    // 1) Define Data Schema
+    const defaultSiteData = {
+      hero: [
+        { title: "Boost Your Online <span>Presence</span>", desc: "Grow your business with professional SEO services in India.", image: "images/homeImg.png" },
+        { title: "Grow Your Business <span>Digitally</span>", desc: "Expert digital marketing services including SEO, PPC, and Social Media Marketing.", image: "images/homeImg.png" },
+        { title: "Web & App <span>Development</span>", desc: "Responsive websites, landing pages, and scalable applications for your business.", image: "images/homeImg.png" }
+      ],
+      about: {
+        title: "Who We Are", 
+        text: "We are a Digital Marketing & IVR Solutions Agency helping brands grow smarter. From IVR, Bulk SMS, RCS & WhatsApp Messaging to Web & App Development, we deliver powerful tools that connect you with your audience. <br>\n        🚀 Experts in Real Estate Lead Generation — turning campaigns into conversions!", 
+        image: "images/h1-whowe.png"
+      },
+      offersHeading: "🎊 Festival Special Offers",
+      offersSubtext: "Celebrate with us & enjoy exclusive service discounts!",
+      offers: [
+        { title: "✨ Happy Diwali ✨", text: "Light up your business growth with <strong>20% OFF</strong> on IVR Services.", link: "services.html", bgImage: "images/19483797.jpg" },
+        { title: "✨ Happy Diwali ✨", text: "Light up your business growth with <strong>20% OFF</strong> on IVR Services.", link: "services.html", bgImage: "images/19483797.jpg" },
+        { title: "✨ Happy Diwali ✨", text: "Light up your business growth with <strong>20% OFF</strong> on IVR Services.", link: "services.html", bgImage: "images/19483797.jpg" }
+      ],
+      homeAbout: {
+        badge: "About Us",
+        title: "Smart Digital Communication<br>\n<span>For Growing Businesses</span>",
+        p1: "We are a leading provider of digital communication and marketing solutions, helping businesses connect with their customers more effectively.",
+        p2: "With expertise in <strong>IVR, SMS, WhatsApp, RCS</strong> and <strong>Digital Marketing</strong>, we deliver innovative, result-driven strategies across industries.",
+        btnText: "Discover More",
+        btnLink: "about.html",
+        image: "images/8597911.jpg"
+      },
+      clientsHeading: "Trusted by Leading Companies",
+      clients: [
+        { name: "Apple", image: "https://upload.wikimedia.org/wikipedia/commons/a/ab/Apple-logo.png" },
+        { name: "Microsoft", image: "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" },
+        { name: "Google", image: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Google_2015_logo.svg" },
+        { name: "Netflix", image: "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" },
+        { name: "IBM", image: "https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg" }
+      ],
+      aboutPage: {
+        heroTitle: "About Us",
+        whoWeAreTitle: "Who We Are",
+        whoWeAreText: "We are a creative marketing agency driven by innovation, passion, and technology. With years of experience in branding, digital marketing, and strategy development, we help businesses stand out and scale to new heights. Our approach is human-centered, blending creativity with data-driven insights to deliver impactful solutions.",
+        whoWeAreImage: "images/8597911.jpg",
+        valuesHeading: "Our Mission, Vision & Values",
+        values: [
+          { title: "Our Mission", text: "To empower businesses with innovative marketing strategies that create measurable growth and long-term success." },
+          { title: "Our Vision", text: "To become the most trusted and creative marketing partner for global brands across industries." },
+          { title: "Our Values", text: "Integrity, innovation, teamwork, and client success are at the heart of everything we do." }
+        ],
+        teamHeading: "Meet Our Team",
+        team: [
+          { name: "Rahul Sharma", role: "CEO & Founder", image: "https://picsum.photos/200" },
+          { name: "Anita Verma", role: "Creative Director", image: "https://picsum.photos/201" },
+          { name: "Vikas Mehta", role: "Marketing Strategist", image: "https://picsum.photos/202" },
+          { name: "Priya Singh", role: "Digital Manager", image: "https://picsum.photos/203" }
+        ]
+      },
+      blogPage: {
+        heroTitle: "Our Blog",
+        sectionHeading: "Latest Articles & Insights",
+        blogs: [
+          { title: "How to Build a Strong Brand Identity", desc: "Discover the essential elements of building a powerful brand identity that resonates with your target audience...", image: "https://picsum.photos/400/250?random=1", link: "#" },
+          { title: "Top Digital Marketing Trends 2025", desc: "From AI-driven campaigns to immersive experiences – explore the latest digital marketing trends shaping the future...", image: "https://picsum.photos/400/250?random=2", link: "#" },
+          { title: "Boost Your Online Presence in 5 Steps", desc: "Learn how to strengthen your online visibility and connect with your ideal customers effectively in today’s digital age...", image: "https://picsum.photos/400/250?random=3", link: "#" },
+          { title: "The Future of E-commerce", desc: "Explore how AI, AR, and mobile-first shopping experiences are shaping the future of online stores worldwide...", image: "https://picsum.photos/400/250?random=4", link: "#" }
+        ]
+      },
+      detailedServices: [
+        { id: "social-media-marketing", category: "Marketing", navIcon: "fa-solid fa-hashtag", title: "Social Media Marketing", shortDesc: "We manage and grow your brand presence across social platforms with content planning, engagement strategies, and performance tracking.", longDesc: "We manage and grow your brand presence across social platforms with content planning, engagement strategies, and performance tracking.", f1T: "Engaging Content", f1D: "We craft visually appealing and highly engaging content tailored to your target audience.", f2T: "Community Management", f2D: "We actively monitor, reply, and engage with your followers to build brand loyalty.", f3T: "Analytics & Reporting", f3D: "Track your growth with comprehensive monthly performance reports and insights." },
+        { id: "google-meta-ads", category: "Marketing", navIcon: "fa-solid fa-chart-line", title: "Google & Meta Ads", shortDesc: "High-performing paid advertising campaigns optimized for reach, leads, and ROI across Google, Facebook, and Instagram.", longDesc: "High-performing paid advertising campaigns optimized for reach, leads, and ROI across Google, Facebook, and Instagram.", f1T: "Targeted Reach", f1D: "Laser-focused audience targeting to ensure your ads are seen by potential buyers.", f2T: "High ROI Optimization", f2D: "Continuous monitoring and A/B testing to lower cost-per-click and boost conversions.", f3T: "Cross-Platform Strategy", f3D: "Unified campaigns across Google Search, Facebook feeds, and Instagram stories." },
+        { id: "brand-awareness", category: "Marketing", navIcon: "fa-solid fa-eye", title: "Brand Awareness Campaigns", shortDesc: "Strategic campaigns focused on improving brand recall, credibility, and audience trust across digital channels.", longDesc: "Strategic campaigns focused on improving brand recall, credibility, and audience trust across digital channels.", f1T: "Strategic Positioning", f1D: "Crafting a unique voice and visual identity that stands out in the market.", f2T: "Maximum Exposure", f2D: "Utilizing multiple digital touchpoints to keep your brand top-of-mind.", f3T: "Trust Building", f3D: "Establishing credibility through consistent, high-quality messaging and PR." },
+        { id: "seo-online-visibility", category: "Marketing", navIcon: "fa-solid fa-magnifying-glass", title: "SEO & Online Visibility", shortDesc: "Improve organic rankings, website traffic, and long-term online presence through ethical white-hat SEO strategies.", longDesc: "Improve organic rankings, website traffic, and long-term online presence through ethical white-hat SEO strategies.", f1T: "Keyword Research", f1D: "Identifying the high-intent search terms your customers are actively using.", f2T: "On-Page Optimization", f2D: "Optimizing website structure, meta tags, and content for search engines.", f3T: "Quality Link Building", f3D: "Acquiring authoritative backlinks to boost your domain authority." },
+        { id: "content-writing", category: "Marketing", navIcon: "fa-solid fa-pen-nib", title: "Content Writing", shortDesc: "High-quality content tailored for websites, ads, blogs, and social media to support brand messaging and conversions.", longDesc: "High-quality content tailored for websites, ads, blogs, and social media to support brand messaging and conversions.", f1T: "SEO Blog Posts", f1D: "Informative, keyword-rich articles that drive organic traffic to your site.", f2T: "Compelling Ad Copy", f2D: "Persuasive writing designed specifically to maximize ad click-through rates.", f3T: "Website Copywriting", f3D: "Clear, conversion-focused messaging for landing pages and corporate sites." },
+        { id: "bulk-sms", category: "Promote", navIcon: "fa-solid fa-message", title: "Bulk SMS", shortDesc: "Promotional and transactional SMS solutions with high delivery rates for alerts, offers, and notifications.", longDesc: "Promotional and transactional SMS solutions with high delivery rates for alerts, offers, and notifications.", f1T: "High Delivery Rates", f1D: "Direct carrier connections ensure your messages reach the inbox instantly.", f2T: "Cost Effective", f2D: "Reach thousands of customers simultaneously without breaking your marketing budget.", f3T: "Automated Triggers", f3D: "Schedule messages or trigger them via API based on customer actions." },
+        { id: "rcs-sms", category: "Promote", navIcon: "fa-solid fa-comments", title: "RCS Messaging", shortDesc: "Rich Communication Services with branded messages, images, buttons, and interactive customer engagement.", longDesc: "Rich Communication Services enable interactive messaging with images, buttons, and branding.", f1T: "Fast Delivery", f1D: "Messages delivered instantly with high reliability and read receipts.", f2T: "Detailed Reports", f2D: "Track campaign performance, delivery rates, and user interactions.", f3T: "Easy Integration", f3D: "Robust API integration for your existing apps, websites, and CRMs." },
+        { id: "voice-sms", category: "Promote", navIcon: "fa-solid fa-microphone", title: "Voice SMS", shortDesc: "Automated voice messages for alerts, reminders, and campaigns, ideal for reaching users instantly.", longDesc: "Automated voice messages for alerts, reminders, and campaigns, ideal for reaching users instantly.", f1T: "Instant Reach", f1D: "Deliver pre-recorded voice messages to thousands of phones at once.", f2T: "Personalized Touch", f2D: "Add a human element to your automated broadcasts and alerts.", f3T: "Easy Scheduling", f3D: "Set up voice campaigns in advance for optimal delivery times." },
+        { id: "whatsapp-api", category: "Promote", navIcon: "fa-brands fa-whatsapp", title: "WhatsApp Business API", shortDesc: "Meta-verified WhatsApp messaging for customer support, notifications, and conversational commerce.", longDesc: "Meta-verified WhatsApp messaging for customer support, notifications, and conversational commerce.", f1T: "Verified Badge", f1D: "Build trust with a verified green tick next to your business name.", f2T: "Automated Chatbots", f2D: "Provide 24/7 customer support with intelligent automated replies.", f3T: "Rich Media Broadcasts", f3D: "Send documents, videos, and interactive buttons directly to WhatsApp." },
+        { id: "website-development", category: "Development", navIcon: "fa-solid fa-globe", title: "Website Design & Development", shortDesc: "Modern, responsive, and SEO-friendly websites designed to convert visitors into customers.", longDesc: "Modern, responsive, and SEO-friendly websites designed to convert visitors into customers.", f1T: "Custom Design", f1D: "Tailor-made visual layouts that perfectly match your brand identity.", f2T: "Mobile Responsive", f2D: "Flawless performance and aesthetics on desktops, tablets, and smartphones.", f3T: "Fast Loading", f3D: "Optimized code and assets for lightning-fast page load speeds." },
+        { id: "app-development", category: "Development", navIcon: "fa-solid fa-mobile-screen", title: "Mobile App Development", shortDesc: "Custom mobile applications built for performance, scalability, and seamless user experience.", longDesc: "Custom mobile applications built for performance, scalability, and seamless user experience.", f1T: "iOS & Android", f1D: "Cross-platform or native development to reach users on any device.", f2T: "Scalable Architecture", f2D: "Built with a robust backend to support thousands of concurrent users.", f3T: "Intuitive UI/UX", f3D: "User-centric design focused on ease of use and high retention." },
+        { id: "landing-pages", category: "Development", navIcon: "fa-solid fa-layer-group", title: "Landing Pages", shortDesc: "High-converting landing pages optimized for ads, campaigns, and lead generation.", longDesc: "Targeted landing pages optimized specifically for ad campaigns, lead generation, and quick sales.", f1T: "A/B Testing Ready", f1D: "Built to easily test different headlines and layouts to maximize conversions.", f2T: "Lead Capture Forms", f2D: "Seamless integration with your CRM or email marketing software.", f3T: "Laser-Focused Content", f3D: "Stripped of distractions to guide the user straight to the call-to-action." }
+      ],
+      servicesHeading: "Our Services",
+      services: [
+        { title: "Marketing", desc: "Build visibility, trust, and conversions with strategic marketing.", link: "social-media-marketing.html" },
+        { title: "Promote", desc: "Engage customers instantly with powerful messaging solutions.", link: "bulk-sms.html" },
+        { title: "Development", desc: "Design and develop high-performing digital platforms.", link: "website-development.html" }
+      ],
+      casesHeading: "FEATURED CASE STUDIES",
+      casesHighlight: "Customizable For All Industries",
+      casesSubtext: "We Work On These Industries.",
+      cases: [
+        {
+          tag: "Real Estate", title: "Real Estate", cardDesc: "Drive property sales and customer engagement with tailored tools.", image: "images/4334329.jpg",
+          popupIntro: "Helping real estate businesses convert leads faster and build long-term buyer trust through intelligent communication.",
+          challenge: "Managing high lead volumes, delayed follow-ups, and poor buyer engagement often results in lost sales opportunities.",
+          solution: "We provide automated messaging, CRM integration, instant follow-ups, and personalized buyer journeys.",
+          benefits: "Faster lead response time\nHigher property inquiry conversions\nAutomated site-visit reminders\nImproved customer trust"
+        },
+        {
+          tag: "Education", title: "Education", cardDesc: "Empower institutions with smart communication tools for students.", image: "images/5836.jpg",
+          popupIntro: "Connecting institutions, students, and parents with reliable, scalable communication solutions.",
+          challenge: "Manual communication causes delays in admissions, updates, and student engagement.",
+          solution: "Smart notification systems, admission alerts, and student engagement workflows.",
+          benefits: "Streamlined admissions\nImproved student communication\nAutomated alerts & reminders\nBetter parent engagement"
+        },
+        {
+          tag: "Healthcare", title: "Healthcare", cardDesc: "Engage patients with secure and effective communication solutions.", image: "images/4885941.jpg",
+          popupIntro: "Secure, timely, and reliable patient communication that enhances care delivery.",
+          challenge: "Missed appointments, delayed updates, and lack of patient follow-ups.",
+          solution: "Automated appointment reminders, secure alerts, and real-time patient notifications.",
+          benefits: "Reduced no-shows\nImproved patient experience\nSecure communication\nOperational efficiency"
+        },
+        {
+          tag: "Automobile", title: "Automobile", cardDesc: "Accelerate business with customer-focused communication solutions.", image: "images/car_showroom_04.jpg",
+          popupIntro: "Driving sales and after-sales engagement through customer-centric communication.",
+          challenge: "Low test-drive conversions and weak after-sales follow-ups.",
+          solution: "Lead automation, service reminders, and customer lifecycle messaging.",
+          benefits: "Higher test-drive bookings\nImproved service retention\nCustomer loyalty growth\nSales process automation"
+        }
+      ],
+      faqsHeading: "Frequently Asked Questions",
+      faqsSubHeading: "Cloud Communication Platform – FAQ’s",
+      faqs: [
+        { q: "What cloud-based IVR service would you recommend?", a: "<b>Ans:-</b> When it comes to cloud-based IVR services, one that stands out is Movictel. With its flexible and scalable platform, it offers advanced features like speech recognition and natural language processing. Its user-friendly interface and robust analytics make it an ideal choice for businesses of all sizes." },
+        { q: "What is IVR full form and IVR for call center?", a: "<b>Ans:-</b> IVR full form is Interactive Voice Response. It is a technology used in call centers and telephony systems to automate interactions with callers. IVR systems use pre-recorded voice prompts and menus to provide callers with options and gather input through their telephone keypad or voice recognition.<br>In a call center setting, IVR serves as an automated receptionist that helps direct and assist callers.." },
+        { q: "What are the advantages and disadvantages of bulk SMS?", a: "<b>Ans:- Advantages of Bulk SMS:</b> <br><br><b>1:- Wide Reach:</b> Bulk SMS allows you to reach a large number of recipients instantly. It is an effective way to communicate with a large audience, whether it's customers, employees, or members of an organization. <br><b>2:- Cost-Effective:</b> Bulk SMS is generally more cost-effective compared to other marketing and communication channels such as print media or phone calls. It offers a lower cost per message, especially when sending messages in large volumes. <br><b>3:- High Open Rates:</b> SMS messages typically have high open rates since most people have their mobile phones within close proximity. This makes bulk SMS an effective way to ensure that your messages are seen and read by the recipients.<br><br><b>Ans:- Disadvantages of Bulk SMS:</b> <br><br><b>1:- Character Limitations:</b> SMS messages are limited to a specific number of characters (usually 160 characters). This can restrict the amount of information you can convey in a single message and may require you to be concise and precise in your communication. <br><b>2:- No Multimedia Support:</b> SMS messages are text-based and do not support multimedia content such as images, videos, or audio files. If you need to deliver rich media content, bulk SMS may not be suitable. <br><b>3:- Opt-Out Requests:</b> Sending bulk SMS messages to recipients who have not explicitly consented or opted-in can lead to compliance issues. It is important to have proper consent mechanisms in place and provide recipients with an option to opt-out if they no longer wish to receive messages." },
+        { q: "What is bulk SMS marketing?", a: "<b>Ans:-</b> Bulk SMS Marketing is a powerful communication tool that allows businesses to send promotional, transactional, or informational text messages to a large number of customers at once. It is widely used for marketing campaigns, customer engagement, reminders, and instant alerts because of its high open rates and instant delivery. <br><br>1. With Bulk SMS, you can: <br><br>2. Reach thousands of customers in seconds <br><br>3. Share offers, discounts, and updates instantly <br><br>4. Ensure 99% delivery rate with measurable reports <br><br>5. Personalize messages for better engagement <br><br>👉 In short, Bulk SMS Marketing helps businesses connect with their audience quickly, effectively, and at a very low cost." }
+      ],
+      sections: { 
+        hero: true, about: true, offers: true, services: true, cases: true, aboutUs: true, clients: true, faq: true, testimonials: true,
+        aboutPageHero: true, aboutPageWho: true, aboutPageValues: true, aboutPageTeam: true,
+        blogPageHero: true, blogPageGrid: true
+      }
+    };
+
+    let siteData = {};
+
+    // Use window.init so it can be called correctly if needed by other scopes
+    window.init = function() {
+      const stored = localStorage.getItem('movictelCMSData');
+      siteData = stored ? JSON.parse(stored) : JSON.parse(JSON.stringify(defaultSiteData));
+      
+      // Safety checks
+      const defaultSections = [
+        'aboutUs', 'cases', 'clients', 
+        'aboutPageHero', 'aboutPageWho', 'aboutPageValues', 'aboutPageTeam', 
+        'blogPageHero', 'blogPageGrid'
+      ];
+      defaultSections.forEach(s => {
+          if (siteData.sections[s] === undefined) siteData.sections[s] = true;
+      });
+
+      if(!siteData.offers) {
+          siteData.offers = defaultSiteData.offers;
+          siteData.offersHeading = defaultSiteData.offersHeading;
+          siteData.offersSubtext = defaultSiteData.offersSubtext;
+      }
+      if(!siteData.homeAbout) siteData.homeAbout = defaultSiteData.homeAbout;
+      if(!siteData.clients) {
+          siteData.clients = defaultSiteData.clients;
+          siteData.clientsHeading = defaultSiteData.clientsHeading;
+      }
+      if(!siteData.cases) {
+          siteData.cases = defaultSiteData.cases;
+          siteData.casesHeading = defaultSiteData.casesHeading;
+          siteData.casesHighlight = defaultSiteData.casesHighlight;
+          siteData.casesSubtext = defaultSiteData.casesSubtext;
+      }
+      if(!siteData.aboutPage) {
+          siteData.aboutPage = defaultSiteData.aboutPage;
+      }
+      if(!siteData.blogPage) {
+          siteData.blogPage = defaultSiteData.blogPage;
+      }
+      if(!siteData.detailedServices) {
+          siteData.detailedServices = defaultSiteData.detailedServices;
+      }
+
+      // Convert old Hero Object format to Array format
+      if (siteData.hero && !Array.isArray(siteData.hero)) {
+          let newHero = [];
+          if(siteData.hero.title1) newHero.push({ title: siteData.hero.title1, desc: siteData.hero.desc1, image: siteData.hero.image1 });
+          if(siteData.hero.title2) newHero.push({ title: siteData.hero.title2, desc: siteData.hero.desc2, image: siteData.hero.image2 });
+          if(siteData.hero.title3) newHero.push({ title: siteData.hero.title3, desc: siteData.hero.desc3, image: siteData.hero.image3 });
+          siteData.hero = newHero.length ? newHero : JSON.parse(JSON.stringify(defaultSiteData.hero));
+      }
+      
+      window.renderAllForms();
+    }
+
+    // 2) Render Logic
+    window.renderAllForms = function() {
+      // Visibility - Grouped logically
+      const visGroups = [
+        {
+          title: "Home Page Elements",
+          keys: [
+            { k: 'hero', l: 'Hero Slider' }, { k: 'about', l: 'Who We Are' }, { k: 'offers', l: 'Festival Offers' },
+            { k: 'services', l: 'Services Section' }, { k: 'cases', l: 'Case Studies' }, { k: 'aboutUs', l: 'About Us Section' },
+            { k: 'clients', l: 'Clients Strip' }, { k: 'faq', l: 'FAQs' }, { k: 'testimonials', l: 'Testimonials' }
+          ]
+        },
+        {
+          title: "About Us Elements",
+          keys: [
+            { k: 'aboutPageHero', l: 'Hero Section' }, { k: 'aboutPageWho', l: 'Who We Are' }, 
+            { k: 'aboutPageValues', l: 'Mission & Values' }, { k: 'aboutPageTeam', l: 'Team Section' }
+          ]
+        },
+        {
+          title: "Blog Elements",
+          keys: [
+            { k: 'blogPageHero', l: 'Hero Section' }, { k: 'blogPageGrid', l: 'Blog Grid' }
+          ]
+        }
+      ];
+
+      let visibilityHtml = '';
+      visGroups.forEach((g, index) => {
+         visibilityHtml += `
+            <div class="col-span-1 md:col-span-2 text-xs font-semibold text-gray-400 uppercase tracking-wider ${index !== 0 ? 'mt-4' : ''} mb-1 border-b border-gray-100 pb-2">${g.title}</div>
+         `;
+         g.keys.forEach(v => {
+            visibilityHtml += `
+              <div class="flex justify-between items-center bg-gray-50/50 px-4 py-3 rounded-lg border border-gray-100">
+                <span class="text-sm font-medium text-gray-700">${v.l}</span>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" class="sr-only peer toggle-checkbox" ${siteData.sections[v.k] ? 'checked' : ''} onchange="updateVis('${v.k}', this.checked)">
+                  <div class="w-10 h-5 bg-gray-200 rounded-full peer peer-focus:ring-2 peer-focus:ring-black/10 transition-colors duration-200 ease-in-out toggle-label after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-[20px] peer-checked:after:border-white shadow-sm"></div>
+                </label>
+              </div>
+            `;
+         });
+      });
+      document.getElementById('visibility-toggles').innerHTML = visibilityHtml;
+
+      // Hero
+      window.renderHeroForms();
+
+      // About
+      document.getElementById('about-title').value = siteData.about.title;
+      document.getElementById('about-title').oninput = e => siteData.about.title = e.target.value;
+      document.getElementById('about-text').value = siteData.about.text;
+      document.getElementById('about-text').oninput = e => siteData.about.text = e.target.value;
+      document.getElementById('about-image').value = siteData.about.image;
+      document.getElementById('about-image').oninput = e => siteData.about.image = e.target.value;
+
+      // Festival Offers
+      document.getElementById('offers-heading').value = siteData.offersHeading || '';
+      document.getElementById('offers-heading').oninput = e => siteData.offersHeading = e.target.value;
+      document.getElementById('offers-subtext').value = siteData.offersSubtext || '';
+      document.getElementById('offers-subtext').oninput = e => siteData.offersSubtext = e.target.value;
+      window.renderOffers();
+
+      // Home About
+      document.getElementById('ha-badge').value = siteData.homeAbout.badge || '';
+      document.getElementById('ha-badge').oninput = e => siteData.homeAbout.badge = e.target.value;
+      document.getElementById('ha-title').value = siteData.homeAbout.title || '';
+      document.getElementById('ha-title').oninput = e => siteData.homeAbout.title = e.target.value;
+      document.getElementById('ha-p1').value = siteData.homeAbout.p1 || '';
+      document.getElementById('ha-p1').oninput = e => siteData.homeAbout.p1 = e.target.value;
+      document.getElementById('ha-p2').value = siteData.homeAbout.p2 || '';
+      document.getElementById('ha-p2').oninput = e => siteData.homeAbout.p2 = e.target.value;
+      document.getElementById('ha-btnText').value = siteData.homeAbout.btnText || '';
+      document.getElementById('ha-btnText').oninput = e => siteData.homeAbout.btnText = e.target.value;
+      document.getElementById('ha-btnLink').value = siteData.homeAbout.btnLink || '';
+      document.getElementById('ha-btnLink').oninput = e => siteData.homeAbout.btnLink = e.target.value;
+      document.getElementById('ha-image').value = siteData.homeAbout.image || '';
+      document.getElementById('ha-image').oninput = e => siteData.homeAbout.image = e.target.value;
+
+      // Clients Strip
+      document.getElementById('clients-heading').value = siteData.clientsHeading || '';
+      document.getElementById('clients-heading').oninput = e => siteData.clientsHeading = e.target.value;
+      window.renderClients();
+
+      // Inner Detailed Services Page
+      window.renderDetailedServices();
+
+      // Inner About Us Page
+      document.getElementById('ap-hero-title').value = siteData.aboutPage.heroTitle;
+      document.getElementById('ap-hero-title').oninput = e => siteData.aboutPage.heroTitle = e.target.value;
+      document.getElementById('ap-who-title').value = siteData.aboutPage.whoWeAreTitle;
+      document.getElementById('ap-who-title').oninput = e => siteData.aboutPage.whoWeAreTitle = e.target.value;
+      document.getElementById('ap-who-text').value = siteData.aboutPage.whoWeAreText;
+      document.getElementById('ap-who-text').oninput = e => siteData.aboutPage.whoWeAreText = e.target.value;
+      document.getElementById('ap-who-image').value = siteData.aboutPage.whoWeAreImage;
+      document.getElementById('ap-who-image').oninput = e => siteData.aboutPage.whoWeAreImage = e.target.value;
+      document.getElementById('ap-values-heading').value = siteData.aboutPage.valuesHeading;
+      document.getElementById('ap-values-heading').oninput = e => siteData.aboutPage.valuesHeading = e.target.value;
+      document.getElementById('ap-team-heading').value = siteData.aboutPage.teamHeading;
+      document.getElementById('ap-team-heading').oninput = e => siteData.aboutPage.teamHeading = e.target.value;
+      window.renderAboutPageValues();
+      window.renderAboutPageTeam();
+
+      // Inner Blog Page
+      document.getElementById('bp-hero-title').value = siteData.blogPage.heroTitle;
+      document.getElementById('bp-hero-title').oninput = e => siteData.blogPage.heroTitle = e.target.value;
+      document.getElementById('bp-section-heading').value = siteData.blogPage.sectionHeading;
+      document.getElementById('bp-section-heading').oninput = e => siteData.blogPage.sectionHeading = e.target.value;
+      window.renderBlogCards();
+
+      // Home Services Summary
+      document.getElementById('services-heading').value = siteData.servicesHeading;
+      document.getElementById('services-heading').oninput = e => siteData.servicesHeading = e.target.value;
+      window.renderServices();
+
+      // Case Studies
+      document.getElementById('cases-heading').value = siteData.casesHeading || '';
+      document.getElementById('cases-heading').oninput = e => siteData.casesHeading = e.target.value;
+      document.getElementById('cases-highlight').value = siteData.casesHighlight || '';
+      document.getElementById('cases-highlight').oninput = e => siteData.casesHighlight = e.target.value;
+      document.getElementById('cases-subtext').value = siteData.casesSubtext || '';
+      document.getElementById('cases-subtext').oninput = e => siteData.casesSubtext = e.target.value;
+      window.renderCases();
+
+      // Testimonials
+      document.getElementById('testi-heading').value = siteData.testimonialsHeading;
+      document.getElementById('testi-heading').oninput = e => siteData.testimonialsHeading = e.target.value;
+      document.getElementById('testi-text').value = siteData.testimonialsText;
+      document.getElementById('testi-text').oninput = e => siteData.testimonialsText = e.target.value;
+      window.renderTestimonials();
+
+      // FAQs
+      document.getElementById('faq-heading').value = siteData.faqsHeading;
+      document.getElementById('faq-heading').oninput = e => siteData.faqsHeading = e.target.value;
+      document.getElementById('faq-subheading').value = siteData.faqsSubHeading;
+      document.getElementById('faq-subheading').oninput = e => siteData.faqsSubHeading = e.target.value;
+      window.renderFaqs();
+    }
+
+    // 3) Sub-Render Lists
+    window.renderHeroForms = function() {
+      document.getElementById('hero-forms').innerHTML = `
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="font-semibold text-lg text-gray-900">Hero Slides</h3>
+            <button onclick="addHeroSlide()" class="text-xs font-medium text-black bg-white border border-gray-200 px-3 py-1.5 rounded hover:bg-gray-50 transition-colors shadow-sm"><i class="fas fa-plus mr-1.5"></i> Add Slide</button>
+        </div>
+        <div class="space-y-4">
+            ${siteData.hero.map((slide, i) => `
+                <div class="bg-white border border-gray-200 rounded-xl p-6 relative group hover:border-gray-300 transition-colors animate-fade-in-up">
+                    <button onclick="removeHeroSlide(${i})" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"><i class="fas fa-trash-alt"></i></button>
+                    <h4 class="text-xs font-bold text-gray-400 uppercase mb-4 tracking-wider">Slide ${i + 1}</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div><label class="label-modern">Headline (HTML Allowed)</label><input type="text" class="input-modern" value="${slide.title.replace(/"/g, '&quot;')}" oninput="siteData.hero[${i}].title=this.value"></div>
+                        <div><label class="label-modern">Image URL</label><input type="text" class="input-modern" value="${slide.image.replace(/"/g, '&quot;')}" oninput="siteData.hero[${i}].image=this.value"></div>
+                        <div class="md:col-span-2"><label class="label-modern">Description</label><input type="text" class="input-modern" value="${slide.desc.replace(/"/g, '&quot;')}" oninput="siteData.hero[${i}].desc=this.value"></div>
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+      `;
+    }
+
+    window.renderOffers = function() {
+      document.getElementById('offers-container').innerHTML = siteData.offers.map((o, i) => `
+        <div class="bg-white border border-gray-200 rounded-xl p-6 relative group hover:border-gray-300 transition-colors animate-fade-in-up">
+          <button onclick="removeOffer(${i})" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"><i class="fas fa-trash-alt"></i></button>
+          <div class="grid grid-cols-2 gap-4 pr-6">
+            <div><label class="label-modern">Title</label><input type="text" class="input-modern" value="${o.title.replace(/"/g, '&quot;')}" oninput="siteData.offers[${i}].title=this.value"></div>
+            <div><label class="label-modern">Link URL</label><input type="text" class="input-modern" value="${o.link}" oninput="siteData.offers[${i}].link=this.value"></div>
+            <div class="col-span-2"><label class="label-modern">Offer Text (HTML Allowed)</label><textarea class="input-modern" rows="2" oninput="siteData.offers[${i}].text=this.value">${o.text}</textarea></div>
+            <div class="col-span-2"><label class="label-modern">Background Image URL</label><input type="text" class="input-modern" value="${o.bgImage}" oninput="siteData.offers[${i}].bgImage=this.value"></div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    window.renderClients = function() {
+      document.getElementById('clients-container').innerHTML = siteData.clients.map((c, i) => `
+        <div class="bg-white border border-gray-200 rounded-xl p-5 relative group hover:border-gray-300 transition-colors animate-fade-in-up">
+          <button onclick="removeClient(${i})" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"><i class="fas fa-trash-alt"></i></button>
+          <div class="grid grid-cols-2 gap-4 pr-6">
+            <div><label class="label-modern">Client Name</label><input type="text" class="input-modern" value="${c.name.replace(/"/g, '&quot;')}" oninput="siteData.clients[${i}].name=this.value"></div>
+            <div><label class="label-modern">Logo URL</label><input type="text" class="input-modern" value="${c.image}" oninput="siteData.clients[${i}].image=this.value"></div>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    window.renderDetailedServices = function() {
+      document.getElementById('detailed-services-container').innerHTML = siteData.detailedServices.map((s, i) => `
+        <div class="bg-white border border-gray-200 rounded-xl p-6 relative group hover:border-gray-300 transition-colors animate-fade-in-up">
+            <button onclick="removeDetailedService(${i})" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"><i class="fas fa-trash-alt"></i></button>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 pr-6">
+                <div><label class="label-modern text-gray-800">URL Slug (ID)</label><input type="text" class="input-modern bg-gray-100 font-mono" value="${s.id}" oninput="siteData.detailedServices[${i}].id=this.value"></div>
+                <div>
+                    <label class="label-modern">Category</label>
+                    <select class="input-modern" onchange="siteData.detailedServices[${i}].category=this.value">
+                        <option value="Marketing" ${s.category==='Marketing'?'selected':''}>Marketing</option>
+                        <option value="Promote" ${s.category==='Promote'?'selected':''}>Promote</option>
+                        <option value="Development" ${s.category==='Development'?'selected':''}>Development</option>
+                    </select>
+                </div>
+                <div><label class="label-modern">Icon (FontAwesome)</label><input type="text" class="input-modern" value="${s.navIcon}" oninput="siteData.detailedServices[${i}].navIcon=this.value"></div>
+                
+                <div class="col-span-2 md:col-span-3"><label class="label-modern">Service Title</label><input type="text" class="input-modern font-semibold text-gray-900" value="${s.title}" oninput="siteData.detailedServices[${i}].title=this.value"></div>
+                <div class="col-span-2 md:col-span-3"><label class="label-modern">Short Description (Catalog)</label><textarea class="input-modern" rows="2" oninput="siteData.detailedServices[${i}].shortDesc=this.value">${s.shortDesc}</textarea></div>
+                <div class="col-span-2 md:col-span-3"><label class="label-modern">Long Description (Detail Page)</label><textarea class="input-modern" rows="2" oninput="siteData.detailedServices[${i}].longDesc=this.value">${s.longDesc}</textarea></div>
+                
+                <div class="col-span-2 md:col-span-3 mt-4 border-t border-gray-100 pt-4 flex items-center"><span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Features List</span></div>
+                
+                <div class="space-y-2">
+                  <label class="label-modern">Feature 1</label>
+                  <input type="text" class="input-modern" placeholder="Title" value="${s.f1T || ''}" oninput="siteData.detailedServices[${i}].f1T=this.value">
+                  <input type="text" class="input-modern text-gray-500" placeholder="Description" value="${s.f1D || ''}" oninput="siteData.detailedServices[${i}].f1D=this.value">
+                </div>
+
+                <div class="space-y-2">
+                  <label class="label-modern">Feature 2</label>
+                  <input type="text" class="input-modern" placeholder="Title" value="${s.f2T || ''}" oninput="siteData.detailedServices[${i}].f2T=this.value">
+                  <input type="text" class="input-modern text-gray-500" placeholder="Description" value="${s.f2D || ''}" oninput="siteData.detailedServices[${i}].f2D=this.value">
+                </div>
+
+                <div class="space-y-2">
+                  <label class="label-modern">Feature 3</label>
+                  <input type="text" class="input-modern" placeholder="Title" value="${s.f3T || ''}" oninput="siteData.detailedServices[${i}].f3T=this.value">
+                  <input type="text" class="input-modern text-gray-500" placeholder="Description" value="${s.f3D || ''}" oninput="siteData.detailedServices[${i}].f3D=this.value">
+                </div>
+            </div>
+        </div>
+      `).join('');
+    }
+
+    window.renderAboutPageValues = function() {
+      document.getElementById('ap-values-container').innerHTML = siteData.aboutPage.values.map((v, i) => `
+        <div class="bg-white border border-gray-200 rounded-xl p-5 relative group hover:border-gray-300 transition-colors animate-fade-in-up">
+          <button onclick="removeAboutValue(${i})" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"><i class="fas fa-trash-alt"></i></button>
+          <div class="grid grid-cols-1 gap-4 pr-6">
+            <div><label class="label-modern">Value Title</label><input type="text" class="input-modern font-medium" value="${v.title.replace(/"/g, '&quot;')}" oninput="siteData.aboutPage.values[${i}].title=this.value"></div>
+            <div><label class="label-modern">Value Description</label><textarea class="input-modern" rows="2" oninput="siteData.aboutPage.values[${i}].text=this.value">${v.text}</textarea></div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    window.renderAboutPageTeam = function() {
+      document.getElementById('ap-team-container').innerHTML = siteData.aboutPage.team.map((t, i) => `
+        <div class="bg-white border border-gray-200 rounded-xl p-5 relative group hover:border-gray-300 transition-colors animate-fade-in-up">
+          <button onclick="removeAboutTeam(${i})" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"><i class="fas fa-trash-alt"></i></button>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pr-6">
+            <div><label class="label-modern">Name</label><input type="text" class="input-modern" value="${t.name.replace(/"/g, '&quot;')}" oninput="siteData.aboutPage.team[${i}].name=this.value"></div>
+            <div><label class="label-modern">Role</label><input type="text" class="input-modern" value="${t.role.replace(/"/g, '&quot;')}" oninput="siteData.aboutPage.team[${i}].role=this.value"></div>
+            <div class="md:col-span-2"><label class="label-modern">Image URL</label><input type="text" class="input-modern" value="${t.image.replace(/"/g, '&quot;')}" oninput="siteData.aboutPage.team[${i}].image=this.value"></div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    window.renderBlogCards = function() {
+      document.getElementById('bp-cards-container').innerHTML = siteData.blogPage.blogs.map((b, i) => `
+        <div class="bg-white border border-gray-200 rounded-xl p-6 relative group hover:border-gray-300 transition-colors animate-fade-in-up">
+          <button onclick="removeBlogCard(${i})" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"><i class="fas fa-trash-alt"></i></button>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pr-6">
+            <div><label class="label-modern">Title</label><input type="text" class="input-modern font-semibold" value="${b.title.replace(/"/g, '&quot;')}" oninput="siteData.blogPage.blogs[${i}].title=this.value"></div>
+            <div><label class="label-modern">Link URL</label><input type="text" class="input-modern" value="${b.link.replace(/"/g, '&quot;')}" oninput="siteData.blogPage.blogs[${i}].link=this.value"></div>
+            <div class="md:col-span-2"><label class="label-modern">Description</label><textarea class="input-modern" rows="2" oninput="siteData.blogPage.blogs[${i}].desc=this.value">${b.desc}</textarea></div>
+            <div class="md:col-span-2"><label class="label-modern">Image URL</label><input type="text" class="input-modern" value="${b.image.replace(/"/g, '&quot;')}" oninput="siteData.blogPage.blogs[${i}].image=this.value"></div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    window.renderCases = function() {
+      document.getElementById('cases-container').innerHTML = siteData.cases.map((c, i) => `
+        <div class="bg-white border border-gray-200 rounded-xl p-6 relative group hover:border-gray-300 transition-colors animate-fade-in-up">
+          <button onclick="removeCase(${i})" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"><i class="fas fa-trash-alt"></i></button>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pr-6">
+            <div><label class="label-modern">Industry Tag</label><input type="text" class="input-modern text-xs font-bold uppercase text-gray-500" value="${c.tag.replace(/"/g, '&quot;')}" oninput="siteData.cases[${i}].tag=this.value"></div>
+            <div><label class="label-modern">Title</label><input type="text" class="input-modern font-semibold" value="${c.title.replace(/"/g, '&quot;')}" oninput="siteData.cases[${i}].title=this.value"></div>
+            <div><label class="label-modern">Brief Description</label><textarea class="input-modern" rows="2" oninput="siteData.cases[${i}].cardDesc=this.value">${c.cardDesc}</textarea></div>
+            <div><label class="label-modern">Image URL</label><input type="text" class="input-modern" value="${c.image.replace(/"/g, '&quot;')}" oninput="siteData.cases[${i}].image=this.value"></div>
+            <div class="md:col-span-2 border-t border-gray-100 pt-4 mt-2"><label class="label-modern text-gray-800 font-semibold mb-3">Popup Detail Settings</label></div>
+            <div class="md:col-span-2"><label class="label-modern">Popup Intro</label><textarea class="input-modern" rows="2" oninput="siteData.cases[${i}].popupIntro=this.value">${c.popupIntro}</textarea></div>
+            <div class="md:col-span-2"><label class="label-modern">Challenge</label><textarea class="input-modern" rows="2" oninput="siteData.cases[${i}].challenge=this.value">${c.challenge}</textarea></div>
+            <div class="md:col-span-2"><label class="label-modern">Executed Solution</label><textarea class="input-modern" rows="2" oninput="siteData.cases[${i}].solution=this.value">${c.solution}</textarea></div>
+            <div class="md:col-span-2"><label class="label-modern">Benefits (One per line)</label><textarea class="input-modern" rows="3" placeholder="Benefit 1\nBenefit 2" oninput="siteData.cases[${i}].benefits=this.value">${c.benefits}</textarea></div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    window.renderServices = function() {
+      document.getElementById('services-container').innerHTML = siteData.services.map((s, i) => `
+        <div class="bg-white border border-gray-200 rounded-xl p-5 relative group hover:border-gray-300 transition-colors animate-fade-in-up">
+          <button onclick="removeService(${i})" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"><i class="fas fa-trash-alt"></i></button>
+          <div class="grid grid-cols-2 gap-4 pr-6">
+            <div><label class="label-modern">Category Title</label><input type="text" class="input-modern font-semibold text-gray-900" value="${s.title}" oninput="siteData.services[${i}].title=this.value"></div>
+            <div><label class="label-modern">Link URL</label><input type="text" class="input-modern text-blue-500" value="${s.link}" oninput="siteData.services[${i}].link=this.value"></div>
+            <div class="col-span-2"><label class="label-modern">Description</label><input type="text" class="input-modern" value="${s.desc}" oninput="siteData.services[${i}].desc=this.value"></div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    window.renderTestimonials = function() {
+      document.getElementById('testimonials-container').innerHTML = siteData.testimonials.map((t, i) => `
+        <div class="bg-white border border-gray-200 rounded-xl p-5 relative group hover:border-gray-300 transition-colors animate-fade-in-up">
+          <button onclick="removeTestimonial(${i})" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"><i class="fas fa-trash-alt"></i></button>
+          <div class="grid grid-cols-2 gap-4 pr-6">
+            <div><label class="label-modern">Name</label><input type="text" class="input-modern font-medium" value="${t.name}" oninput="siteData.testimonials[${i}].name=this.value"></div>
+            <div><label class="label-modern">Role</label><input type="text" class="input-modern text-gray-500" value="${t.role}" oninput="siteData.testimonials[${i}].role=this.value"></div>
+            <div class="col-span-2"><label class="label-modern">Quote</label><textarea class="input-modern italic text-gray-700" rows="2" oninput="siteData.testimonials[${i}].quote=this.value">${t.quote}</textarea></div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    window.renderFaqs = function() {
+      document.getElementById('faqs-container').innerHTML = siteData.faqs.map((f, i) => `
+        <div class="bg-white border border-gray-200 rounded-xl p-6 relative group hover:border-gray-300 transition-colors animate-fade-in-up">
+          <button onclick="removeFaq(${i})" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"><i class="fas fa-trash-alt"></i></button>
+          <div class="grid grid-cols-1 gap-4 pr-6">
+            <div><label class="label-modern">Question</label><input type="text" class="input-modern font-medium text-gray-900" value="${f.q}" oninput="siteData.faqs[${i}].q=this.value"></div>
+            <div><label class="label-modern">Answer (HTML Allowed)</label><textarea class="input-modern text-gray-600" rows="4" oninput="siteData.faqs[${i}].a=this.value">${f.a}</textarea></div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // 4) Array Operations (Injecting new objects triggering re-renders)
+    window.addHeroSlide = function() { siteData.hero.push({ title: 'New Slide', desc: 'Add description...', image: 'images/homeImg.png' }); window.renderHeroForms(); }
+    window.removeHeroSlide = function(i) { siteData.hero.splice(i, 1); window.renderHeroForms(); }
+
+    window.addDetailedService = function() { 
+        siteData.detailedServices.push({ id: "new-service", category: "Marketing", navIcon: "fa-solid fa-star", title: "New Service", shortDesc: "Summary.", longDesc: "Detailed desc.", f1T: "Feature 1", f1D: "Desc", f2T: "Feature 2", f2D: "Desc", f3T: "Feature 3", f3D: "Desc" }); 
+        window.renderDetailedServices(); 
+    }
+    window.removeDetailedService = function(i) { siteData.detailedServices.splice(i, 1); window.renderDetailedServices(); }
+
+    window.addOffer = function() { siteData.offers.push({ title: 'New Offer', text: 'Discount text...', link: 'services.html', bgImage: 'images/19483797.jpg' }); window.renderOffers(); }
+    window.removeOffer = function(i) { siteData.offers.splice(i, 1); window.renderOffers(); }
+
+    window.addClient = function() { siteData.clients.push({ name: 'New Client', image: 'https://upload.wikimedia.org/wikipedia/commons/a/ae/Google_2015_logo.svg' }); window.renderClients(); }
+    window.removeClient = function(i) { siteData.clients.splice(i, 1); window.renderClients(); }
+
+    window.addAboutValue = function() { siteData.aboutPage.values.push({ title: 'New Value', text: 'Add text...' }); window.renderAboutPageValues(); }
+    window.removeAboutValue = function(i) { siteData.aboutPage.values.splice(i, 1); window.renderAboutPageValues(); }
+
+    window.addAboutTeam = function() { siteData.aboutPage.team.push({ name: 'Name', role: 'Role', image: 'https://picsum.photos/200' }); window.renderAboutPageTeam(); }
+    window.removeAboutTeam = function(i) { siteData.aboutPage.team.splice(i, 1); window.renderAboutPageTeam(); }
+
+    window.addBlogCard = function() { siteData.blogPage.blogs.push({ title: 'New Blog Post', desc: 'Summary text...', image: 'https://picsum.photos/400/250', link: '#' }); window.renderBlogCards(); }
+    window.removeBlogCard = function(i) { siteData.blogPage.blogs.splice(i, 1); window.renderBlogCards(); }
+
+    window.addCase = function() { siteData.cases.push({ tag: 'Tag', title: 'New Case', cardDesc: 'Summary...', image: 'images/4334329.jpg', popupIntro: 'Intro...', challenge: 'Challenge...', solution: 'Solution...', benefits: 'Benefit 1\nBenefit 2' }); window.renderCases(); }
+    window.removeCase = function(i) { siteData.cases.splice(i, 1); window.renderCases(); }
+
+    window.addService = function() { siteData.services.push({ title: 'New Category', desc: 'Desc...', link: '#' }); window.renderServices(); }
+    window.removeService = function(i) { siteData.services.splice(i, 1); window.renderServices(); }
+
+    window.addTestimonial = function() { siteData.testimonials.push({ name: 'Name', role: 'Role', quote: 'Quote text...' }); window.renderTestimonials(); }
+    window.removeTestimonial = function(i) { siteData.testimonials.splice(i, 1); window.renderTestimonials(); }
+
+    window.addFaq = function() { siteData.faqs.push({ q: 'Question?', a: 'Answer...' }); window.renderFaqs(); }
+    window.removeFaq = function(i) { siteData.faqs.splice(i, 1); window.renderFaqs(); }
+
+    // 5) Form Updaters
+    window.updateVis = function(key, val) { siteData.sections[key] = val; }
+
+    // 6) LocalStorage Saving
+    window.saveData = function() {
+      localStorage.setItem('movictelCMSData', JSON.stringify(siteData));
+      
+      const toast = document.getElementById('toast-notification');
+      toast.style.transform = 'translateX(0)'; 
+      toast.style.opacity = '1';
+      
+      setTimeout(() => { 
+        toast.style.transform = 'translateX(10px)'; 
+        toast.style.opacity = '0'; 
+      }, 3000);
+    }
+
+    // 7) Tab Navigation
+    window.switchTab = function(id) {
+      document.querySelectorAll('.tab-content').forEach(e => e.classList.remove('active'));
+      
+      // Reset all nav links
+      document.querySelectorAll('.nav-link').forEach(e => {
+          e.classList.remove('bg-gray-100', 'text-black', 'active-nav');
+          e.classList.add('text-gray-600', 'hover:bg-gray-50', 'hover:text-black');
+          e.querySelector('i').classList.remove('text-black');
+          e.querySelector('i').classList.add('text-gray-400');
+      });
+      
+      // Activate the targeted content
+      document.getElementById(id).classList.add('active');
+      const nav = document.querySelector(`.nav-link[data-tab="${id}"]`);
+      
+      // Activate the specific nav item
+      if(nav) {
+          nav.classList.add('bg-gray-100', 'text-black', 'active-nav');
+          nav.classList.remove('text-gray-600', 'hover:bg-gray-50', 'hover:text-black');
+          nav.querySelector('i').classList.add('text-gray-500');
+          nav.querySelector('i').classList.remove('text-gray-400');
+          document.getElementById('current-tab-title').innerHTML = nav.innerText.trim();
+      }
+    }
+
+    // Initialize content load
+    window.onload = window.init;
+  </script>
+
+  <!-- FIREBASE AUTH SCRIPT (ES Modules) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-analytics.js";
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCmMeoeZFsUeRKg2B6GM1riE1DpkmCHllw",
+      authDomain: "movictel.firebaseapp.com",
+      projectId: "movictel",
+      storageBucket: "movictel.firebasestorage.app",
+      messagingSenderId: "614749394807",
+      appId: "1:614749394807:web:647f3d1ea27d38f7c83372",
+      measurementId: "G-8VBSR6TF7B"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const auth = getAuth(app);
+
+    // DOM Elements
+    const loginOverlay = document.getElementById('login-overlay');
+    const appWrapper = document.getElementById('app-wrapper');
+    const loginForm = document.getElementById('login-form');
+    const loginError = document.getElementById('login-error');
+    const loginBtn = document.getElementById('login-btn');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    // Listen to Auth State
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            // User is signed in, hide login and show app
+            loginOverlay.classList.add('opacity-0', 'pointer-events-none');
+            setTimeout(() => loginOverlay.classList.add('hidden'), 300);
+            
+            appWrapper.classList.remove('hidden');
+            appWrapper.classList.add('flex');
+            
+            // Re-initialize CMS rendering just in case
+            if (typeof window.init === 'function') {
+                window.init();
+            }
+        } else {
+            // No user is signed in, show login and hide app
+            loginOverlay.classList.remove('hidden');
+            setTimeout(() => loginOverlay.classList.remove('opacity-0', 'pointer-events-none'), 10);
+            
+            appWrapper.classList.add('hidden');
+            appWrapper.classList.remove('flex');
+        }
+    });
+
+    // Handle Login Submit
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('admin-email').value;
+        const password = document.getElementById('admin-password').value;
+        
+        loginBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Authenticating...';
+        loginBtn.disabled = true;
+        loginError.classList.add('hidden');
+
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+            loginForm.reset();
+        } catch (error) {
+            console.error("Auth Error:", error);
+            loginError.textContent = "Invalid email or password. Please try again.";
+            loginError.classList.remove('hidden');
+        } finally {
+            loginBtn.innerHTML = 'Sign In to CMS';
+            loginBtn.disabled = false;
+        }
+    });
+
+    // Handle Logout Click
+    if(logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            signOut(auth);
+        });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - Movictel</title>
+  <link rel="stylesheet" href="css/flip.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+
+  <style>
+    :root {
+      --ig-blue: #018eec;
+      --ig-purple: #015fa8;
+      --ig-pink: #c13584;
+      --ig-red: #fd1d1d;
+      --ig-orange: #f77737;
+      --ig-yellow: #fcaf45;
+      --ig-light: #ffdc80;
+
+      /* Grayscale */
+      --ig-dark: #242d3f;
+      --ig-gray: #dcf0ff;
+      --ig-lightGray: #c8c9ce;
+      --white: #ffffff;
+      --black: #000000;
+    }
+
+    /* Global */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at left, var(--ig-gray), #fff 60%);
+      color: var(--text-dark);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Floating shapes */
+    .floating-shape {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.25;
+      animation: float 15s ease-in-out infinite;
+      z-index: 0;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0px) translateX(0px);
+      }
+
+      50% {
+        transform: translateY(-50px) translateX(50px);
+      }
+    }
+
+    /* HERO */
+    .about-hero {
+      height: 40vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      background: url(images/5153829.jpg);
+      border-radius: 0 0 60px 60px;
+    }
+
+    .about-hero h1 {
+      color: #1e37b3;
+      font-size: 3.8rem;
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      transform: translateY(-30px);
+      opacity: 0;
+      animation: heroFade 1.5s forwards;
+    }
+
+    @keyframes heroFade {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ABOUT SECTION */
+    .about-section {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 50px;
+      width: 100%;
+      padding: 80px;
+      /* max-width:1200px;  */
+      margin: auto;
+      align-items: center;
+      opacity: 0;
+      transform: translateY(40px);
+      animation: sectionFade 1s forwards 0.5s;
+      position: relative;
+    }
+
+    @keyframes sectionFade {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .about-section img {
+      width: 80%;
+      /* align-self: right; */
+      border-radius: 20px;
+      box-shadow: 0 20px 40px var(--shadow);
+      transform: scale(0.98);
+      transition: transform 0.6s ease;
+    }
+
+    .about-section img:hover {
+      transform: scale(1.02);
+    }
+
+    .about-section h2 {
+      font-size: 2.5rem;
+      margin-bottom: 25px;
+      background: linear-gradient(90deg, var(--ig-blue), var(--ig-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .about-section p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+    }
+
+    /* VALUES SECTION */
+    .values {
+      background: var(--bg-light);
+      padding: 100px 20px;
+      position: relative;
+    }
+
+    .values h2 {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 60px;
+      background: linear-gradient(90deg, var(--ig-blue), var(--ig-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .values-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .value-card {
+      background: var(--card-bg);
+      padding: 35px 25px;
+      border-radius: 25px;
+      box-shadow: 0 20px 50px var(--shadow);
+      text-align: center;
+      transition: transform 0.5s ease, box-shadow 0.5s ease;
+      opacity: 0;
+      transform: translateY(40px);
+    }
+
+    .value-card.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .value-card:hover {
+      transform: translateY(-12px) scale(1.02);
+      box-shadow: 0 35px 70px var(--shadow);
+    }
+
+    .value-card h3 {
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+      color: var(--ig-blue);
+    }
+
+    .value-card p {
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+
+    /* TEAM SECTION */
+    .team {
+      padding: 100px 20px;
+      background: #f4f6fa;
+      position: relative;
+    }
+
+    .team h2 {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 60px;
+      background: linear-gradient(90deg, var(--ig-blue), var(--ig-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* TEAM CARDS HORIZONTAL SCROLL CENTERED */
+    .team-cards {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      overflow-x: auto;
+      padding-bottom: 20px;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .team-card {
+      flex: 0 0 250px;
+      background: var(--card-bg);
+      border-radius: 25px;
+      padding: 30px 20px;
+      text-align: center;
+      box-shadow: 0 20px 50px var(--shadow);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      opacity: 0;
+      transform: translateY(40px);
+      cursor: grab;
+      perspective: 1000px;
+    }
+
+    .team-card.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .team-card:hover {
+      box-shadow: 0 35px 70px var(--shadow);
+    }
+
+    .team-card img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    /* MAGNETIC 3D HOVER */
+    .team-card:hover img {
+      transform: scale(1.1) rotateY(10deg) rotateX(10deg);
+    }
+
+    .team-card h4 {
+      font-size: 1.3rem;
+      margin-bottom: 5px;
+    }
+
+    .team-card p {
+      font-size: 1rem;
+      color: var(--text-muted);
+    }
+
+    /* RESPONSIVE */
+    @media(max-width:768px) {
+      .about-section {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      .about-section h2 {
+        font-size: 2rem;
+      }
+
+      .about-hero h1 {
+        font-size: 2.8rem;
+      }
+
+      .team-cards {
+        justify-content: flex-start;
+      }
+    }
+  </style>
+
+
+
+</head>
+
+<body>
+  <!-- HEADER -->
+  <!-- HEADER -->
+<header id="main-header">
+  <div class="container">
+
+    <div class="logo">
+      <a href="index.html">
+        <img src="images/logo/Movictel 12 sept 25-01-01.png" alt="Movictel Logo">
+      </a>
+    </div>
+
+    <div class="menu-toggle" id="menuToggle">
+      <i class="fas fa-bars"></i>
+    </div>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav>
+      <ul class="menu">
+
+        <li><a href="index.html">Home</a></li>
+
+       <li class="dropdown">
+  <a href="services.html">Services</a>
+  <ul class="dropdown-menu">
+
+    <!-- MARKETING -->
+    <li class="has-submenu">
+      <a href="#"><i class="fa-solid fa-bullhorn"></i>Marketing</a>
+      <ul class="submenu">
+        <li><a href="services.html#social-media-marketing"><i class="fa-solid fa-hashtag"></i>Social Media Marketing</a></li>
+        <li><a href="services.html#google-meta-ads"><i class="fa-solid fa-chart-line"></i>Google & Meta Ads</a></li>
+        <li><a href="services.html#brand-awareness"><i class="fa-solid fa-eye"></i>Brand Awareness Campaigns</a></li>
+        <li><a href="services.html#seo-online-visibility"><i class="fa-solid fa-magnifying-glass"></i>SEO & Online Visibility</a></li>
+        <li><a href="services.html#content-writing"><i class="fa-solid fa-pen-nib"></i> Content Writing</a></li>
+      </ul>
+    </li>
+
+    <!-- PROMOTE -->
+    <li class="has-submenu">
+      <a href="#"><i class="fa-solid fa-paper-plane"></i>Promote</a>
+      <ul class="submenu">
+        <li><a href="services.html#bulk-sms"><i class="fa-solid fa-message"></i>Bulk SMS</a></li>
+        <li><a href="services.html#rcs-sms"><i class="fa-solid fa-comments"></i>RCS SMS</a></li>
+        <li><a href="services.html#voice-sms"><i class="fa-solid fa-microphone"></i>Voice SMS</a></li>
+        <li><a href="services.html#whatsapp-api"><i class="fa-brands fa-whatsapp"></i>WhatsApp Business API</a></li>
+      </ul>
+    </li>
+
+    <!-- DEVELOPMENT -->
+    <li class="has-submenu">
+      <a href="#"><i class="fa-solid fa-code"></i> Development</a>
+      <ul class="submenu">
+        <li><a href="services.html#website-development"><i class="fa-solid fa-globe"></i> Website Development</a></li>
+        <li><a href="services.html#app-development"><i class="fa-solid fa-mobile-screen"></i>App Development</a></li>
+        <li><a href="services.html#landing-pages"><i class="fa-solid fa-layer-group"></i> Landing Pages</a></li>
+      </ul>
+    </li>
+
+  </ul>
+</li>
+
+
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="aboutus.html">About Us</a></li>
+        <li><a href="contact.html">Contact</a></li>
+
+      </ul>
+    </nav>
+
+    <div class="social-icons">
+      <a href="https://www.facebook.com/share/1CNLUSH1xV/"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://www.instagram.com/movictel?igsh=Mjg3cnowdnE3emd3"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.linkedin.com/company/movictel/"><i class="fab fa-linkedin-in"></i></a>
+      <a href="https://x.com/movictel"><i class="fab fa-x-twitter"></i></a>
+    </div>
+
+  </div>
+</header>
+  <!-- HERO CARD -->
+  <section class="about-hero">
+    <h1>About Us</h1>
+  </section>
+
+  <!-- ABOUT SECTION -->
+  <section class="about-section">
+    <div class="about-text">
+      <h2>Who We Are</h2>
+      <p>We are a creative marketing agency driven by innovation, passion, and technology.
+        With years of experience in branding, digital marketing, and strategy development,
+        we help businesses stand out and scale to new heights. Our approach is human-centered,
+        blending creativity with data-driven insights to deliver impactful solutions.</p>
+    </div>
+    <div>
+      <img src="images/8597911.jpg" alt="About Us Image">
+    </div>
+  </section>
+
+  <!-- VALUES -->
+  <section class="values">
+    <h2>Our Mission, Vision & Values</h2>
+    <div class="values-cards">
+      <div class="value-card">
+        <h3>Our Mission</h3>
+        <p>To empower businesses with innovative marketing strategies that create measurable growth and long-term
+          success.</p>
+      </div>
+      <div class="value-card">
+        <h3>Our Vision</h3>
+        <p>To become the most trusted and creative marketing partner for global brands across industries.</p>
+      </div>
+      <div class="value-card">
+        <h3>Our Values</h3>
+        <p>Integrity, innovation, teamwork, and client success are at the heart of everything we do.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section class="team">
+    <h2>Meet Our Team</h2>
+    <div class="team-cards">
+      <div class="team-card">
+        <img src="https://picsum.photos/200" alt="Team Member">
+        <h4>Rahul Sharma</h4>
+        <p>CEO & Founder</p>
+      </div>
+      <div class="team-card">
+        <img src="https://picsum.photos/201" alt="Team Member">
+        <h4>Anita Verma</h4>
+        <p>Creative Director</p>
+      </div>
+      <div class="team-card">
+        <img src="https://picsum.photos/202" alt="Team Member">
+        <h4>Vikas Mehta</h4>
+        <p>Marketing Strategist</p>
+      </div>
+      <div class="team-card">
+        <img src="https://picsum.photos/203" alt="Team Member">
+        <h4>Priya Singh</h4>
+        <p>Digital Manager</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+<footer class="site-footer">
+
+  
+  <div style="text-align: center; padding-top: 30px; padding-bottom: 10px;">
+    <button id="footerToggleBtn" class="footer-toggle-btn">
+      <span>Show Footer</span>
+      <i class="fas fa-chevron-down"></i>
+    </button>
+  </div>
+
+  
+  <div class="footer-collapsible-wrapper" id="footerCollapsible">
+    <div class="footer-collapsible-inner">
+      <div class="footer-container">
+
+        <!-- Column 1: Logo & About -->
+        <div class="footer-col">
+          <div class="footer-logo">
+            <img src="images/logo/Movictel 12 sept 25-01-01.png" alt="Movictel Logo">
+          </div>
+          <p class="footer-about">
+            Movictel is a growth-driven digital solutions company offering
+            Marketing, Messaging & Development services to help businesses
+            connect, engage & scale faster.
+          </p>
+          <div class="footer-social">
+            <a href="https://www.facebook.com/share/1CNLUSH1xV/"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/movictel?igsh=Mjg3cnowdnE3emd3"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.linkedin.com/company/movictel/"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://x.com/movictel"><i class="fab fa-x-twitter"></i></a>
+          </div>
+        </div>
+
+        <!-- Column 2: Quick Links -->
+        <div class="footer-col">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="aboutus.html">About Us</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Services -->
+        <div class="footer-col services-col">
+          <h3>Our Services</h3>
+
+          <div class="services-grid">
+
+            <div class="footer-service-group">
+              <span class="service-heading">Marketing</span>
+              <ul>
+                <li><a href="services.html#social-media-marketing">Social Media Marketing</a></li>
+                <li><a href="services.html#google-meta-ads">Google & Meta Ads</a></li>
+                <li><a href="services.html#brand-awareness">Brand Awareness Campaigns</a></li>
+                <li><a href="services.html#seo-online-visibility">SEO & Online Visibility</a></li>
+                <li><a href="services.html#content-writing"> Content Writing</a></li>
+              </ul>
+            </div>
+
+            <div class="footer-service-group">
+              <span class="service-heading">Promote</span>
+              <ul>
+                <li><a href="services.html#bulk-sms">Bulk SMS</a></li>
+                <li><a href="services.html#rcs-sms">RCS SMS</a></li>
+                <li><a href="services.html#voice-sms">Voice SMS</a></li>
+                <li><a href="services.html#whatsapp-api">WhatsApp Business API</a></li>
+              </ul>
+            </div>
+
+            <div class="footer-service-group">
+              <span class="service-heading">Development</span>
+              <ul>
+                <li><a href="services.html#website-development">Website Development</a></li>
+                <li><a href="services.html#app-development">App Development</a></li>
+                <li><a href="services.html#landing-pages">Landing Pages</a></li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+
+      </div> 
+    </div>
+  </div> 
+
+  <!-- Bottom Bar -->
+  <div class="footer-bottom">
+    <p>© 2025 Movictel. All Rights Reserved.</p>
+  </div>
+</footer>
+
+<!-- Back to Top Button -->
+<button id="backToTop" title="Go to top"><i class="fas fa-arrow-up"></i></button>
+
+  <!-- CMS DATA BINDING SCRIPT - RUNS BEFORE ANIMATIONS SO NEW ELEMENTS GET BOUND -->
+  <script>
+    (function() {
+      const storedData = localStorage.getItem('movictelCMSData');
+      if (!storedData) return;
+      try {
+        const data = JSON.parse(storedData);
+        
+        // 0. SECTION VISIBILITY CONTROLS
+        if(data.sections) {
+            const toggleVis = (selector, isVisible) => {
+                const el = document.querySelector(selector);
+                if (el) el.style.display = isVisible ? '' : 'none';
+            };
+            toggleVis('.about-hero', data.sections.aboutPageHero !== false);
+            toggleVis('.about-section', data.sections.aboutPageWho !== false);
+            toggleVis('.values', data.sections.aboutPageValues !== false);
+            toggleVis('.team', data.sections.aboutPageTeam !== false);
+        }
+
+        // 0.5 HEADER/FOOTER SERVICE LINKS DYNAMIC BINDING
+        if (data.detailedServices && Array.isArray(data.detailedServices)) {
+            // Headers
+            const headMarketing = document.querySelector("nav .dropdown-menu > li:nth-child(1) .submenu");
+            const headPromote = document.querySelector("nav .dropdown-menu > li:nth-child(2) .submenu");
+            const headDev = document.querySelector("nav .dropdown-menu > li:nth-child(3) .submenu");
+            if(headMarketing) headMarketing.innerHTML = '';
+            if(headPromote) headPromote.innerHTML = '';
+            if(headDev) headDev.innerHTML = '';
+
+            // Footers
+            const footMarketing = document.querySelector(".footer-service-group:nth-child(1) ul");
+            const footPromote = document.querySelector(".footer-service-group:nth-child(2) ul");
+            const footDev = document.querySelector(".footer-service-group:nth-child(3) ul");
+            if(footMarketing) footMarketing.innerHTML = '';
+            if(footPromote) footPromote.innerHTML = '';
+            if(footDev) footDev.innerHTML = '';
+
+            data.detailedServices.forEach(s => {
+                let targetHead = s.category === 'Marketing' ? headMarketing : (s.category === 'Promote' ? headPromote : headDev);
+                if(targetHead) targetHead.innerHTML += `<li><a href="services.html#${s.id}"><i class="${s.navIcon}"></i>${s.title}</a></li>`;
+                
+                let targetFoot = s.category === 'Marketing' ? footMarketing : (s.category === 'Promote' ? footPromote : footDev);
+                if(targetFoot) targetFoot.innerHTML += `<li><a href="services.html#${s.id}">${s.title}</a></li>`;
+            });
+        }
+
+        if (data.aboutPage) {
+          // 1. Hero Title
+          const heroText = document.querySelector('.about-hero h1');
+          if (heroText && data.aboutPage.heroTitle) heroText.innerHTML = data.aboutPage.heroTitle;
+  
+          // 2. Who We Are
+          const aboutSec = document.querySelector('.about-section');
+          if (aboutSec) {
+              const h2 = aboutSec.querySelector('.about-text h2');
+              const p = aboutSec.querySelector('.about-text p');
+              const img = aboutSec.querySelector('img');
+              if (h2) h2.innerHTML = data.aboutPage.whoWeAreTitle;
+              if (p) p.innerHTML = data.aboutPage.whoWeAreText;
+              if (img) img.src = data.aboutPage.whoWeAreImage;
+          }
+  
+          // 3. Values Section
+          const valuesSec = document.querySelector('.values');
+          if (valuesSec && data.aboutPage.values) {
+              const h2 = valuesSec.querySelector('h2');
+              if (h2) h2.innerHTML = data.aboutPage.valuesHeading;
+              
+              const cardsCont = valuesSec.querySelector('.values-cards');
+              cardsCont.innerHTML = '';
+              data.aboutPage.values.forEach(v => {
+                  const div = document.createElement('div');
+                  div.className = 'value-card';
+                  div.innerHTML = `<h3>${v.title}</h3><p>${v.text}</p>`;
+                  cardsCont.appendChild(div);
+              });
+          }
+  
+          // 4. Team Section
+          const teamSec = document.querySelector('.team');
+          if (teamSec && data.aboutPage.team) {
+              const h2 = teamSec.querySelector('h2');
+              if (h2) h2.innerHTML = data.aboutPage.teamHeading;
+              
+              const cardsCont = teamSec.querySelector('.team-cards');
+              cardsCont.innerHTML = '';
+              data.aboutPage.team.forEach(t => {
+                  const div = document.createElement('div');
+                  div.className = 'team-card';
+                  div.innerHTML = `<img src="${t.image}" alt="${t.name}"><h4>${t.name}</h4><p>${t.role}</p>`;
+                  cardsCont.appendChild(div);
+              });
+          }
+        }
+      } catch(e) {
+        console.error("CMS Load Error:", e);
+      }
+    })();
+  </script>
+
+  <!-- ANIMATIONS AND INTERACTIVITY (Runs AFTER DOM replaces elements) -->
+  <script>
+    const heroText = document.querySelector('.about-hero h1');
+    const aboutImg = document.querySelector('.about-section img');
+
+    window.addEventListener('scroll', () => {
+      let scrollY = window.scrollY;
+      if(heroText) heroText.style.transform = `translateY(${scrollY * 0.3}px)`;
+      if(aboutImg) aboutImg.style.transform = `translateY(${scrollY * 0.2}px) scale(1)`;
+    });
+
+    // Scroll reveal
+    const valueCards = document.querySelectorAll('.value-card');
+    const teamCards = document.querySelectorAll('.team-card');
+    const aboutSection = document.querySelector('.about-section');
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+        }
+      });
+    }, { threshold: 0.2 });
+
+    valueCards.forEach(card => observer.observe(card));
+    teamCards.forEach(card => observer.observe(card));
+    if (aboutSection) observer.observe(aboutSection);
+
+    // Magnetic hover for team cards
+    document.querySelectorAll('.team-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const cx = rect.width / 2;
+        const cy = rect.height / 2;
+        const dx = (x - cx) / cx;
+        const dy = (y - cy) / cy;
+        card.style.transform = `rotateY(${dx * 10}deg) rotateX(${-dy * 10}deg)`;
+      });
+      card.addEventListener('mouseleave', e => {
+        card.style.transform = 'rotateY(0deg) rotateX(0deg)';
+      });
+    });
+  </script>
+
+  <!-- NAVBAR & FOOTER LOGIC -->
+  <script>
+  const menuToggle = document.getElementById("menuToggle");
+  const navMenu = document.querySelector("header nav");
+
+  if(menuToggle && navMenu) {
+      menuToggle.addEventListener("click", () => {
+        navMenu.classList.toggle("active");
+        menuToggle.classList.toggle("active");
+      });
+  }
+
+   let lastScrollTop = 0;
+  const header = document.getElementById("main-header");
+  const backToTopBtn = document.getElementById("backToTop");
+
+  window.addEventListener("scroll", function() {
+    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+    // Hide/Show Header
+    if (header) {
+      if (scrollTop > lastScrollTop && scrollTop > 100) {
+        header.style.transform = "translateY(-100%)";
+      } else {
+        header.style.transform = "translateY(0)";
+      }
+    }
+    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+
+    // Show/Hide BackToTop Button
+    if (backToTopBtn) {
+      if (scrollTop > 300) {
+        backToTopBtn.classList.add("show");
+      } else {
+        backToTopBtn.classList.remove("show");
+      }
+    }
+  });
+
+  if (backToTopBtn) {
+    backToTopBtn.addEventListener("click", () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    });
+  }
+
+  // ==========================================
+  // FOOTER EXPAND/COLLAPSE LOGIC
+  // ==========================================
+  const footerToggleBtn = document.getElementById("footerToggleBtn");
+  const footerCollapsible = document.getElementById("footerCollapsible");
+
+  if (footerToggleBtn && footerCollapsible) {
+    footerToggleBtn.addEventListener("click", () => {
+      footerToggleBtn.classList.toggle("open");
+      footerCollapsible.classList.toggle("open");
+      
+      const spanText = footerToggleBtn.querySelector("span");
+      if(spanText) {
+        if (footerToggleBtn.classList.contains("open")) {
+          spanText.textContent = "Hide Footer";
+        } else {
+          spanText.textContent = "Show Footer";
+        }
+      }
+    });
+  }
+  </script>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="js/script.js"></script>
+
+</body>
+
+</html>

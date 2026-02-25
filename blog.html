@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Blog - MOVICTEL</title>
+  
+  <link rel="stylesheet" href="css/flip.css">
+  <link rel="stylesheet" href="css/style.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+ <style>
+:root {
+--ig-blue: #018eec;
+  --ig-purple: #015fa8;
+  --ig-pink: #c13584;
+  --ig-red: #fd1d1d;
+  --ig-orange: #f77737;
+  --ig-yellow: #fcaf45;
+  --ig-light: #ffdc80;
+
+  /* Grayscale */
+  --ig-dark: #242d3f;
+  --ig-gray: #dcf0ff;
+  --ig-lightGray: #c8c9ce;
+  --white: #ffffff;
+  --black: #000000;
+}
+
+/* Global */
+* {
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+   background: radial-gradient(circle at left, var(--ig-gray), #fff 60%);
+  color: var(--text-dark);
+  line-height:1.6;
+}
+
+/* HERO */
+.blog-hero {
+  height:40vh;
+  /* background: linear-gradient(135deg, #d9dff0 0%, #dfcbe7 100%); */
+  background-image: url(images/GTM_Playbook_2x-1.jpg);
+  backdrop-filter: inherit;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  overflow:hidden;
+  /* opacity: 0.9; */
+  border-radius: 0 0 50px 50px;
+}
+
+.blog-hero h1 {
+  /* color: var(--white); */
+  font-size:3.5rem;
+  font-weight:800;
+  text-transform:uppercase;
+  text-align:center;
+  letter-spacing:3px;
+  background: #1e37b3;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  
+  animation: heroFade 1.5s ease forwards;
+}
+
+@keyframes heroFade {
+  from { opacity:0; transform:translateY(-20px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+/* BLOG SECTION */
+.blog-section {
+  padding:100px 20px;
+  max-width:1200px;
+  margin:auto;
+}
+
+.blog-section h2 {
+  text-align:center;
+  font-size:2.5rem;
+  margin-bottom:70px;
+  background: linear-gradient(90deg, var(--ig-blue), var(--ig-purple));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+/* BLOG GRID */
+.blog-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(300px,1fr));
+  gap:35px;
+}
+
+/* BLOG CARD */
+.blog-card {
+  background: var(--card-bg);
+  border-radius:20px;
+  box-shadow: 0 15px 40px var(--card-shadow);
+  overflow:hidden;
+  transform: translateY(40px);
+  opacity:0;
+  transition: all 0.6s cubic-bezier(.2,.8,.2,1);
+  position: relative;
+}
+
+.blog-card.show {
+  transform: translateY(0);
+  opacity:1;
+}
+
+.blog-card img {
+  width:100%;
+  height:220px;
+  object-fit:cover;
+  transition: transform 0.6s ease;
+  border-bottom: 4px solid transparent;
+}
+
+.blog-card:hover img {
+  transform: scale(1.08);
+  border-bottom: 4px solid var(--ig-blue);
+}
+
+.blog-card-content {
+  padding:25px;
+}
+
+.blog-card h3 {
+  font-size:1.4rem;
+  margin-bottom:10px;
+  color: var(--text-dark);
+  transition: color 0.3s;
+}
+
+.blog-card:hover h3 {
+  color: var(--ig-blue);
+}
+
+.blog-card p {
+  font-size:0.95rem;
+  color: var(--text-light);
+  margin-bottom:20px;
+}
+
+/* BUTTON */
+.blog-card a {
+  display:inline-block;
+  padding:12px 28px;
+  border-radius:30px;
+  background: linear-gradient(135deg, var(--ig-blue), var(--ig-purple));
+  color:#fff;
+  text-decoration:none;
+  font-size:0.9rem;
+  font-weight:500;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.blog-card a:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(131,58,180,0.3);
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .blog-hero h1{font-size:2.5rem;}
+  .blog-section h2{font-size:2rem;}
+}
+</style>
+
+
+</head>
+<body>
+  <!-- HEADER -->
+<header id="main-header">
+  <div class="container">
+
+    <div class="logo">
+      <a href="index.html">
+        <img src="images/logo/Movictel 12 sept 25-01-01.png" alt="Movictel Logo">
+      </a>
+    </div>
+
+    <div class="menu-toggle" id="menuToggle">
+      <i class="fas fa-bars"></i>
+    </div>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav>
+      <ul class="menu">
+
+        <li><a href="index.html">Home</a></li>
+
+       <li class="dropdown">
+  <a href="services.html">Services</a>
+  <ul class="dropdown-menu">
+
+    <!-- MARKETING -->
+    <li class="has-submenu">
+      <a href="#"><i class="fa-solid fa-bullhorn"></i>Marketing</a>
+      <ul class="submenu">
+        <li><a href="services.html#social-media-marketing"><i class="fa-solid fa-hashtag"></i>Social Media Marketing</a></li>
+        <li><a href="services.html#google-meta-ads"><i class="fa-solid fa-chart-line"></i>Google & Meta Ads</a></li>
+        <li><a href="services.html#brand-awareness"><i class="fa-solid fa-eye"></i>Brand Awareness Campaigns</a></li>
+        <li><a href="services.html#seo-online-visibility"><i class="fa-solid fa-magnifying-glass"></i>SEO & Online Visibility</a></li>
+        <li><a href="services.html#content-writing"><i class="fa-solid fa-pen-nib"></i> Content Writing</a></li>
+      </ul>
+    </li>
+
+    <!-- PROMOTE -->
+    <li class="has-submenu">
+      <a href="#"><i class="fa-solid fa-paper-plane"></i>Promote</a>
+      <ul class="submenu">
+        <li><a href="services.html#bulk-sms"><i class="fa-solid fa-message"></i>Bulk SMS</a></li>
+        <li><a href="services.html#rcs-sms"><i class="fa-solid fa-comments"></i>RCS SMS</a></li>
+        <li><a href="services.html#voice-sms"><i class="fa-solid fa-microphone"></i>Voice SMS</a></li>
+        <li><a href="services.html#whatsapp-api"><i class="fa-brands fa-whatsapp"></i>WhatsApp Business API</a></li>
+      </ul>
+    </li>
+
+    <!-- DEVELOPMENT -->
+    <li class="has-submenu">
+      <a href="#"><i class="fa-solid fa-code"></i> Development</a>
+      <ul class="submenu">
+        <li><a href="services.html#website-development"><i class="fa-solid fa-globe"></i> Website Development</a></li>
+        <li><a href="services.html#app-development"><i class="fa-solid fa-mobile-screen"></i>App Development</a></li>
+        <li><a href="services.html#landing-pages"><i class="fa-solid fa-layer-group"></i> Landing Pages</a></li>
+      </ul>
+    </li>
+
+  </ul>
+</li>
+
+
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="aboutus.html">About Us</a></li>
+        <li><a href="contact.html">Contact</a></li>
+
+      </ul>
+    </nav>
+
+    <div class="social-icons">
+      <a href="https://www.facebook.com/share/1CNLUSH1xV/"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://www.instagram.com/movictel?igsh=Mjg3cnowdnE3emd3"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.linkedin.com/company/movictel/"><i class="fab fa-linkedin-in"></i></a>
+      <a href="https://x.com/movictel"><i class="fab fa-x-twitter"></i></a>
+    </div>
+
+  </div>
+</header>
+
+  <!-- HERO BANNER -->
+  <section class="blog-hero">
+    <h1>Our Blog</h1>
+  </section>
+
+  <!-- BLOG SECTION -->
+  <section class="blog-section">
+    <h2>Latest Articles & Insights</h2>
+    <div class="blog-grid">
+      
+      <!-- Blog Card 1 -->
+      <div class="blog-card">
+        <img src="https://picsum.photos/400/250?random=1" alt="Blog 1">
+        <div class="blog-card-content">
+          <h3>How to Build a Strong Brand Identity</h3>
+          <p>Discover the essential elements of building a powerful brand identity that resonates with your target audience...</p>
+          <a href="#"><span>Read More</span></a>
+
+        </div>
+      </div>
+
+      <!-- Blog Card 2 -->
+      <div class="blog-card">
+        <img src="https://picsum.photos/400/250?random=2" alt="Blog 2">
+        <div class="blog-card-content">
+          <h3>Top Digital Marketing Trends 2025</h3>
+          <p>From AI-driven campaigns to immersive experiences – explore the latest digital marketing trends shaping the future...</p>
+          <a href="#"><span>Read More</span></a>
+
+        </div>
+      </div>
+
+      <!-- Blog Card 3 -->
+      <div class="blog-card">
+        <img src="https://picsum.photos/400/250?random=3" alt="Blog 3">
+        <div class="blog-card-content">
+          <h3>Boost Your Online Presence in 5 Steps</h3>
+          <p>Learn how to strengthen your online visibility and connect with your ideal customers effectively in today’s digital age...</p>
+         <a href="#"><span>Read More</span></a>
+
+        </div>
+      </div>
+
+      <!-- Blog Card 4 -->
+      <div class="blog-card">
+        <img src="https://picsum.photos/400/250?random=4" alt="Blog 4">
+        <div class="blog-card-content">
+          <h3>The Future of E-commerce</h3>
+          <p>Explore how AI, AR, and mobile-first shopping experiences are shaping the future of online stores worldwide...</p>
+          <a href="#"><span>Read More</span></a>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+   <!-- Footer -->
+<footer class="site-footer">
+
+  
+  <div style="text-align: center; padding-top: 30px; padding-bottom: 10px;">
+    <button id="footerToggleBtn" class="footer-toggle-btn">
+      <span>Show Footer</span>
+      <i class="fas fa-chevron-down"></i>
+    </button>
+  </div>
+
+  
+  <div class="footer-collapsible-wrapper" id="footerCollapsible">
+    <div class="footer-collapsible-inner">
+      <div class="footer-container">
+
+        <!-- Column 1: Logo & About -->
+        <div class="footer-col">
+          <div class="footer-logo">
+            <img src="images/logo/Movictel 12 sept 25-01-01.png" alt="Movictel Logo">
+          </div>
+          <p class="footer-about">
+            Movictel is a growth-driven digital solutions company offering
+            Marketing, Messaging & Development services to help businesses
+            connect, engage & scale faster.
+          </p>
+          <div class="footer-social">
+            <a href="https://www.facebook.com/share/1CNLUSH1xV/"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/movictel?igsh=Mjg3cnowdnE3emd3"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.linkedin.com/company/movictel/"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://x.com/movictel"><i class="fab fa-x-twitter"></i></a>
+          </div>
+        </div>
+
+        <!-- Column 2: Quick Links -->
+        <div class="footer-col">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="aboutus.html">About Us</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Services -->
+        <div class="footer-col services-col">
+          <h3>Our Services</h3>
+
+          <div class="services-grid">
+
+            <div class="footer-service-group">
+              <span class="service-heading">Marketing</span>
+              <ul>
+                <li><a href="services.html#social-media-marketing">Social Media Marketing</a></li>
+                <li><a href="services.html#google-meta-ads">Google & Meta Ads</a></li>
+                <li><a href="services.html#brand-awareness">Brand Awareness Campaigns</a></li>
+                <li><a href="services.html#seo-online-visibility">SEO & Online Visibility</a></li>
+                <li><a href="services.html#content-writing"> Content Writing</a></li>
+              </ul>
+            </div>
+
+            <div class="footer-service-group">
+              <span class="service-heading">Promote</span>
+              <ul>
+                <li><a href="services.html#bulk-sms">Bulk SMS</a></li>
+                <li><a href="services.html#rcs-sms">RCS SMS</a></li>
+                <li><a href="services.html#voice-sms">Voice SMS</a></li>
+                <li><a href="services.html#whatsapp-api">WhatsApp Business API</a></li>
+              </ul>
+            </div>
+
+            <div class="footer-service-group">
+              <span class="service-heading">Development</span>
+              <ul>
+                <li><a href="services.html#website-development">Website Development</a></li>
+                <li><a href="services.html#app-development">App Development</a></li>
+                <li><a href="services.html#landing-pages">Landing Pages</a></li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+
+      </div> 
+    </div>
+  </div> 
+
+  <!-- Bottom Bar -->
+  <div class="footer-bottom">
+    <p>© 2025 Movictel. All Rights Reserved.</p>
+  </div>
+</footer>
+
+<!-- Back to Top Button -->
+<button id="backToTop" title="Go to top"><i class="fas fa-arrow-up"></i></button>
+
+  <!-- CMS DATA BINDING SCRIPT - RUNS BEFORE ANIMATIONS -->
+  <script>
+    (function() {
+      const storedData = localStorage.getItem('movictelCMSData');
+      if (!storedData) return;
+      try {
+        const data = JSON.parse(storedData);
+        
+        // 0. SECTION VISIBILITY CONTROLS
+        if(data.sections) {
+            const toggleVis = (selector, isVisible) => {
+                const el = document.querySelector(selector);
+                if (el) el.style.display = isVisible ? '' : 'none';
+            };
+            toggleVis('.blog-hero', data.sections.blogPageHero !== false);
+            toggleVis('.blog-section', data.sections.blogPageGrid !== false);
+        }
+
+        // 0.5 HEADER/FOOTER SERVICE LINKS DYNAMIC BINDING
+        if (data.detailedServices && Array.isArray(data.detailedServices)) {
+            // Headers
+            const headMarketing = document.querySelector("nav .dropdown-menu > li:nth-child(1) .submenu");
+            const headPromote = document.querySelector("nav .dropdown-menu > li:nth-child(2) .submenu");
+            const headDev = document.querySelector("nav .dropdown-menu > li:nth-child(3) .submenu");
+            if(headMarketing) headMarketing.innerHTML = '';
+            if(headPromote) headPromote.innerHTML = '';
+            if(headDev) headDev.innerHTML = '';
+
+            // Footers
+            const footMarketing = document.querySelector(".footer-service-group:nth-child(1) ul");
+            const footPromote = document.querySelector(".footer-service-group:nth-child(2) ul");
+            const footDev = document.querySelector(".footer-service-group:nth-child(3) ul");
+            if(footMarketing) footMarketing.innerHTML = '';
+            if(footPromote) footPromote.innerHTML = '';
+            if(footDev) footDev.innerHTML = '';
+
+            data.detailedServices.forEach(s => {
+                let targetHead = s.category === 'Marketing' ? headMarketing : (s.category === 'Promote' ? headPromote : headDev);
+                if(targetHead) targetHead.innerHTML += `<li><a href="services.html#${s.id}"><i class="${s.navIcon}"></i>${s.title}</a></li>`;
+                
+                let targetFoot = s.category === 'Marketing' ? footMarketing : (s.category === 'Promote' ? footPromote : footDev);
+                if(targetFoot) targetFoot.innerHTML += `<li><a href="services.html#${s.id}">${s.title}</a></li>`;
+            });
+        }
+
+        if (data.blogPage) {
+          // 1. Hero Title
+          const heroText = document.querySelector('.blog-hero h1');
+          if (heroText && data.blogPage.heroTitle) heroText.innerHTML = data.blogPage.heroTitle;
+  
+          // 2. Section Heading
+          const sectionHeading = document.querySelector('.blog-section h2');
+          if (sectionHeading && data.blogPage.sectionHeading) sectionHeading.innerHTML = data.blogPage.sectionHeading;
+  
+          // 3. Blog Grid
+          const grid = document.querySelector('.blog-grid');
+          if (grid && data.blogPage.blogs) {
+              grid.innerHTML = ''; // Clear hardcoded content
+              data.blogPage.blogs.forEach(b => {
+                  const div = document.createElement('div');
+                  div.className = 'blog-card';
+                  div.innerHTML = `
+                    <img src="${b.image}" alt="${b.title}">
+                    <div class="blog-card-content">
+                      <h3>${b.title}</h3>
+                      <p>${b.desc}</p>
+                      <a href="${b.link}"><span>Read More</span></a>
+                    </div>
+                  `;
+                  grid.appendChild(div);
+              });
+          }
+        }
+      } catch(e) {
+        console.error("CMS Load Error:", e);
+      }
+    })();
+  </script>
+
+  <!-- ANIMATIONS SCRIPT -->
+  <script>
+  // Because this script runs *after* the CMS script above, 
+  // document.querySelectorAll('.blog-card') perfectly targets the dynamically loaded cards!
+  const cards = document.querySelectorAll('.blog-card');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add('show');
+      }
+    });
+  }, { threshold: 0.2 });
+
+  cards.forEach(card => observer.observe(card));
+
+  const menuToggle = document.getElementById("menuToggle");
+  const navMenu = document.querySelector("header nav");
+
+  if(menuToggle && navMenu) {
+    menuToggle.addEventListener("click", () => {
+      navMenu.classList.toggle("active");
+      menuToggle.classList.toggle("active");
+    });
+  }
+
+   let lastScrollTop = 0;
+  const header = document.getElementById("main-header");
+  const backToTopBtn = document.getElementById("backToTop");
+
+  window.addEventListener("scroll", function() {
+    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+    // Hide/Show Header
+    if (header) {
+      if (scrollTop > lastScrollTop && scrollTop > 100) {
+        header.style.transform = "translateY(-100%)";
+      } else {
+        header.style.transform = "translateY(0)";
+      }
+    }
+    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+
+    // Show/Hide BackToTop Button
+    if (backToTopBtn) {
+      if (scrollTop > 300) {
+        backToTopBtn.classList.add("show");
+      } else {
+        backToTopBtn.classList.remove("show");
+      }
+    }
+  });
+
+  if (backToTopBtn) {
+    backToTopBtn.addEventListener("click", () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    });
+  }
+
+  // ==========================================
+  // FOOTER EXPAND/COLLAPSE LOGIC
+  // ==========================================
+  const footerToggleBtn = document.getElementById("footerToggleBtn");
+  const footerCollapsible = document.getElementById("footerCollapsible");
+
+  if (footerToggleBtn && footerCollapsible) {
+    footerToggleBtn.addEventListener("click", () => {
+      footerToggleBtn.classList.toggle("open");
+      footerCollapsible.classList.toggle("open");
+      
+      const spanText = footerToggleBtn.querySelector("span");
+      if(spanText) {
+        if (footerToggleBtn.classList.contains("open")) {
+          spanText.textContent = "Hide Footer";
+        } else {
+          spanText.textContent = "Show Footer";
+        }
+      }
+    });
+  }
+  </script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,1676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Movictel</title>
+  <link rel="stylesheet" href="css/flip.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+
+<!-- Swiper CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+  
+  <!-- Custom Styles for Scroll & Footer Features -->
+  <style>
+    /* ==========================================
+       SCROLL & FOOTER FEATURES
+       ========================================== */
+    /* Header Hide on Scroll */
+    #main-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      transition: transform 0.3s ease-in-out;
+      background-color: #fff;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    body {
+      padding-top: 80px; 
+    }
+
+    /* Back to Top Button */
+    #backToTop {
+      display: none;
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 999;
+      border: none;
+      outline: none;
+      background-color: #018eec;
+      color: white;
+      cursor: pointer;
+      padding: 15px;
+      border-radius: 50%;
+      font-size: 20px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+      width: 50px;
+      height: 50px;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    #backToTop.show {
+      display: flex;
+      opacity: 1;
+      visibility: visible;
+    }
+    #backToTop:hover {
+      background-color: #016bba;
+      transform: translateY(-3px);
+    }
+
+    /* Admin Login Floating Button */
+    #adminLoginBtn {
+      position: fixed;
+      bottom: 30px;
+      right: 90px; /* Placed directly to the left of the backToTop button */
+      z-index: 999;
+      background-color: #242d3f; /* Matches your dark brand color */
+      color: white;
+      text-decoration: none;
+      border-radius: 50%;
+      font-size: 18px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+    #adminLoginBtn:hover {
+      background-color: #018eec;
+      transform: translateY(-3px);
+    }
+
+    /* Advanced CSS Grid Logic for Smooth Footer Collapse */
+    .footer-collapsible-wrapper {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.6s ease-in-out;
+      width: 100%;
+    }
+    .footer-collapsible-wrapper.open {
+      grid-template-rows: 1fr;
+    }
+    .footer-collapsible-inner {
+      overflow: hidden;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s ease-in-out, visibility 0.6s;
+    }
+    .footer-collapsible-wrapper.open .footer-collapsible-inner {
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.6s ease-in-out, visibility 0.1s;
+    }
+
+    /* Footer Toggle Button Enhancement */
+    .footer-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #018eec, #0166b3);
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(1, 142, 236, 0.4);
+      transition: all 0.3s ease;
+    }
+    .footer-toggle-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(1, 142, 236, 0.6);
+    }
+    .footer-toggle-btn i {
+      transition: transform 0.4s ease;
+    }
+    .footer-toggle-btn.open i {
+      transform: rotate(180deg);
+    }
+
+    /* ==========================================
+       SPLIT TESTIMONIAL REDESIGN
+       ========================================== */
+    .split-testimonial-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+      /* background-color: #f4f5f7; */
+      position: relative;
+    }
+    .split-testi-left {
+      width: 40%;
+      background: linear-gradient(135deg, #018eec, #0166b3); /* Dark navy/black theme color */
+      
+      color: #fff;
+  font-weight: 600;
+      padding: 8% 8% 8% 8%;
+      display: flex;
+      align-items: center;
+      border-radius: 9px;
+      position: relative;
+      box-shadow: 0 10px 25px rgba(1,142,236,0.5);
+      z-index: 1;
+    }
+    .testi-left-content {
+      max-width: 450px;
+    }
+    .testi-brand-line {
+      border: none;
+      height: 2px;
+      background: #ffffff;
+      width: 100%;
+      margin-bottom: 30px;
+    }
+    .testi-left-content h2 {
+      font-size: 2.5rem;
+      font-weight: 600;
+      line-height: 1.3;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .testi-left-content p {
+      font-size: 1rem;
+      color: #ffffffe4;
+      line-height: 1.6;
+    }
+    .split-testi-right {
+      width: 60%;
+      position: relative;
+      padding: 5% 0;
+      display: flex;
+      align-items: center;
+    }
+    /* Negative margin to create the overlap effect */
+    .splitTestimonialSwiper {
+      width: 100%;
+      margin-left: -120px; 
+      padding: 20px 20px 20px 0;
+      z-index: 2;
+    }
+    .split-testi-card {
+     
+      background: #dcf0ff;
+      border: #018eec solid 2px;
+      border-radius: 9px;
+      padding: 40px 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 350px;
+    }
+    .testi-text {
+      font-size: 0.95rem;
+      color:  #242d3f;
+      line-height: 1.8;
+      margin-bottom: 30px;
+    }
+    .testi-author-info {
+      margin-top: auto;
+    }
+    .testi-author-name {
+      color: #018eec; /* Muted name like in the image */
+      font-size: 0.95rem;
+      font-weight: 500;
+      margin-bottom: 5px;
+    }
+    .testi-author-role {
+      color:  #242d3f; /* Dark role like in the image */
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    /* Custom Navigation Buttons */
+    .custom-testi-prev, .custom-testi-next {
+      background-color: rgba(255, 255, 255, 0.1); 
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #018eec;
+      background-color: #018eec; /* Using the yellow-gold from the image for buttons */
+      color: white;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      transition: all 0.3s ease;
+    }
+    .custom-testi-prev:hover, .custom-testi-next:hover {
+      background-color: #018eec; /* Hover state adapts to your blue theme */
+    }
+    .custom-testi-prev {
+      left: -140px; /* Positions perfectly in the dark space */
+    }
+    .custom-testi-next {
+      right: 20px;
+    }
+
+    @media (max-width: 992px) {
+      .split-testi-left {
+        width: 100%;
+        padding: 10% 5%;
+      }
+      .split-testi-right {
+        width: 100%;
+        padding: 10% 5%;
+      }
+      .splitTestimonialSwiper {
+        margin-left: 0;
+        padding: 0;
+      }
+      .custom-testi-prev {
+        left: 0;
+        background-color: #018eec;
+      }
+      .custom-testi-next {
+        right: 0;
+        background-color: #018eec;
+      }
+    }
+  </style>
+
+</head>
+<body>
+  <div id="preloader">
+    <img src="images/logo.gif" alt="Loading...">
+  </div>
+
+ 
+<!-- ... existing code ... -->
+<header id="main-header">
+  <div class="container">
+
+    <div class="logo">
+      <a href="index.html">
+        <img src="images/logo/Movictel 12 sept 25-01-01.png" alt="Movictel Logo">
+      </a>
+    </div>
+
+    <div class="menu-toggle" id="menuToggle">
+      <i class="fas fa-bars"></i>
+    </div>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav>
+      <ul class="menu">
+
+        <li><a href="index.html">Home</a></li>
+
+       <li class="dropdown">
+  <a href="services.html">Services</a>
+  <ul class="dropdown-menu">
+
+    <!-- MARKETING -->
+    <li class="has-submenu">
+      <a href="#"><i class="fa-solid fa-bullhorn"></i>Marketing</a>
+      <ul class="submenu">
+        <li><a href="services.html#social-media-marketing"><i class="fa-solid fa-hashtag"></i>Social Media Marketing</a></li>
+        <li><a href="services.html#google-meta-ads"><i class="fa-solid fa-chart-line"></i>Google & Meta Ads</a></li>
+        <li><a href="services.html#brand-awareness"><i class="fa-solid fa-eye"></i>Brand Awareness Campaigns</a></li>
+        <li><a href="services.html#seo-online-visibility"><i class="fa-solid fa-magnifying-glass"></i>SEO & Online Visibility</a></li>
+        <li><a href="services.html#content-writing"><i class="fa-solid fa-pen-nib"></i> Content Writing</a></li>
+      </ul>
+    </li>
+
+    <!-- PROMOTE -->
+    <li class="has-submenu">
+      <a href="#"><i class="fa-solid fa-paper-plane"></i>Promote</a>
+      <ul class="submenu">
+        <li><a href="services.html#bulk-sms"><i class="fa-solid fa-message"></i>Bulk SMS</a></li>
+        <li><a href="services.html#rcs-sms"><i class="fa-solid fa-comments"></i>RCS SMS</a></li>
+        <li><a href="services.html#voice-sms"><i class="fa-solid fa-microphone"></i>Voice SMS</a></li>
+        <li><a href="services.html#whatsapp-api"><i class="fa-brands fa-whatsapp"></i>WhatsApp Business API</a></li>
+      </ul>
+    </li>
+
+    <!-- DEVELOPMENT -->
+    <li class="has-submenu">
+      <a href="#"><i class="fa-solid fa-code"></i> Development</a>
+      <ul class="submenu">
+        <li><a href="services.html#website-development"><i class="fa-solid fa-globe"></i> Website Development</a></li>
+        <li><a href="services.html#app-development"><i class="fa-solid fa-mobile-screen"></i>App Development</a></li>
+        <li><a href="services.html#landing-pages"><i class="fa-solid fa-layer-group"></i> Landing Pages</a></li>
+      </ul>
+    </li>
+
+  </ul>
+</li>
+
+
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="aboutus.html">About Us</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="social-icons">
+      <a href="https://www.facebook.com/share/1CNLUSH1xV/"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://www.instagram.com/movictel?igsh=Mjg3cnowdnE3emd3"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.linkedin.com/company/movictel/"><i class="fab fa-linkedin-in"></i></a>
+      <a href="https://x.com/movictel"><i class="fab fa-x-twitter"></i></a>
+    </div>
+
+  </div>
+</header>
+<!-- ... existing code ... -->
+
+  <!-- Full Width Stack Carousel -->
+<!-- Services Stack Carousel -->
+<section class="hero-slider">
+  <div class="slider-container">
+
+    <!-- Slide 1 -->
+    <div class="slide active">
+      <div class="slide-content">
+        <div class="text">
+          <h1>Boost Your Online <span>Presence</span></h1>
+          <p>Grow your business with professional SEO services in India.</p>
+          <a href="#"><button>Get Started</button></a>
+        </div>
+        <div class="image">
+          <img src="images/homeImg.png">
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2 -->
+    <div class="slide">
+      <div class="slide-content">
+        <div class="text">
+          <h1>Grow Your Business <span>Digitally</span></h1>
+          <p>Expert digital marketing services including SEO, PPC, and Social Media Marketing.</p>
+          <a href="#"><button>Get Started</button></a>
+        </div>
+        <div class="image">
+          <img src="images/homeImg.png">
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3 -->
+    <div class="slide">
+      <div class="slide-content">
+        <div class="text">
+          <h1>Web & App <span>Development</span></h1>
+          <p>Responsive websites, landing pages, and scalable applications for your business.</p>
+          <a href="#"><button>Get Started</button></a>
+        </div>
+        <div class="image">
+          <img src="images/homeImg.png">
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Arrows -->
+    <button class="prev">&#10094;</button>
+    <button class="next">&#10095;</button>
+
+    <!-- Dots -->
+    <div class="dots">
+      <span class="dot active"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+
+    <!-- Floating Background Elements -->
+    <div class="floating circle1"></div>
+    <div class="floating circle2"></div>
+    <div class="floating circle3"></div>
+
+  </div>
+</section>
+
+
+
+
+
+
+
+
+  
+
+  
+<!-- Home Slider -->
+<!-- Home Hero Slider -->
+
+  <!-- Hero Slider -->
+  <!-- <div class="slider">
+    
+    <img class="slide active" src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d" alt="Digital Marketing Team">
+  <img class="slide" src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d" alt="Social Media Marketing">
+  <img class="slide" src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d" alt="Creative Strategy">
+  
+   
+    <a class="prev" onclick="changeSlide(-1)">&#10094;</a>
+    <a class="next" onclick="changeSlide(1)">&#10095;</a>
+  
+   
+    <div class="dots">
+      <span class="dot active" onclick="currentSlide(0)"></span>
+      <span class="dot" onclick="currentSlide(1)"></span>
+      <span class="dot" onclick="currentSlide(2)"></span>
+    </div>
+  </div> -->
+
+  <!-- Middle Content -->
+ <section class="who-we-are">
+  <div class="container">
+    <!-- Left Side (Text) -->
+    <div class="text-content">
+      <h2>Who We Are</h2>
+      <p>
+        We are a Digital Marketing & IVR Solutions Agency helping brands grow smarter. From IVR, Bulk SMS, RCS & WhatsApp Messaging to Web & App Development, we deliver powerful tools that connect you with your audience. <br>
+        🚀 Experts in Real Estate Lead Generation — turning campaigns into conversions!
+      </p>
+
+      <!-- Fixed Hover Animation Button -->
+      <a href="aboutus.html"><button class="button">
+        <span class="actual-text">Know More</span>
+        <span class="hover-text">Know More</span>
+      </button></a>
+
+      <!-- Scoped CSS -->
+      <style>
+        .button {
+          position: relative;
+          background: transparent;
+          border: none;
+          padding: 0 ;
+          cursor: pointer;
+          font-family: Arial, sans-serif;
+          font-size: 1.5em;
+          text-transform: uppercase;
+          letter-spacing: 2px;
+          -webkit-text-stroke: 1px #018eec;
+          color: transparent;
+          display: inline-block;
+          overflow: hidden;
+        }
+
+        .actual-text {
+          display: block;
+          color: transparent;
+          -webkit-text-stroke: 1px #018eec;
+        }
+
+        .hover-text {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 0;
+          color: #018eec;
+          overflow: hidden;
+          white-space: nowrap;
+          border-right: 4px solid #018eec;
+          transition: width 0.5s;
+          -webkit-text-stroke: 1px #018eec;
+        }
+
+        .button:hover .hover-text {
+          width: 100%;
+          filter: drop-shadow(0 0 23px #018eec);
+        }
+      </style>
+    </div>
+
+    <!-- Right Side (Rotating Image) -->
+    <div class="image-content">
+      <img src="images/h1-whowe.png" alt="Agency Team">
+    </div>
+  </div>
+</section>
+
+
+  <!-- festival offer slider -->
+  <section class="festival-offers">
+    <h2>🎊 Festival Special Offers</h2>
+    <p class="sub-text">Celebrate with us & enjoy exclusive service discounts!</p>
+  
+    <div class="swiper offerSwiper">
+      <div class="swiper-wrapper">
+  
+        <!-- Slide 1 -->
+        <div class="swiper-slide">
+          <div class="offer-card festival-bg" style="background-image: url('images/19483797.jpg');">
+            <div class="offer-overlay"></div>
+            <div class="offer-content">
+              <h3>✨ Happy Diwali ✨</h3>
+              <p>Light up your business growth with <strong>20% OFF</strong> on IVR Services.</p>
+              <a href="services.html" class="btn">Grab Offer</a>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Slide 2 -->
+        <div class="swiper-slide">
+          <div class="offer-card festival-bg" style="background-image: url('images/19483797.jpg');">
+            <div class="offer-overlay"></div>
+            <div class="offer-content">
+              <h3>✨ Happy Diwali ✨</h3>
+              <p>Light up your business growth with <strong>20% OFF</strong> on IVR Services.</p>
+              <a href="services.html" class="btn">Grab Offer</a>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Slide 3 -->
+        <div class="swiper-slide">
+          <div class="offer-card festival-bg" style="background-image: url('images/19483797.jpg');">
+            <div class="offer-overlay"></div>
+            <div class="offer-content">
+              <h3>✨ Happy Diwali ✨</h3>
+              <p>Light up your business growth with <strong>20% OFF</strong> on IVR Services.</p>
+              <a href="services.html" class="btn">Grab Offer</a>
+            </div>
+          </div>
+        </div>
+  
+      </div>
+  
+      <!-- Navigation -->
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </section>
+  
+  
+  <!-- our service -->
+<section class="services-section">
+
+ 
+
+  <!-- ===== HEADING ===== -->
+  <div class="section-heading">
+    <h2>Our Services</h2>
+    <div class="underline"></div>
+  </div>
+
+  <!-- ===== SERVICES GRID ===== -->
+  <div class="services-grid">
+
+    <!-- MARKETING -->
+    <div class="ser-card sc3">
+      <h3>Marketing</h3>
+      <p>Build visibility, trust, and conversions with strategic marketing.</p>
+      <ul class="sub-services">
+        <li><a href="services.html#social-media-marketing">Social Media Marketing</a></li>
+        <li><a href="services.html#google-meta-ads">Google & Meta Ads</a></li>
+        <li><a href="services.html#brand-awareness">Brand Awareness Campaigns</a></li>
+        <li><a href="services.html#seo-online-visibility">SEO & Online Visibility</a></li>
+        <li><a href="services.html#content-writing"> Content Writing</a></li>
+      </ul>
+    </div>
+
+    <!-- PROMOTE -->
+    <div class="ser-card sc1" >
+      <h3>Promote</h3>
+      <p>Engage customers instantly with powerful messaging solutions.</p>
+      <ul class="sub-services">
+        <li><a href="services.html#bulk-sms">Bulk SMS</a></li>
+        <li><a href="services.html#rcs-sms">RCS SMS</a></li>
+        <li><a href="services.html#voice-sms">Voice SMS</a></li>
+        <li><a href="services.html#whatsapp-api">WhatsApp Business API</a></li>
+      </ul>
+    </div>
+
+    <!-- DEVELOPMENT -->
+    <div class="ser-card sc2" >
+      <h3>Development</h3>
+      <p>Design and develop high-performing digital platforms.</p>
+      <ul class="sub-services">
+        <li><a href="services.html#website-development">Website Development</a></li>
+        <li><a href="services.html#app-development">App Development</a></li>
+        <li><a href="services.html#landing-pages">Landing Pages</a></li>
+      </ul>
+    </div>
+
+  </div>
+  </div>
+
+</section>
+
+   <!-- ivr top service section -->
+ <!-- <section class="ivr-section">
+  <div class="ivr-container">
+
+    //Left Side: IVR Info
+    <div class="ivr-content">
+      <h2>IVR Solutions – <span>Smart Communication for Your Business</span></h2>
+      <p>
+        Movictel provides advanced IVR (Interactive Voice Response) solutions 
+        that help businesses automate calls, improve customer experience, and 
+        boost efficiency. Perfect for startups, enterprises & service-based 
+        industries.
+      </p>
+
+      //Features in Cards
+      <div class="ivr-features">
+        <div class="ivr-card">
+          <i class="fas fa-headset"></i>
+          <h3>24/7 Customer Support</h3>
+          <p>Automated system ensures customers are assisted anytime.</p>
+        </div>
+        <div class="ivr-card">
+          <i class="fas fa-random"></i>
+          <h3>Call Routing</h3>
+          <p>Direct calls to the right department without delays.</p>
+        </div>
+        <div class="ivr-card">
+          <i class="fas fa-chart-line"></i>
+          <h3>Analytics & Reports</h3>
+          <p>Track call performance & customer behavior easily.</p>
+        </div>
+      </div>
+    </div>
+
+    //Right Side: Enquiry Form
+    <div class="ivr-form-box">
+      <h3>Enquire for IVR Solutions</h3>
+      <form class="ivr-form">
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Email Address" required>
+        <input type="text" placeholder="Phone Number" required>
+        <textarea placeholder="Your Requirement" rows="4"></textarea>
+        <button type="submit">Submit Enquiry</button>
+      </form>
+    </div>
+
+  </div>
+</section> -->
+
+<!-- fiture instury -->
+  <section class="case-elegant">
+
+    <div class="case-header">
+      <h2>FEATURED CASE STUDIES</h2>
+      <p class="highlight">Customizable For All Industries</p>
+      <p class="subtext">We Work On These Industries.</p>
+    </div>
+
+    <div class="carousel-container">
+      <button class="nav-arrow left">‹</button>
+      <div class="carousel-track">
+  <div class="case-item" data-index="0">
+    <div class="img"><img src="images/4334329.jpg" alt="Real Estate"></div>
+    <h3>Real Estate</h3>
+    <p>Drive property sales and customer engagement with tailored tools.</p>
+    <a href="javascript:void(0)" class="know-more-btn" data-industry="realestate">Know More</a>
+  </div>
+
+  <div class="case-item" data-index="1">
+    <div class="img"><img src="images/5836.jpg" alt="Education"></div>
+    <h3>Education</h3>
+    <p>Empower institutions with smart communication tools for students.</p>
+    <a href="javascript:void(0)" class="know-more-btn" data-industry="education">Know More</a>
+  </div>
+
+  <div class="case-item" data-index="2">
+    <div class="img"><img src="images/4885941.jpg" alt="Healthcare"></div>
+    <h3>Healthcare</h3>
+    <p>Engage patients with secure and effective communication solutions.</p>
+    <a href="javascript:void(0)" class="know-more-btn" data-industry="healthcare">Know More</a>
+  </div>
+
+  <div class="case-item" data-index="3">
+    <div class="img"><img src="images/car_showroom_04.jpg" alt="Automobile"></div>
+    <h3>Automobile</h3>
+    <p>Accelerate business with customer-focused communication solutions.</p>
+    <a href="javascript:void(0)" class="know-more-btn" data-industry="automobile">Know More</a>
+  </div>
+</div>
+
+      <button class="nav-arrow right">›</button>
+    </div>
+
+    <div class="member-info">
+      <h2 class="member-name">Real Estate Industry</h2>
+      <p class="member-role">Industry Focus</p>
+    </div>
+
+  
+  </section>
+
+
+
+
+<!-- Popup Overlay -->
+<div class="case-popup-overlay" id="casePopup">
+  <div class="case-popup">
+
+    <button class="popup-close">&times;</button>
+
+    <span class="popup-tag" id="popupTag">Industry</span>
+    <h2 id="popupTitle"></h2>
+
+    <p class="popup-intro" id="popupIntro"></p>
+
+    <div class="popup-sections">
+      <div class="popup-box">
+        <h4>Challenges</h4>
+        <p id="popupChallenge"></p>
+      </div>
+
+      <div class="popup-box">
+        <h4>Our Solution</h4>
+        <p id="popupSolution"></p>
+      </div>
+
+      <div class="popup-box highlight">
+        <h4>Key Benefits</h4>
+        <ul id="popupBenefits"></ul>
+      </div>
+    </div>
+
+    <a href="services.html" class="popup-cta">
+      View Services →
+    </a>
+
+  </div>
+</div>
+
+
+
+
+
+<!-- ivr service  -->
+<!-- <section class="about-ivr">
+  <div class="container">
+    <div class="about-content">
+     
+      <div class="about-text">
+        <h1>Hire The Best IVR Service Provider in Lucknow</h1>
+        <h2>Why Movictel is a trusted name for IVR service provider</h2>
+        <p>
+          Movictel offers cutting-edge cloud IVR solutions that simplify 
+          customer interactions, enhance call management, and improve 
+          overall business communication. With 24/7 support and customized 
+          solutions, we ensure your business stays ahead in delivering 
+          excellent customer service.
+        </p>
+        <p>
+          From small businesses to enterprises, our IVR services are 
+          scalable and designed to handle thousands of concurrent calls 
+          seamlessly. This ensures your customers never face delays and 
+          your brand image stays strong.
+        </p>
+        
+      </div>
+
+      
+      <div class="about-image">
+        <img src="images/7712594.jpg" alt="IVR Solutions">
+      </div>
+    </div>
+  </div>
+</section> -->
+
+<!-- About us swction -->
+<section class="about-section">
+  <div class="about-container">
+
+    <!-- LEFT CONTENT -->
+    <div class="about-content">
+      <span class="about-badge">About Us</span>
+
+      <h2>
+        Smart Digital Communication<br>
+        <span>For Growing Businesses</span>
+      </h2>
+
+      <p>
+        We are a leading provider of digital communication and marketing solutions,
+        helping businesses connect with their customers more effectively.
+      </p>
+
+      <p>
+        With expertise in <strong>IVR, SMS, WhatsApp, RCS</strong> and
+        <strong>Digital Marketing</strong>, we deliver innovative,
+        result-driven strategies across industries.
+      </p>
+
+      <a href="about.html" class="about-btn">Discover More</a>
+    </div>
+
+    <!-- RIGHT IMAGE -->
+    <div class="about-visual">
+      <div class="illustration-card">
+        <img src="images/8597911.jpg" alt="Team Illustration">
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- customer section  -->
+
+<section class="client-flow">
+  <h2>Trusted by Leading Companies</h2>
+
+  <div class="flow-wrap">
+    <div class="flow-track">
+
+      <div class="flow-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/ab/Apple-logo.png">
+        <span>Apple</span>
+      </div>
+
+      <div class="flow-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg">
+        <span>Microsoft</span>
+      </div>
+
+      <div class="flow-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Google_2015_logo.svg">
+        <span>Google</span>
+      </div>
+
+      <div class="flow-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg">
+        <span>Netflix</span>
+      </div>
+
+      <div class="flow-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg">
+        <span>IBM</span>
+      </div>
+
+      <!-- duplicate -->
+      <div class="flow-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/ab/Apple-logo.png">
+        <span>Apple</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="faq-section">
+  <div class="container">
+    <h2>Frequently Asked Questions</h2>
+    <h3>Cloud Communication Platform – FAQ’s</h3>
+
+    <div class="faq-container">
+
+      <!-- FAQ 1 -->
+      <div class="faq-item">
+        <button class="faq-question">
+          What cloud-based IVR service would you recommend?
+          <span class="icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            <b>Ans:-</b> When it comes to cloud-based IVR services, one that stands out is Movictel. With its flexible and scalable platform, it offers advanced features like speech recognition and natural language processing. Its user-friendly interface and robust analytics make it an ideal choice for businesses of all sizes.
+          </p>
+        </div>
+      </div>
+
+      <!-- FAQ 2 -->
+      <div class="faq-item">
+        <button class="faq-question">
+          What is IVR full form and IVR for call center?
+          <span class="icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+           <b> Ans:-</b> IVR full form is Interactive Voice Response. It is a technology used in call centers and telephony systems to automate interactions with callers. IVR systems use pre-recorded voice prompts and menus to provide callers with options and gather input through their telephone keypad or voice recognition.
+            In a call center setting, IVR serves as an automated receptionist that helps direct and assist callers..
+          </p>
+        </div>
+      </div>
+
+      <!-- FAQ 3 -->
+      <div class="faq-item">
+        <button class="faq-question">
+          What are the advantages and disadvantages of bulk SMS?
+          <span class="icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+           <b> Ans:- Advantages of Bulk SMS:</b> <br>
+
+            <b>1:- Wide Reach:</b> Bulk SMS allows you to reach a large number of recipients instantly. It is an effective way to communicate with a large audience, whether it's customers, employees, or members of an organization. <br>
+            <b>2:- Cost-Effective:</b> Bulk SMS is generally more cost-effective compared to other marketing and communication channels such as print media or phone calls. It offers a lower cost per message, especially when sending messages in large volumes. <br>
+            <b>3:- High Open Rates:</b> SMS messages typically have high open rates since most people have their mobile phones within close proximity. This makes bulk SMS an effective way to ensure that your messages are seen and read by the recipients.
+          </p> <br>
+          <p>
+           <b>Ans:- Disadvantages of Bulk SMS:</b>  <br>
+
+            <b>1:- Character Limitations:</b> SMS messages are limited to a specific number of characters (usually 160 characters). This can restrict the amount of information you can convey in a single message and may require you to be concise and precise in your communication. <br>
+            <b>2:- No Multimedia Support:</b> SMS messages are text-based and do not support multimedia content such as images, videos, or audio files. If you need to deliver rich media content, bulk SMS may not be suitable. <br>
+            <b>3:- Opt-Out Requests:</b> Sending bulk SMS messages to recipients who have not explicitly consented or opted-in can lead to compliance issues. It is important to have proper consent mechanisms in place and provide recipients with an option to opt-out if they no longer wish to receive messages.
+          </p>
+        </div>
+      </div>
+
+      <!-- FAQ 4 -->
+      <div class="faq-item">
+        <button class="faq-question">
+          What is bulk SMS marketing?
+          <span class="icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>
+            <b>Ans:-</b> Bulk SMS Marketing is a powerful communication tool that allows businesses to send promotional, transactional, or informational text messages to a large number of customers at once. It is widely used for marketing campaigns, customer engagement, reminders, and instant alerts because of its high open rates and instant delivery. <br>
+
+            1. With Bulk SMS, you can: <br>
+            
+            2. Reach thousands of customers in seconds <br>
+            
+            3. Share offers, discounts, and updates instantly <br>
+            
+            4. Ensure 99% delivery rate with measurable reports <br>
+            
+            5. Personalize messages for better engagement <br>
+            
+            👉 In short, Bulk SMS Marketing helps businesses connect with their audience quickly, effectively, and at a very low cost.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- NEW SPLIT TESTIMONIAL REDESIGN -->
+<section class="split-testimonial-wrap">
+  <!-- Left Dark Section -->
+  <div class="split-testi-left">
+    <div class="testi-left-content">
+      <hr class="testi-brand-line">
+      <h2>MOVICTEL THROUGH CLIENT'S EYES</h2>
+      <p>Authentic stories from businesses who chose Movictel and scaled faster. See what they have to say about our innovative services.</p>
+    </div>
+  </div>
+  
+  <!-- Right Slider Section -->
+  <div class="split-testi-right">
+    
+    <!-- Custom Navigation overlapping the boundaries -->
+    <div class="custom-testi-prev"><i class="fas fa-chevron-left"></i></div>
+    <div class="custom-testi-next"><i class="fas fa-chevron-right"></i></div>
+
+    <div class="swiper splitTestimonialSwiper">
+      <div class="swiper-wrapper">
+
+        <div class="swiper-slide">
+          <div class="split-testi-card">
+            <p class="testi-text">
+              The project and the team associated with it are incredibly helpful. 
+              Movictel's IVR and bulk SMS transformed our customer communication. 
+              Engagement and satisfaction increased instantly. Hope they continue this association in future.
+            </p>
+            <div class="testi-author-info">
+              <h4 class="testi-author-name">Rahul Sharma</h4>
+              <span class="testi-author-role">E-commerce Marketing Head</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="swiper-slide">
+          <div class="split-testi-card">
+            <p class="testi-text">
+              It is one of the most wonderful experiences working with Movictel. 
+              Their WhatsApp automation helped us build direct customer relationships. 
+              Reliable, fast, and extremely effective. Great team to work with.
+            </p>
+            <div class="testi-author-info">
+              <h4 class="testi-author-name">Pooja Verma</h4>
+              <span class="testi-author-role">CEO, Healthcare Startup</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="swiper-slide">
+          <div class="split-testi-card">
+            <p class="testi-text">
+              Their cloud communication platform scales effortlessly. Support quality is world-class. 
+              After switching to Movictel, we saw an incredible boost in operational efficiency. 
+              Will definitely be using them again for our next project.
+            </p>
+            <div class="testi-author-info">
+              <h4 class="testi-author-name">Arjun Mehta</h4>
+              <span class="testi-author-role">Operations Manager</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+  <!-- Footer -->
+<footer class="site-footer">
+
+  <!-- Toggle Expand Button placed on top of the footer content -->
+  <div style="text-align: center; padding-top: 30px; padding-bottom: 10px;">
+    <button id="footerToggleBtn" class="footer-toggle-btn">
+      <span>Show Footer</span>
+      <i class="fas fa-chevron-down"></i>
+    </button>
+  </div>
+
+  
+  <div class="footer-collapsible-wrapper" id="footerCollapsible">
+    <div class="footer-collapsible-inner">
+      <div class="footer-container">
+
+        <!-- Column 1: Logo & About -->
+        <div class="footer-col">
+          <div class="footer-logo">
+            <img src="images/logo/Movictel 12 sept 25-01-01.png" alt="Movictel Logo">
+          </div>
+          <p class="footer-about">
+            Movictel is a growth-driven digital solutions company offering
+            Marketing, Messaging & Development services to help businesses
+            connect, engage & scale faster.
+          </p>
+          <div class="footer-social">
+            <a href="https://www.facebook.com/share/1CNLUSH1xV/"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/movictel?igsh=Mjg3cnowdnE3emd3"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.linkedin.com/company/movictel/"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://x.com/movictel"><i class="fab fa-x-twitter"></i></a>
+          </div>
+        </div>
+
+        <!-- Column 2: Quick Links -->
+        <div class="footer-col">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="aboutus.html">About Us</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Services -->
+        <div class="footer-col services-col">
+          <h3>Our Services</h3>
+
+          <div class="services-grid">
+
+            <div class="footer-service-group">
+              <span class="service-heading">Marketing</span>
+              <ul>
+                <li><a href="services.html#social-media-marketing">Social Media Marketing</a></li>
+                <li><a href="services.html#google-meta-ads">Google & Meta Ads</a></li>
+                <li><a href="services.html#brand-awareness">Brand Awareness Campaigns</a></li>
+                <li><a href="services.html#seo-online-visibility">SEO & Online Visibility</a></li>
+                <li><a href="services.html#content-writing"> Content Writing</a></li>
+              </ul>
+            </div>
+
+            <div class="footer-service-group">
+              <span class="service-heading">Promote</span>
+              <ul>
+                <li><a href="services.html#bulk-sms">Bulk SMS</a></li>
+                <li><a href="services.html#rcs-sms">RCS SMS</a></li>
+                <li><a href="services.html#voice-sms">Voice SMS</a></li>
+                <li><a href="services.html#whatsapp-api">WhatsApp Business API</a></li>
+              </ul>
+            </div>
+
+            <div class="footer-service-group">
+              <span class="service-heading">Development</span>
+              <ul>
+                <li><a href="services.html#website-development">Website Development</a></li>
+                <li><a href="services.html#app-development">App Development</a></li>
+                <li><a href="services.html#landing-pages">Landing Pages</a></li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+
+      </div> 
+    </div>
+  </div> 
+
+  <!-- Bottom Bar -->
+  <div class="footer-bottom">
+    <p>© 2025 Movictel. All Rights Reserved.</p>
+  </div>
+</footer>
+
+<!-- Admin Login Floating Button -->
+<a href="admin_panel.html" id="adminLoginBtn" title="CMS Admin Login"><i class="fas fa-lock"></i></a>
+
+<!-- Back to Top Button -->
+<button id="backToTop" title="Go to top"><i class="fas fa-arrow-up"></i></button>
+
+ <!-- INLINE SCRIPTS COMPLETELY ISOLATED -->
+<script>
+(function() {
+  // ==========================================
+  // FAIL-SAFE: HIDE PRELOADER TO PREVENT STUCK SCREEN
+  // ==========================================
+  const hidePreloader = () => {
+    const preloader = document.getElementById("preloader");
+    if (preloader) preloader.style.display = "none";
+  };
+  
+  // Try to hide exactly when the page completes loading
+  window.addEventListener('load', hidePreloader);
+  
+  // Absolute fallback: force hide it after 3 seconds in case of broken image links etc.
+  setTimeout(hidePreloader, 3000);
+
+  // ==========================================
+  // MOBILE MENU
+  // ==========================================
+  const menuToggle = document.getElementById("menuToggle");
+  const navMenu = document.querySelector("header nav");
+
+  if (menuToggle && navMenu) {
+    menuToggle.addEventListener("click", () => {
+      navMenu.classList.toggle("active");
+      menuToggle.classList.toggle("active");
+    });
+  }
+
+  // ==========================================
+  // TILT HOVER EFFECT
+  // ==========================================
+  document.querySelectorAll(".tilt").forEach(card => {
+    card.addEventListener("mousemove", e => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const rotateX = ((y / rect.height) - 0.5) * 10;
+      const rotateY = ((x / rect.width) - 0.5) * -10;
+
+      card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    });
+
+    card.addEventListener("mouseleave", () => {
+      card.style.transform = "rotateX(0) rotateY(0)";
+    });
+  });
+
+  // ==========================================
+  // SERVICES SLIDER LOGIC
+  // ==========================================
+  const nextBtn = document.querySelector(".services-next");
+  const prevBtn = document.querySelector(".services-prev");
+  const slideContainer = document.querySelector(".services-slide");
+
+  if (nextBtn && prevBtn && slideContainer) {
+    nextBtn.onclick = () => slideContainer.appendChild(slideContainer.firstElementChild);
+    prevBtn.onclick = () => slideContainer.prepend(slideContainer.lastElementChild);
+  }
+
+  // ==========================================
+  // HEADER HIDE & SCROLL TO TOP LOGIC
+  // ==========================================
+  let lastScrollTop = 0;
+  const header = document.getElementById("main-header");
+  const backToTopBtn = document.getElementById("backToTop");
+
+  window.addEventListener("scroll", function() {
+    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+    // Hide/Show Header
+    if (header) {
+      if (scrollTop > lastScrollTop && scrollTop > 100) {
+        header.style.transform = "translateY(-100%)";
+      } else {
+        header.style.transform = "translateY(0)";
+      }
+    }
+    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+
+    // Show/Hide BackToTop Button
+    if (backToTopBtn) {
+      if (scrollTop > 300) {
+        backToTopBtn.classList.add("show");
+      } else {
+        backToTopBtn.classList.remove("show");
+      }
+    }
+  });
+
+  if (backToTopBtn) {
+    backToTopBtn.addEventListener("click", () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    });
+  }
+
+  // ==========================================
+  // FOOTER EXPAND/COLLAPSE LOGIC
+  // ==========================================
+  const footerToggleBtn = document.getElementById("footerToggleBtn");
+  const footerCollapsible = document.getElementById("footerCollapsible");
+
+  if (footerToggleBtn && footerCollapsible) {
+    footerToggleBtn.addEventListener("click", () => {
+      footerToggleBtn.classList.toggle("open");
+      footerCollapsible.classList.toggle("open");
+      
+      const spanText = footerToggleBtn.querySelector("span");
+      if(spanText) {
+        if (footerToggleBtn.classList.contains("open")) {
+          spanText.textContent = "Hide Footer";
+        } else {
+          spanText.textContent = "Show Footer";
+        }
+      }
+    });
+  }
+  
+  // ==========================================
+  // CLOSE POPUP HANDLER
+  // ==========================================
+  const popup = document.getElementById("casePopup");
+  if (popup) {
+    popup.addEventListener("click", e => {
+      if (e.target === popup || e.target.classList.contains("popup-close")) {
+        popup.classList.remove("active");
+      }
+    });
+  }
+})();
+</script>
+
+<!-- CMS DATA BINDING SCRIPT -->
+<script>
+  (function() {
+    const storedData = localStorage.getItem('movictelCMSData');
+    if (!storedData) return; // Ignore if no CMS data exists
+    
+    try {
+      const data = JSON.parse(storedData);
+      
+      // 1. VISIBILITY CONTROLS
+      const toggleVis = (selector, isVisible) => {
+        const els = document.querySelectorAll(selector);
+        els.forEach(el => el.style.display = isVisible ? '' : 'none');
+      };
+      toggleVis('.hero-slider', data.sections.hero);
+      toggleVis('.who-we-are', data.sections.about);
+      toggleVis('.festival-offers', data.sections.offers);
+      toggleVis('.services-section', data.sections.services);
+      toggleVis('.case-elegant', data.sections.cases);
+      toggleVis('.about-section', data.sections.aboutUs);
+      toggleVis('.client-flow', data.sections.clients);
+      toggleVis('.faq-section', data.sections.faq);
+      toggleVis('.split-testimonial-wrap', data.sections.testimonials);
+
+      // 2. HERO SLIDER
+      const sliderCont = document.querySelector('.hero-slider .slider-container');
+      if (sliderCont && data.hero && Array.isArray(data.hero)) {
+        // Clean out old slides 
+        sliderCont.querySelectorAll('.slide').forEach(e => e.remove());
+        const dotsContainer = sliderCont.querySelector('.dots');
+        if (dotsContainer) dotsContainer.innerHTML = '';
+        const prevBtn = sliderCont.querySelector('.prev');
+        
+        data.hero.forEach((slide, i) => {
+           const div = document.createElement('div');
+           div.className = `slide ${i === 0 ? 'active' : ''}`;
+           div.innerHTML = `
+              <div class="slide-content">
+                <div class="text">
+                  <h1>${slide.title}</h1>
+                  <p>${slide.desc}</p>
+                  <a href="#"><button>Get Started</button></a>
+                </div>
+                <div class="image"><img src="${slide.image}"></div>
+              </div>`;
+           sliderCont.insertBefore(div, prevBtn);
+           
+           if (dotsContainer) {
+               const dot = document.createElement('span');
+               dot.className = `dot ${i === 0 ? 'active' : ''}`;
+               dotsContainer.appendChild(dot);
+           }
+        });
+      }
+
+      // 3. ABOUT SECTION (Who We Are)
+      const aboutEl = document.querySelector('.who-we-are');
+      if (aboutEl && data.about) {
+        aboutEl.querySelector('.text-content h2').innerHTML = data.about.title;
+        aboutEl.querySelector('.text-content p').innerHTML = data.about.text;
+        aboutEl.querySelector('.image-content img').src = data.about.image;
+      }
+
+      // 4. FESTIVAL OFFERS
+      const offersSec = document.querySelector('.festival-offers');
+      if (offersSec && data.offers) {
+        const h2 = offersSec.querySelector('h2');
+        if(h2) h2.innerHTML = data.offersHeading || '🎊 Festival Special Offers';
+        const subtext = offersSec.querySelector('.sub-text');
+        if(subtext) subtext.innerHTML = data.offersSubtext || '';
+        
+        const wrapper = offersSec.querySelector('.swiper-wrapper');
+        if(wrapper) {
+            wrapper.innerHTML = '';
+            data.offers.forEach(o => {
+               const slide = document.createElement('div');
+               slide.className = 'swiper-slide';
+               slide.innerHTML = `
+                <div class="offer-card festival-bg" style="background-image: url('${o.bgImage}');">
+                  <div class="offer-overlay"></div>
+                  <div class="offer-content">
+                    <h3>${o.title}</h3>
+                    <p>${o.text}</p>
+                    <a href="${o.link}" class="btn">Grab Offer</a>
+                  </div>
+                </div>`;
+               wrapper.appendChild(slide);
+            });
+        }
+      }
+
+      // 5. UPDATE HEADER AND FOOTER SERVICE LINKS DYNAMICALLY
+      if (data.detailedServices && Array.isArray(data.detailedServices)) {
+          // Headers
+          const headMarketing = document.querySelector("nav .dropdown-menu > li:nth-child(1) .submenu");
+          const headPromote = document.querySelector("nav .dropdown-menu > li:nth-child(2) .submenu");
+          const headDev = document.querySelector("nav .dropdown-menu > li:nth-child(3) .submenu");
+          if(headMarketing) headMarketing.innerHTML = '';
+          if(headPromote) headPromote.innerHTML = '';
+          if(headDev) headDev.innerHTML = '';
+
+          // Footers
+          const footMarketing = document.querySelector(".footer-service-group:nth-child(1) ul");
+          const footPromote = document.querySelector(".footer-service-group:nth-child(2) ul");
+          const footDev = document.querySelector(".footer-service-group:nth-child(3) ul");
+          if(footMarketing) footMarketing.innerHTML = '';
+          if(footPromote) footPromote.innerHTML = '';
+          if(footDev) footDev.innerHTML = '';
+
+          data.detailedServices.forEach(s => {
+              // Target Headers
+              let targetHead = s.category === 'Marketing' ? headMarketing : (s.category === 'Promote' ? headPromote : headDev);
+              if(targetHead) {
+                  targetHead.innerHTML += `<li><a href="services.html#${s.id}"><i class="${s.navIcon}"></i>${s.title}</a></li>`;
+              }
+              
+              // Target Footers
+              let targetFoot = s.category === 'Marketing' ? footMarketing : (s.category === 'Promote' ? footPromote : footDev);
+              if(targetFoot) {
+                  targetFoot.innerHTML += `<li><a href="services.html#${s.id}">${s.title}</a></li>`;
+              }
+          });
+      }
+
+      // 6. MAIN SERVICES SECTION ON HOME PAGE
+      const srvSec = document.querySelector('.services-section');
+      if (srvSec && data.services) {
+        const h2 = srvSec.querySelector('.section-heading h2');
+        if(h2) h2.innerHTML = data.servicesHeading || 'Our Services';
+        const grid = srvSec.querySelector('.services-grid');
+        grid.innerHTML = ''; 
+        
+        const classes = ['sc3', 'sc1', 'sc2'];
+        data.services.forEach((s, i) => {
+           const c = classes[i % classes.length];
+           
+           // Build dynamic list of sub-services from detailedServices
+           let subServicesHtml = '';
+           if (data.detailedServices) {
+               const catServices = data.detailedServices.filter(ds => ds.category === s.title);
+               catServices.forEach(ds => {
+                   subServicesHtml += `<li><a href="services.html#${ds.id}">${ds.title}</a></li>`;
+               });
+           } else {
+               subServicesHtml += `<li><a href="${s.link}">Learn More</a></li>`;
+           }
+           
+           const div = document.createElement('div');
+           div.className = `ser-card ${c}`;
+           div.innerHTML = `
+              <h3>${s.title}</h3>
+              <p>${s.desc}</p>
+              <ul class="sub-services">
+                  ${subServicesHtml}
+              </ul>
+           `;
+           grid.appendChild(div);
+        });
+      }
+
+      // 7. CASE STUDIES
+      const caseSec = document.querySelector('.case-elegant');
+      if (caseSec && data.cases) {
+        caseSec.querySelector('.case-header h2').innerHTML = data.casesHeading || 'FEATURED CASE STUDIES';
+        caseSec.querySelector('.case-header .highlight').innerHTML = data.casesHighlight || 'Customizable For All Industries';
+        caseSec.querySelector('.case-header .subtext').innerHTML = data.casesSubtext || 'We Work On These Industries.';
+        
+        const track = caseSec.querySelector('.carousel-track');
+        if (track) {
+           track.innerHTML = '';
+           data.cases.forEach((c, i) => {
+              const div = document.createElement('div');
+              div.className = 'case-item';
+              div.dataset.index = i;
+              div.innerHTML = `
+                <div class="img"><img src="${c.image}" alt="${c.title}"></div>
+                <h3>${c.title}</h3>
+                <p>${c.cardDesc}</p>
+                <a href="javascript:void(0)" class="know-more-btn cms-case-btn" data-index="${i}">Know More</a>
+              `;
+              track.appendChild(div);
+           });
+           
+           // Dynamic Popup Binding
+           track.querySelectorAll('.cms-case-btn').forEach(btn => {
+              btn.addEventListener('click', (e) => {
+                 const idx = e.target.getAttribute('data-index');
+                 const d = data.cases[idx];
+                 if (d) {
+                   const tag = document.getElementById("popupTag");
+                   const title = document.getElementById("popupTitle");
+                   const intro = document.getElementById("popupIntro");
+                   const challenge = document.getElementById("popupChallenge");
+                   const solution = document.getElementById("popupSolution");
+                   const benefits = document.getElementById("popupBenefits");
+                   const popup = document.getElementById("casePopup");
+
+                   if(tag) tag.innerText = d.tag;
+                   if(title) title.innerText = d.title;
+                   if(intro) intro.innerText = d.popupIntro;
+                   if(challenge) challenge.innerText = d.challenge;
+                   if(solution) solution.innerText = d.solution;
+                   
+                   if(benefits) {
+                     benefits.innerHTML = "";
+                     if(d.benefits) {
+                        d.benefits.split('\n').forEach(b => {
+                           if(b.trim()) benefits.innerHTML += `<li>${b}</li>`;
+                        });
+                     }
+                   }
+                   if(popup) popup.classList.add("active");
+                 }
+              });
+           });
+        }
+      }
+
+      // 8. HOME ABOUT US (Lower Section)
+      const homeAboutSec = document.querySelector('.about-section');
+      if(homeAboutSec && data.homeAbout) {
+         const badge = homeAboutSec.querySelector('.about-badge');
+         if(badge) badge.innerHTML = data.homeAbout.badge;
+         
+         const title = homeAboutSec.querySelector('h2');
+         if(title) title.innerHTML = data.homeAbout.title;
+         
+         const ps = homeAboutSec.querySelectorAll('p');
+         if(ps[0]) ps[0].innerHTML = data.homeAbout.p1;
+         if(ps[1]) ps[1].innerHTML = data.homeAbout.p2;
+         
+         const btn = homeAboutSec.querySelector('.about-btn');
+         if(btn) { btn.innerHTML = data.homeAbout.btnText; btn.href = data.homeAbout.btnLink; }
+         
+         const img = homeAboutSec.querySelector('.illustration-card img');
+         if(img) img.src = data.homeAbout.image;
+      }
+
+      // 9. CLIENTS STRIP
+      const clientSec = document.querySelector('.client-flow');
+      if(clientSec && data.clients) {
+          const h2 = clientSec.querySelector('h2');
+          if(h2) h2.innerHTML = data.clientsHeading || 'Trusted by Leading Companies';
+          
+          const track = clientSec.querySelector('.flow-track');
+          if(track) {
+              track.innerHTML = '';
+              const appendClients = () => {
+                 data.clients.forEach(c => {
+                    const div = document.createElement('div');
+                    div.className = 'flow-card';
+                    div.innerHTML = `<img src="${c.image}"><span>${c.name}</span>`;
+                    track.appendChild(div);
+                 });
+              };
+              appendClients();
+              appendClients(); // Duplicate for infinite scroll effect
+          }
+      }
+
+      // 10. FAQS
+      const faqSec = document.querySelector('.faq-section');
+      if (faqSec && data.faqs) {
+        faqSec.querySelector('h2').innerHTML = data.faqsHeading || 'Frequently Asked Questions';
+        faqSec.querySelector('h3').innerHTML = data.faqsSubHeading || '';
+        const faqCont = faqSec.querySelector('.faq-container');
+        const existingFaqs = Array.from(faqCont.querySelectorAll('.faq-item'));
+        faqCont.innerHTML = '';
+        
+        data.faqs.forEach((f, i) => {
+           if (existingFaqs[i]) {
+              const btn = existingFaqs[i].querySelector('.faq-question');
+              btn.innerHTML = `${f.q} <span class="icon">+</span>`;
+              existingFaqs[i].querySelector('.faq-answer p').innerHTML = f.a;
+              faqCont.appendChild(existingFaqs[i]);
+           } else {
+              const div = document.createElement('div');
+              div.className = 'faq-item';
+              div.innerHTML = `<button class="faq-question">${f.q} <span class="icon">+</span></button><div class="faq-answer"><p>${f.a}</p></div>`;
+              faqCont.appendChild(div);
+           }
+        });
+      }
+
+      // 11. TESTIMONIALS
+      const testiSec = document.querySelector('.split-testimonial-wrap');
+      if (testiSec && data.testimonials) {
+        testiSec.querySelector('.testi-left-content h2').innerHTML = data.testimonialsHeading || '';
+        testiSec.querySelector('.testi-left-content p').innerHTML = data.testimonialsText || '';
+        
+        const swiperWrap = testiSec.querySelector('.splitTestimonialSwiper .swiper-wrapper');
+        if (swiperWrap) {
+           const existingSlides = Array.from(swiperWrap.querySelectorAll('.swiper-slide'));
+           swiperWrap.innerHTML = '';
+           
+           data.testimonials.forEach((t, i) => {
+             if(existingSlides[i]) {
+                existingSlides[i].querySelector('.testi-text').innerHTML = t.quote;
+                existingSlides[i].querySelector('.testi-author-name').innerHTML = t.name;
+                existingSlides[i].querySelector('.testi-author-role').innerHTML = t.role;
+                swiperWrap.appendChild(existingSlides[i]);
+             } else {
+                const div = document.createElement('div');
+                div.className = 'swiper-slide';
+                div.innerHTML = `
+                  <div class="split-testi-card">
+                    <p class="testi-text">${t.quote}</p>
+                    <div class="testi-author-info">
+                      <h4 class="testi-author-name">${t.name}</h4>
+                      <span class="testi-author-role">${t.role}</span>
+                    </div>
+                  </div>
+                `;
+                swiperWrap.appendChild(div);
+             }
+           });
+        }
+      }
+      
+    } catch (e) {
+      console.error("Error loading CMS data:", e);
+    }
+  })();
+  </script>
+
+</body>
+<!-- Swiper JS -->
+
+<!-- GSAP -->
+<!-- GSAP (FIRST) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<!-- New Split Testimonial Swiper Initialization -->
+<script>
+  if(document.querySelector('.splitTestimonialSwiper')) {
+    new Swiper('.splitTestimonialSwiper', {
+      slidesPerView: 1,
+      spaceBetween: 20,
+      navigation: {
+        nextEl: '.custom-testi-next',
+        prevEl: '.custom-testi-prev',
+      },
+      breakpoints: {
+        768: {
+          slidesPerView: 2,
+          spaceBetween: 30,
+        }
+      }
+    });
+  }
+</script>
+
+<script src="js/script.js"></script>
+<!-- Your animation file (AFTER GSAP) -->
+<script src="js/hoperise-motion.js"></script>
+
+</html>
