@@ -369,25 +369,17 @@
    <div class="contact-form">
   <h2>Send Us a Message</h2>
 
-  <form action="mailto:info.movictel@gmail.com" method="POST" enctype="text/plain" >
-
-        <!-- Disable Captcha (optional) -->
-    <input type="hidden" name="_captcha" value="false">
-
-    <!-- Optional: Redirect after submit -->
-    <input type="hidden" name="_next" value="thankyou.html">
-
-    <input type="text" name="Name" placeholder="Your Name" required>
-
-    <input type="email" name="Email" placeholder="Your Email" required>
-
-    <input type="text" name="Subject" placeholder="Subject">
-
-    <textarea name="Message" placeholder="Your Message" required></textarea>
-
-    <button type="submit">Send Message</button>
-
-  </form>
+  <form class="contact-form-fb">
+  <input type="text" name="Name" placeholder="Your Name" required>
+  <input type="email" name="Email" placeholder="Your Email" required>
+  
+  <!-- Added Phone Number Field -->
+  <input type="tel" name="Phone" placeholder="Your Phone Number (10 Digits)" required pattern="\d{10}" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+  
+  <input type="text" name="Subject" placeholder="Subject">
+  <textarea name="Message" placeholder="Your Message" required></textarea>
+  <button type="submit">Send Message</button>
+</form>
 </div>
 
 
@@ -612,7 +604,47 @@
   }
 
   </script>
-  
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+
+  const app = initializeApp({
+      apiKey: "AIzaSyCmMeoeZFsUeRKg2B6GM1riE1DpkmCHllw",
+      authDomain: "movictel.firebaseapp.com",
+      projectId: "movictel"
+  });
+  const db = getFirestore(app);
+
+  const form = document.querySelector('.contact-form-fb');
+  if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = form.querySelector('button');
+        const ogText = btn.innerHTML;
+        btn.innerHTML = 'Sending...';
+        btn.disabled = true;
+
+        try {
+          await addDoc(collection(db, 'contact_leads'), { 
+            name: form.querySelector('input[name="Name"]').value,
+            email: form.querySelector('input[name="Email"]').value,
+            phone: form.querySelector('input[name="Phone"]').value,
+            subject: form.querySelector('input[name="Subject"]').value || 'N/A',
+            message: form.querySelector('textarea[name="Message"]').value,
+            timestamp: Date.now()
+          });
+          alert('Contact message sent successfully!');
+          form.reset();
+        } catch (error) {
+          console.error("Firebase Error:", error);
+          alert('Error sending message. Check console.');
+        } finally {
+          btn.innerHTML = ogText;
+          btn.disabled = false;
+        }
+      });
+  }
+</script>
 
 </body>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
