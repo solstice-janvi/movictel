@@ -1637,8 +1637,75 @@
       console.error("Error loading CMS data:", e);
     }
   })();
+  
   </script>
+  <!-- Swiper Initialization (FIXED AUTO-SCROLL) -->
+<script>
+  // Wait for the DOM to load before triggering Swipers
+  window.addEventListener('DOMContentLoaded', () => {
+      
+      // 1. Testimonial Swiper
+      if(document.querySelector('.splitTestimonialSwiper')) {
+        new Swiper('.splitTestimonialSwiper', {
+          slidesPerView: 1,
+          spaceBetween: 20,
+          loop: true,
+          observer: true, // Forces Swiper to watch for dynamic CMS updates
+          observeParents: true,
+          autoplay: {
+            delay: 3000, // 3 seconds delay
+            disableOnInteraction: false, // Keeps playing after user clicks arrows
+          },
+          navigation: {
+            nextEl: '.custom-testi-next',
+            prevEl: '.custom-testi-prev',
+          },
+          breakpoints: {
+            768: {
+              slidesPerView: 2,
+              spaceBetween: 30,
+            }
+          }
+        });
+      }
 
+      // 2. Festival Offers Swiper
+      if(document.querySelector('.offerSwiper')) {
+        new Swiper('.offerSwiper', {
+          slidesPerView: 1,
+          spaceBetween: 20,
+          loop: true,
+          observer: true, // Forces Swiper to watch for dynamic CMS updates
+          observeParents: true,
+          autoplay: {
+            delay: 2500, // 2.5 seconds delay
+            disableOnInteraction: false,
+          },
+          pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+          breakpoints: {
+            768: { slidesPerView: 2 },
+            1024: { slidesPerView: 3 }
+          }
+        });
+      }
+  });
+</script>
+<script>
+  // Ensure popup opens instantly regardless of CMS load times
+  document.body.addEventListener('click', function(e) {
+    if (e.target.classList.contains('know-more-btn') || e.target.classList.contains('cms-case-btn')) {
+       const popup = document.getElementById("casePopup");
+       if(popup) popup.classList.add("active");
+    }
+  });
+</script>
 </body>
 <!-- Swiper JS -->
 
