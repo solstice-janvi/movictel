@@ -16,9 +16,16 @@
           fontFamily: { sans: ['Inter', 'sans-serif'] },
           colors: {
             gray: {
-              50: '#fafafa', 100: '#f4f4f5', 200: '#e4e4e7', 300: '#d4d4d8',
-              400: '#a1a1aa', 500: '#71717a', 600: '#52525b', 700: '#3f3f46',
-              800: '#27272a', 900: '#18181b',
+              50: '#fafafa',
+              100: '#f4f4f5',
+              200: '#e4e4e7',
+              300: '#d4d4d8',
+              400: '#a1a1aa',
+              500: '#71717a',
+              600: '#52525b',
+              700: '#3f3f46',
+              800: '#27272a',
+              900: '#18181b',
             }
           },
           animation: {
@@ -41,27 +48,59 @@
   </script>
 
   <style>
-    body { background-color: #fafafa; -webkit-font-smoothing: antialiased; }
+    body {
+      background-color: #fafafa;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Custom Form Elements */
     .input-modern { 
-      width: 100%; padding: 0.6rem 0.8rem; background-color: #ffffff; 
-      border: 1px solid #e4e4e7; border-radius: 0.5rem; outline: none; 
-      transition: all 0.2s ease; color: #18181b; font-size: 0.875rem;
+      width: 100%; 
+      padding: 0.6rem 0.8rem; 
+      background-color: #ffffff; 
+      border: 1px solid #e4e4e7; 
+      border-radius: 0.5rem; 
+      outline: none; 
+      transition: all 0.2s ease; 
+      color: #18181b; 
+      font-size: 0.875rem;
       box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.02);
     }
-    .input-modern:focus { border-color: #18181b; box-shadow: 0 0 0 2px rgba(24, 24, 27, 0.1); }
-    .label-modern { display: block; font-size: 0.75rem; font-weight: 500; color: #71717a; margin-bottom: 0.3rem; }
+    .input-modern:focus { 
+      border-color: #18181b; 
+      box-shadow: 0 0 0 2px rgba(24, 24, 27, 0.1); 
+    }
+    
+    .label-modern { 
+      display: block; 
+      font-size: 0.75rem; 
+      font-weight: 500; 
+      color: #71717a; 
+      margin-bottom: 0.3rem;
+    }
+
+    /* Tabs Logic */
     .tab-content { display: none; }
     .tab-content.active { display: block; animation: fadeInUp 0.4s ease-out forwards; }
+
+    /* Custom Scrollbar */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: #d4d4d8; border-radius: 10px; }
     ::-webkit-scrollbar-thumb:hover { background: #a1a1aa; }
-    .toggle-checkbox:checked { right: 0; border-color: #18181b; }
-    .toggle-checkbox:checked + .toggle-label { background-color: #18181b; }
+
+    /* Toggle Switch Styles */
+    .toggle-checkbox:checked {
+      right: 0;
+      border-color: #18181b;
+    }
+    .toggle-checkbox:checked + .toggle-label {
+      background-color: #18181b;
+    }
   </style>
 
+  <!-- Image Upload Handling Script (Fixed querySelector Error) -->
   <script>
-    // Handles image upload, visual loading state, and safely binds to data
     window.handleImageUpload = function(inputElement) {
         const file = inputElement.files[0];
         if (!file) return;
@@ -69,13 +108,16 @@
         const label = inputElement.parentElement;
         const originalHTML = label.innerHTML;
         
-        // Safely find the text input using standard DOM traversal
-        let textInput = inputElement.parentElement.previousElementSibling;
-        if (!textInput || textInput.tagName !== 'INPUT') {
-            const container = inputElement.closest('div.flex') || inputElement.closest('div');
-            textInput = container ? container.querySelector('input[type="text"]') : null;
+        // BULLETPROOF TEXT INPUT FINDER
+        const container = inputElement.closest('div');
+        const textInput = container ? container.querySelector('input[type="text"]') : null;
+
+        if (!textInput) {
+            alert("System Error: Could not locate the input box to paste the image data.");
+            return;
         }
         
+        // Show loading state
         label.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
         label.classList.add('opacity-50', 'pointer-events-none');
         
@@ -85,31 +127,37 @@
             img.onload = function() {
                 try {
                     const canvas = document.createElement('canvas');
-                    const MAX_WIDTH = 1000; const MAX_HEIGHT = 1000;
-                    let width = img.width; let height = img.height;
+                    const MAX_SIZE = 800; // Cap width/height to prevent LocalStorage from crashing
+                    let width = img.width;
+                    let height = img.height;
 
-                    if (width > height) { if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; } } 
-                    else { if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; } }
+                    if (width > height && width > MAX_SIZE) { height *= MAX_SIZE / width; width = MAX_SIZE; }
+                    else if (height > MAX_SIZE) { width *= MAX_SIZE / height; height = MAX_SIZE; }
                     
-                    canvas.width = width; canvas.height = height;
+                    canvas.width = width;
+                    canvas.height = height;
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, width, height);
                     
-                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.8);
+                    // Compress to JPEG to keep data size small
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.6);
                     
-                    if (textInput) {
-                        textInput.value = compressedBase64;
-                        textInput.dispatchEvent(new Event('input', { bubbles: true }));
-                        if (textInput.hasAttribute('oninput')) {
-                            const fn = new Function('event', textInput.getAttribute('oninput'));
-                            fn.call(textInput, { target: textInput });
-                        }
+                    textInput.value = compressedBase64;
+                    
+                    // Force data-binding update
+                    textInput.dispatchEvent(new Event('input', { bubbles: true }));
+                    if (textInput.hasAttribute('oninput')) {
+                        const fn = new Function('event', textInput.getAttribute('oninput'));
+                        fn.call(textInput, { target: textInput });
                     }
                 } catch(err) {
                     console.error("Compression error:", err);
+                    alert("Failed to process image.");
                 } finally {
+                    // Restore button UI
                     label.innerHTML = originalHTML;
                     label.classList.remove('opacity-50', 'pointer-events-none');
+                    inputElement.value = ''; // Reset input
                 }
             };
             img.src = e.target.result;
@@ -118,10 +166,10 @@
     }
   </script>
 </head>
-<body class="h-screen w-full text-gray-900 overflow-hidden text-base bg-gray-50">
+<body class="h-screen w-full text-gray-900 overflow-hidden text-base bg-gray-50 flex flex-col md:flex-row">
 
   <!-- LOGIN OVERLAY -->
-  <div id="login-overlay" class="fixed inset-0 bg-gray-50 z-50 flex items-center justify-center transition-opacity duration-300">
+  <div id="login-overlay" class="fixed inset-0 bg-gray-50 z-[100] flex items-center justify-center transition-opacity duration-300">
       <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-200 max-w-sm w-full mx-4">
           <div class="text-center mb-8">
               <h1 class="text-2xl font-bold tracking-tight text-black flex items-center justify-center gap-2">
@@ -130,85 +178,147 @@
               <p class="text-sm text-gray-500 mt-2">Secure access restricted to authorized personnel</p>
           </div>
           <form id="login-form" class="space-y-5">
-              <div><label class="label-modern">Email Address</label><input type="email" id="admin-email" class="input-modern" placeholder="admin@movictel.com" required></div>
-              <div><label class="label-modern">Password</label><input type="password" id="admin-password" class="input-modern" placeholder="••••••••" required></div>
+              <div>
+                  <label class="label-modern">Email Address</label>
+                  <input type="email" id="admin-email" class="input-modern" placeholder="admin@movictel.com" required>
+              </div>
+              <div>
+                  <label class="label-modern">Password</label>
+                  <input type="password" id="admin-password" class="input-modern" placeholder="••••••••" required>
+              </div>
               <div id="login-error" class="text-red-500 text-xs font-medium hidden text-center bg-red-50 p-2 rounded border border-red-100"></div>
-              <button type="submit" id="login-btn" class="w-full bg-black hover:bg-gray-800 text-white font-medium py-2.5 rounded-lg transition-colors flex justify-center items-center shadow-sm active:scale-95">Sign In to CMS</button>
+              <button type="submit" id="login-btn" class="w-full bg-black hover:bg-gray-800 text-white font-medium py-2.5 rounded-lg transition-colors flex justify-center items-center shadow-sm active:scale-95">
+                  Sign In to CMS
+              </button>
           </form>
       </div>
   </div>
 
-  <div id="app-wrapper" class="hidden h-screen w-full">
+  <!-- APP WRAPPER -->
+  <div id="app-wrapper" class="hidden h-screen w-full flex-col md:flex-row">
     <!-- Sidebar -->
-    <aside class="w-64 bg-white border-r border-gray-200 flex flex-col z-40 shrink-0">
-        <div class="h-16 flex items-center px-6 border-b border-gray-100">
+    <aside class="w-full md:w-64 bg-white border-b md:border-b-0 md:border-r border-gray-200 flex flex-col z-40 shrink-0 h-auto md:h-screen">
+        <div class="h-16 flex items-center px-6 border-b border-gray-100 justify-between md:justify-start">
             <h1 class="text-xl font-bold tracking-tight text-black flex items-center gap-2">
               Movictel <span class="bg-gray-100 text-gray-600 text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider font-semibold border border-gray-200">CMS</span>
             </h1>
         </div>
         
-        <nav class="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
-            <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Home Sections</p>
-            <a href="#" onclick="switchTab('visibility-settings')" class="nav-link active-nav flex items-center px-3 py-2 rounded-lg bg-gray-100 text-black font-medium transition-all group" data-tab="visibility-settings"><i class="fas fa-eye w-5 text-center text-gray-500 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm">Global Visibility</span></a>
-            <a href="#" onclick="switchTab('hero-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group" data-tab="hero-settings"><i class="fas fa-images w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm">Hero Slider</span></a>
-            <a href="#" onclick="switchTab('about-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group" data-tab="about-settings"><i class="fas fa-address-card w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm">Who We Are</span></a>
-            <a href="#" onclick="switchTab('offers-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group" data-tab="offers-settings"><i class="fas fa-gift w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm">Active Offers</span></a>
-            <a href="#" onclick="switchTab('services-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group" data-tab="services-settings"><i class="fas fa-cogs w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm">Services Grid</span></a>
-            <a href="#" onclick="switchTab('cases-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group" data-tab="cases-settings"><i class="fas fa-briefcase w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm">Case Studies</span></a>
-            <a href="#" onclick="switchTab('homeabout-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group" data-tab="homeabout-settings"><i class="fas fa-info-circle w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm">Home About Block</span></a>
-            <a href="#" onclick="switchTab('clients-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group" data-tab="clients-settings"><i class="fas fa-building w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm">Client Logos</span></a>
-            <a href="#" onclick="switchTab('testimonials-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group" data-tab="testimonials-settings"><i class="fas fa-star w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm">Testimonials</span></a>
-            <a href="#" onclick="switchTab('faqs-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group mb-4" data-tab="faqs-settings"><i class="fas fa-question-circle w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm">FAQs</span></a>
+        <nav class="flex-1 px-4 py-4 md:py-6 space-y-1 overflow-y-auto flex flex-row md:flex-col gap-2 md:gap-0 overflow-x-auto md:overflow-x-visible">
+            <p class="px-2 text-[10px] md:text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 shrink-0 md:block hidden">Home Sections</p>
+            
+            <a href="#" onclick="switchTab('visibility-settings')" class="nav-link active-nav flex items-center px-3 py-2 rounded-lg bg-gray-100 text-black font-medium transition-all group shrink-0" data-tab="visibility-settings">
+                <i class="fas fa-eye w-5 text-center text-gray-500 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm hidden md:inline">Global Visibility</span>
+            </a>
+            <a href="#" onclick="switchTab('hero-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group shrink-0" data-tab="hero-settings">
+                <i class="fas fa-images w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm hidden md:inline">Hero Slider</span>
+            </a>
+            <a href="#" onclick="switchTab('about-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group shrink-0" data-tab="about-settings">
+                <i class="fas fa-address-card w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm hidden md:inline">Who We Are</span>
+            </a>
+            <a href="#" onclick="switchTab('offers-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group shrink-0" data-tab="offers-settings">
+                <i class="fas fa-gift w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm hidden md:inline">Active Offers</span>
+            </a>
+            <a href="#" onclick="switchTab('services-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group shrink-0" data-tab="services-settings">
+                <i class="fas fa-cogs w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm hidden md:inline">Services Grid</span>
+            </a>
+            <a href="#" onclick="switchTab('cases-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group shrink-0" data-tab="cases-settings">
+                <i class="fas fa-briefcase w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm hidden md:inline">Case Studies</span>
+            </a>
+            <a href="#" onclick="switchTab('homeabout-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group shrink-0" data-tab="homeabout-settings">
+                <i class="fas fa-info-circle w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm hidden md:inline">Home About Block</span>
+            </a>
+            <a href="#" onclick="switchTab('clients-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group shrink-0" data-tab="clients-settings">
+                <i class="fas fa-building w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm hidden md:inline">Client Logos</span>
+            </a>
+            <a href="#" onclick="switchTab('testimonials-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group shrink-0" data-tab="testimonials-settings">
+                <i class="fas fa-star w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm hidden md:inline">Testimonials</span>
+            </a>
+            <a href="#" onclick="switchTab('faqs-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group mb-4 shrink-0" data-tab="faqs-settings">
+                <i class="fas fa-question-circle w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm hidden md:inline">FAQs</span>
+            </a>
 
-            <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 mt-6">Internal Pages</p>
-            <a href="#" onclick="switchTab('servicepages-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group" data-tab="servicepages-settings"><i class="fas fa-cubes w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm">Service Details</span></a>
-            <a href="#" onclick="switchTab('aboutpage-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group" data-tab="aboutpage-settings"><i class="fas fa-users w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm">About Us Page</span></a>
-            <a href="#" onclick="switchTab('blogpage-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group" data-tab="blogpage-settings"><i class="fas fa-blog w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm">Blog Page</span></a>
+            <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 mt-4 shrink-0 md:block hidden">Internal Pages</p>
+            <a href="#" onclick="switchTab('servicepages-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group shrink-0" data-tab="servicepages-settings">
+                <i class="fas fa-cubes w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm hidden md:inline">Service Details</span>
+            </a>
+            <a href="#" onclick="switchTab('aboutpage-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group shrink-0" data-tab="aboutpage-settings">
+                <i class="fas fa-users w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm hidden md:inline">About Us Page</span>
+            </a>
+            <a href="#" onclick="switchTab('blogpage-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group shrink-0" data-tab="blogpage-settings">
+                <i class="fas fa-blog w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm hidden md:inline">Blog Page</span>
+            </a>
 
-            <p class="px-2 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 mt-6">Leads & Data</p>
-            <a href="#" onclick="switchTab('leads-settings')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group" data-tab="leads-settings"><i class="fas fa-envelope-open-text w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm">Form Submissions</span></a>
+            <p class="px-2 text-[10px] md:text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 mt-4 shrink-0 md:block hidden">Leads</p>
+            <a href="#" onclick="switchTab('contact-leads')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group shrink-0" data-tab="contact-leads">
+                <i class="fas fa-envelope w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm hidden md:inline">Contact Leads</span>
+            </a>
+            <a href="#" onclick="switchTab('service-leads')" class="nav-link flex items-center px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-black font-medium transition-all group shrink-0" data-tab="service-leads">
+                <i class="fas fa-headset w-5 text-center text-gray-400 group-hover:text-black transition-colors"></i> <span class="ml-2 text-sm hidden md:inline">Service Leads</span>
+            </a>
         </nav>
     </aside>
 
     <!-- Main Content Area -->
-    <main class="flex-1 flex flex-col h-screen overflow-hidden bg-gray-50">
-        <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-8 shrink-0 sticky top-0 z-30">
-            <div><h2 id="current-tab-title" class="text-lg font-semibold text-gray-900 tracking-tight">Global Visibility</h2></div>
-            <div class="flex gap-4 items-center">
-              <button id="logout-btn" class="text-sm font-medium text-red-500 hover:text-red-700 transition-colors flex items-center gap-1.5 mr-2"><i class="fas fa-sign-out-alt"></i> Logout</button>
-              <div class="w-px h-6 bg-gray-200"></div>
-              <a href="index.html" target="_blank" class="text-sm font-medium text-gray-600 hover:text-black transition-colors flex items-center gap-2">View Live Site <i class="fas fa-arrow-up-right-from-square text-xs"></i></a>
-              <button onclick="saveData()" class="bg-black hover:bg-gray-800 active:scale-95 text-white px-5 py-2 rounded-md text-sm font-medium transition-all shadow-sm flex items-center gap-2 ml-2">Save Changes</button>
+    <main class="flex-1 flex flex-col h-[calc(100vh-64px)] md:h-screen overflow-hidden bg-gray-50 w-full">
+        
+        <!-- Top Header -->
+        <header class="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 md:px-8 shrink-0 z-30">
+            <div>
+              <h2 id="current-tab-title" class="text-base md:text-lg font-semibold text-gray-900 tracking-tight">Global Visibility</h2>
+            </div>
+            <div class="flex gap-2 md:gap-4 items-center">
+              <button id="logout-btn" class="text-xs md:text-sm font-medium text-red-500 hover:text-red-700 transition-colors flex items-center gap-1.5 mr-0 md:mr-2">
+                <i class="fas fa-sign-out-alt"></i> <span class="hidden md:inline">Logout</span>
+              </button>
+              <div class="w-px h-6 bg-gray-200 hidden md:block"></div>
+              <a href="index.html" target="_blank" class="text-sm font-medium text-gray-600 hover:text-black transition-colors hidden md:flex items-center gap-2">
+                Live Site <i class="fas fa-arrow-up-right-from-square text-xs"></i>
+              </a>
+              <button onclick="saveData()" class="bg-black hover:bg-gray-800 active:scale-95 text-white px-3 md:px-5 py-2 rounded-md text-xs md:text-sm font-medium transition-all shadow-sm flex items-center gap-2">
+                  <i class="fas fa-save md:hidden"></i><span class="hidden md:inline">Save Changes</span>
+              </button>
             </div>
         </header>
 
-        <div id="toast-notification" class="fixed top-20 right-8 bg-black text-white px-5 py-3 rounded-lg shadow-lg transform translate-x-10 opacity-0 transition-all duration-300 z-50 flex items-center gap-3">
-            <i class="fas fa-check-circle text-white"></i><span class="text-sm font-medium">Changes published successfully</span>
+        <!-- Toast Notification -->
+        <div id="toast-notification" class="fixed top-20 right-4 md:right-8 bg-black text-white px-5 py-3 rounded-lg shadow-lg transform translate-x-20 opacity-0 transition-all duration-300 z-50 flex items-center gap-3">
+            <i class="fas fa-check-circle text-white"></i>
+            <span class="text-sm font-medium">Changes published</span>
         </div>
 
         <!-- Scrollable Content -->
-        <div class="flex-1 overflow-y-auto p-8 scroll-smooth">
-            <div class="max-w-4xl mx-auto pb-20">
+        <div class="flex-1 overflow-y-auto p-4 md:p-8 scroll-smooth w-full">
+            <div class="max-w-5xl mx-auto pb-20 w-full">
                 
+                <!-- VISIBILITY -->
                 <div id="visibility-settings" class="tab-content active">
-                    <div class="bg-white border border-gray-200 rounded-xl p-8 shadow-sm">
+                    <div class="bg-white border border-gray-200 rounded-xl p-5 md:p-8 shadow-sm">
                         <h3 class="text-lg font-semibold text-gray-900 mb-6">Manage Section Visibility</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-16" id="visibility-toggles"></div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-y-4 md:gap-y-6 gap-x-16" id="visibility-toggles">
+                            <!-- Injected via JS -->
+                        </div>
                     </div>
                 </div>
 
-                <div id="hero-settings" class="tab-content"><div id="hero-forms"></div></div>
+                <!-- HERO -->
+                <div id="hero-settings" class="tab-content">
+                    <div id="hero-forms">
+                        <!-- Injected via JS -->
+                    </div>
+                </div>
 
+                <!-- WHO WE ARE (ABOUT) -->
                 <div id="about-settings" class="tab-content">
-                    <div class="bg-white border border-gray-200 rounded-xl p-8 shadow-sm space-y-5">
+                    <div class="bg-white border border-gray-200 rounded-xl p-5 md:p-8 shadow-sm space-y-5">
                         <h3 class="text-lg font-semibold text-gray-900 mb-2">Home 'Who We Are' Block</h3>
                         <div><label class="label-modern">Headline</label><input type="text" id="about-title" class="input-modern"></div>
                         <div><label class="label-modern">Content Paragraph</label><textarea id="about-text" rows="4" class="input-modern"></textarea></div>
                         <div>
-                            <label class="label-modern">Image Asset URL</label>
-                            <div class="flex gap-2">
-                                <input type="text" id="about-image" class="input-modern flex-1">
-                                <label class="bg-gray-100 hover:bg-gray-200 border border-gray-200 text-gray-700 px-3 py-1 rounded cursor-pointer text-xs font-medium flex items-center gap-1 transition-colors">
+                            <label class="label-modern">Image Asset URL or Upload</label>
+                            <div class="flex flex-col md:flex-row gap-2">
+                                <input type="text" id="about-image" class="input-modern flex-1" placeholder="Paste Image URL or click Upload ➔">
+                                <label class="bg-gray-100 hover:bg-gray-200 border border-gray-200 text-gray-700 px-3 py-2 md:py-1 rounded cursor-pointer text-xs font-medium flex items-center justify-center gap-1 transition-colors w-full md:w-auto">
                                     <i class="fas fa-upload"></i> Upload
                                     <input type="file" class="hidden" accept="image/*" onchange="handleImageUpload(this)">
                                 </label>
@@ -217,55 +327,61 @@
                     </div>
                 </div>
 
+                <!-- FESTIVAL OFFERS -->
                 <div id="offers-settings" class="tab-content">
-                    <div class="bg-white border border-gray-200 rounded-xl p-8 mb-6 shadow-sm grid grid-cols-2 gap-5">
+                    <div class="bg-white border border-gray-200 rounded-xl p-5 md:p-8 mb-6 shadow-sm grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div><label class="label-modern">Section Heading</label><input type="text" id="offers-heading" class="input-modern"></div>
                         <div><label class="label-modern">Section Subtext</label><input type="text" id="offers-subtext" class="input-modern"></div>
                     </div>
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="font-semibold text-gray-900">Promotional Cards</h3>
-                        <button onclick="addOffer()" class="text-sm font-medium text-black bg-white border border-gray-200 px-4 py-2 rounded-md hover:bg-gray-50 transition-colors shadow-sm">+ Add Offer</button>
+                        <button onclick="addOffer()" class="text-xs font-medium text-black bg-white border border-gray-200 px-3 py-1.5 rounded hover:bg-gray-50 shadow-sm">+ Add Offer</button>
                     </div>
                     <div id="offers-container" class="space-y-4"></div>
                 </div>
 
+                <!-- SERVICES SUMMARY -->
                 <div id="services-settings" class="tab-content">
-                    <div class="bg-white border border-gray-200 rounded-xl p-8 mb-6 shadow-sm"><label class="label-modern">Section Heading</label><input type="text" id="services-heading" class="input-modern"></div>
+                    <div class="bg-white border border-gray-200 rounded-xl p-5 md:p-8 mb-6 shadow-sm">
+                        <label class="label-modern">Section Heading</label><input type="text" id="services-heading" class="input-modern">
+                    </div>
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="font-semibold text-gray-900">Main Categories</h3>
-                        <button onclick="addService()" class="text-sm font-medium text-black bg-white border border-gray-200 px-4 py-2 rounded-md hover:bg-gray-50 transition-colors shadow-sm">+ Add Category</button>
+                        <button onclick="addService()" class="text-xs font-medium text-black bg-white border border-gray-200 px-3 py-1.5 rounded hover:bg-gray-50 shadow-sm">+ Add Category</button>
                     </div>
                     <div id="services-container" class="space-y-4"></div>
                 </div>
 
+                <!-- CASE STUDIES -->
                 <div id="cases-settings" class="tab-content">
-                    <div class="bg-white border border-gray-200 rounded-xl p-8 mb-6 shadow-sm grid grid-cols-2 gap-5">
+                    <div class="bg-white border border-gray-200 rounded-xl p-5 md:p-8 mb-6 shadow-sm grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div><label class="label-modern">Heading</label><input type="text" id="cases-heading" class="input-modern"></div>
                         <div><label class="label-modern">Highlight Label</label><input type="text" id="cases-highlight" class="input-modern"></div>
-                        <div class="col-span-2"><label class="label-modern">Subtext</label><input type="text" id="cases-subtext" class="input-modern"></div>
+                        <div class="md:col-span-2"><label class="label-modern">Subtext</label><input type="text" id="cases-subtext" class="input-modern"></div>
                     </div>
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="font-semibold text-gray-900">Case Study Items</h3>
-                        <button onclick="addCase()" class="text-sm font-medium text-black bg-white border border-gray-200 px-4 py-2 rounded-md hover:bg-gray-50 transition-colors shadow-sm">+ Add Case Study</button>
+                        <button onclick="addCase()" class="text-xs font-medium text-black bg-white border border-gray-200 px-3 py-1.5 rounded hover:bg-gray-50 shadow-sm">+ Add Case Study</button>
                     </div>
                     <div id="cases-container" class="space-y-4"></div>
                 </div>
 
+                <!-- HOME ABOUT US (LOWER) -->
                 <div id="homeabout-settings" class="tab-content">
-                    <div class="bg-white border border-gray-200 rounded-xl p-8 shadow-sm space-y-5">
+                    <div class="bg-white border border-gray-200 rounded-xl p-5 md:p-8 shadow-sm space-y-5">
                         <h3 class="text-lg font-semibold text-gray-900 mb-2">Lower About Section</h3>
-                        <div class="grid grid-cols-2 gap-5">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                           <div><label class="label-modern">Badge Text</label><input type="text" id="ha-badge" class="input-modern"></div>
                           <div><label class="label-modern">Button Label</label><input type="text" id="ha-btnText" class="input-modern"></div>
-                          <div class="col-span-2"><label class="label-modern">Headline (HTML Allowed)</label><input type="text" id="ha-title" class="input-modern"></div>
-                          <div class="col-span-2"><label class="label-modern">Paragraph 1</label><textarea id="ha-p1" rows="3" class="input-modern"></textarea></div>
-                          <div class="col-span-2"><label class="label-modern">Paragraph 2</label><textarea id="ha-p2" rows="3" class="input-modern"></textarea></div>
+                          <div class="md:col-span-2"><label class="label-modern">Headline (HTML Allowed)</label><input type="text" id="ha-title" class="input-modern"></div>
+                          <div class="md:col-span-2"><label class="label-modern">Paragraph 1</label><textarea id="ha-p1" rows="3" class="input-modern"></textarea></div>
+                          <div class="md:col-span-2"><label class="label-modern">Paragraph 2</label><textarea id="ha-p2" rows="3" class="input-modern"></textarea></div>
                           <div><label class="label-modern">Button Link</label><input type="text" id="ha-btnLink" class="input-modern"></div>
                           <div>
-                              <label class="label-modern">Image Asset URL</label>
-                              <div class="flex gap-2">
-                                  <input type="text" id="ha-image" class="input-modern flex-1">
-                                  <label class="bg-gray-100 hover:bg-gray-200 border border-gray-200 text-gray-700 px-3 py-1 rounded cursor-pointer text-xs font-medium flex items-center gap-1 transition-colors">
+                              <label class="label-modern">Image Asset URL or Upload</label>
+                              <div class="flex flex-col xl:flex-row gap-2">
+                                  <input type="text" id="ha-image" class="input-modern flex-1" placeholder="Paste Image URL or click Upload ➔">
+                                  <label class="bg-gray-100 hover:bg-gray-200 border border-gray-200 text-gray-700 px-3 py-2 xl:py-1 rounded cursor-pointer text-xs font-medium flex items-center justify-center gap-1 transition-colors w-full xl:w-auto">
                                       <i class="fas fa-upload"></i> Upload
                                       <input type="file" class="hidden" accept="image/*" onchange="handleImageUpload(this)">
                                   </label>
@@ -275,89 +391,150 @@
                     </div>
                 </div>
 
+                <!-- CLIENTS STRIP -->
                 <div id="clients-settings" class="tab-content">
-                    <div class="bg-white border border-gray-200 rounded-xl p-8 mb-6 shadow-sm"><label class="label-modern">Section Heading</label><input type="text" id="clients-heading" class="input-modern"></div>
+                    <div class="bg-white border border-gray-200 rounded-xl p-5 md:p-8 mb-6 shadow-sm">
+                        <label class="label-modern">Section Heading</label><input type="text" id="clients-heading" class="input-modern">
+                    </div>
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="font-semibold text-gray-900">Client Logos</h3>
-                        <button onclick="addClient()" class="text-sm font-medium text-black bg-white border border-gray-200 px-4 py-2 rounded-md hover:bg-gray-50 transition-colors shadow-sm">+ Add Client</button>
+                        <button onclick="addClient()" class="text-xs font-medium text-black bg-white border border-gray-200 px-3 py-1.5 rounded hover:bg-gray-50 shadow-sm">+ Add Client</button>
                     </div>
-                    <div id="clients-container" class="grid grid-cols-1 gap-4"></div>
+                    <div id="clients-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
                 </div>
 
+                <!-- TESTIMONIALS -->
                 <div id="testimonials-settings" class="tab-content">
-                    <div class="bg-white border border-gray-200 rounded-xl p-8 mb-6 shadow-sm grid grid-cols-2 gap-5">
+                    <div class="bg-white border border-gray-200 rounded-xl p-5 md:p-8 mb-6 shadow-sm grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div><label class="label-modern">Section Heading</label><input type="text" id="testi-heading" class="input-modern"></div>
-                        <div class="col-span-2"><label class="label-modern">Description Text</label><input type="text" id="testi-text" class="input-modern"></div>
+                        <div class="md:col-span-2"><label class="label-modern">Description Text</label><input type="text" id="testi-text" class="input-modern"></div>
                     </div>
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="font-semibold text-gray-900">User Reviews</h3>
-                        <button onclick="addTestimonial()" class="text-sm font-medium text-black bg-white border border-gray-200 px-4 py-2 rounded-md hover:bg-gray-50 transition-colors shadow-sm">+ Add Review</button>
+                        <button onclick="addTestimonial()" class="text-xs font-medium text-black bg-white border border-gray-200 px-3 py-1.5 rounded hover:bg-gray-50 shadow-sm">+ Add Review</button>
                     </div>
                     <div id="testimonials-container" class="space-y-4"></div>
                 </div>
 
+                <!-- FAQS -->
                 <div id="faqs-settings" class="tab-content">
-                    <div class="bg-white border border-gray-200 rounded-xl p-8 mb-6 shadow-sm grid grid-cols-2 gap-5">
+                    <div class="bg-white border border-gray-200 rounded-xl p-5 md:p-8 mb-6 shadow-sm grid grid-cols-1 md:grid-cols-2 gap-5">
                         <div><label class="label-modern">Main Heading</label><input type="text" id="faq-heading" class="input-modern"></div>
                         <div><label class="label-modern">Subtext</label><input type="text" id="faq-subheading" class="input-modern"></div>
                     </div>
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="font-semibold text-gray-900">Questions & Answers</h3>
-                        <button onclick="addFaq()" class="text-sm font-medium text-black bg-white border border-gray-200 px-4 py-2 rounded-md hover:bg-gray-50 transition-colors shadow-sm">+ Add FAQ</button>
+                        <button onclick="addFaq()" class="text-xs font-medium text-black bg-white border border-gray-200 px-3 py-1.5 rounded hover:bg-gray-50 shadow-sm">+ Add FAQ</button>
                     </div>
                     <div id="faqs-container" class="space-y-4"></div>
                 </div>
 
+                <!-- INNER: DETAILED SERVICE PAGES -->
                 <div id="servicepages-settings" class="tab-content">
-                    <div class="flex justify-between items-center mb-4"><h3 class="font-semibold text-gray-900">Detailed Services Catalog</h3><button onclick="addDetailedService()" class="text-sm font-medium text-white bg-black hover:bg-gray-800 px-4 py-2 rounded-md transition-colors shadow-sm">+ New Service</button></div>
+                    <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm mb-6 flex items-start gap-4">
+                        <div class="text-blue-500 mt-1"><i class="fas fa-info-circle"></i></div>
+                        <p class="text-sm text-gray-600 leading-relaxed">Changes made here automatically update the <strong>Service Catalog</strong> on the frontend, as well as the dynamic links in the main navigation dropdowns and footer columns.</p>
+                    </div>
+                    <div class="flex justify-between items-center mb-4 mt-2">
+                        <h3 class="font-semibold text-gray-900">Detailed Services Catalog</h3>
+                        <button onclick="addDetailedService()" class="text-xs font-medium text-white bg-black hover:bg-gray-800 px-3 py-1.5 rounded shadow-sm">+ New Service</button>
+                    </div>
                     <div id="detailed-services-container" class="space-y-6 mb-8"></div>
                 </div>
 
+                <!-- INNER: ABOUT US PAGE -->
                 <div id="aboutpage-settings" class="tab-content">
-                    <div class="bg-white border border-gray-200 rounded-xl p-8 shadow-sm space-y-5 mb-6">
+                    <div class="bg-white border border-gray-200 rounded-xl p-5 md:p-8 shadow-sm space-y-5 mb-6">
                         <h3 class="text-lg font-semibold text-gray-900 mb-2">Page Intro</h3>
                         <div><label class="label-modern">Banner Title</label><input type="text" id="ap-hero-title" class="input-modern"></div>
                         <div><label class="label-modern">Who We Are - Heading</label><input type="text" id="ap-who-title" class="input-modern"></div>
                         <div><label class="label-modern">Who We Are - Paragraph</label><textarea id="ap-who-text" rows="4" class="input-modern"></textarea></div>
-                        <div><label class="label-modern">Main Image URL</label><div class="flex gap-2"><input type="text" id="ap-who-image" class="input-modern flex-1"><label class="bg-gray-100 hover:bg-gray-200 border border-gray-200 text-gray-700 px-3 py-1 rounded cursor-pointer text-xs font-medium flex items-center gap-1 transition-colors"><i class="fas fa-upload"></i> Upload<input type="file" class="hidden" accept="image/*" onchange="handleImageUpload(this)"></label></div></div>
+                        <div>
+                            <label class="label-modern">Main Image URL or Upload</label>
+                            <div class="flex flex-col md:flex-row gap-2">
+                                <input type="text" id="ap-who-image" class="input-modern flex-1" placeholder="Paste Image URL or click Upload ➔">
+                                <label class="bg-gray-100 hover:bg-gray-200 border border-gray-200 text-gray-700 px-3 py-2 md:py-1 rounded cursor-pointer text-xs font-medium flex items-center justify-center gap-1 w-full md:w-auto">
+                                    <i class="fas fa-upload"></i> Upload
+                                    <input type="file" class="hidden" accept="image/*" onchange="handleImageUpload(this)">
+                                </label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="bg-white border border-gray-200 rounded-xl p-8 mb-6 shadow-sm"><label class="label-modern">Values Section Heading</label><input type="text" id="ap-values-heading" class="input-modern"></div>
-                    <div class="flex justify-between items-center mb-4"><h3 class="font-semibold text-gray-900">Mission & Core Values</h3><button onclick="addAboutValue()" class="text-sm font-medium text-black bg-white border border-gray-200 px-4 py-2 rounded-md hover:bg-gray-50 transition-colors shadow-sm">+ Add Value</button></div>
+                    
+                    <div class="bg-white border border-gray-200 rounded-xl p-5 md:p-8 mb-6 shadow-sm">
+                        <label class="label-modern">Values Section Heading</label><input type="text" id="ap-values-heading" class="input-modern">
+                    </div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-semibold text-gray-900">Mission & Core Values</h3>
+                        <button onclick="addAboutValue()" class="text-xs font-medium text-black bg-white border border-gray-200 px-3 py-1.5 rounded hover:bg-gray-50">+ Add Value</button>
+                    </div>
                     <div id="ap-values-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8"></div>
-                    <div class="bg-white border border-gray-200 rounded-xl p-8 mb-6 shadow-sm"><label class="label-modern">Team Section Heading</label><input type="text" id="ap-team-heading" class="input-modern"></div>
-                    <div class="flex justify-between items-center mb-4"><h3 class="font-semibold text-gray-900">Team Roster</h3><button onclick="addAboutTeam()" class="text-sm font-medium text-black bg-white border border-gray-200 px-4 py-2 rounded-md hover:bg-gray-50 transition-colors shadow-sm">+ Add Member</button></div>
+                    
+                    <div class="bg-white border border-gray-200 rounded-xl p-5 md:p-8 mb-6 shadow-sm">
+                        <label class="label-modern">Team Section Heading</label><input type="text" id="ap-team-heading" class="input-modern">
+                    </div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-semibold text-gray-900">Team Roster</h3>
+                        <button onclick="addAboutTeam()" class="text-xs font-medium text-black bg-white border border-gray-200 px-3 py-1.5 rounded hover:bg-gray-50">+ Add Member</button>
+                    </div>
                     <div id="ap-team-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
                 </div>
 
+                <!-- INNER: BLOG PAGE -->
                 <div id="blogpage-settings" class="tab-content">
-                    <div class="bg-white border border-gray-200 rounded-xl p-8 shadow-sm space-y-5 mb-6">
+                    <div class="bg-white border border-gray-200 rounded-xl p-5 md:p-8 shadow-sm space-y-5 mb-6">
                         <h3 class="text-lg font-semibold text-gray-900 mb-2">Blog Headers</h3>
                         <div><label class="label-modern">Banner Title</label><input type="text" id="bp-hero-title" class="input-modern"></div>
                         <div><label class="label-modern">Grid Section Heading</label><input type="text" id="bp-section-heading" class="input-modern"></div>
                     </div>
-                    <div class="flex justify-between items-center mb-4"><h3 class="font-semibold text-gray-900">Articles</h3><button onclick="addBlogCard()" class="text-sm font-medium text-black bg-white border border-gray-200 px-4 py-2 rounded-md hover:bg-gray-50 transition-colors shadow-sm">+ Add Article</button></div>
+                    <div class="flex justify-between items-center mb-4 mt-2">
+                        <h3 class="font-semibold text-gray-900">Articles</h3>
+                        <button onclick="addBlogCard()" class="text-xs font-medium text-black bg-white border border-gray-200 px-3 py-1.5 rounded hover:bg-gray-50 shadow-sm">+ Add Article</button>
+                    </div>
                     <div id="bp-cards-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8"></div>
                 </div>
 
-                <div id="leads-settings" class="tab-content">
-                    <div class="bg-white border border-gray-200 rounded-xl p-8 shadow-sm">
-                        <div class="flex justify-between items-center mb-6">
-                            <h3 class="text-lg font-semibold text-gray-900">Recent Form Submissions</h3>
-                            <button onclick="clearLeads()" class="text-sm font-medium text-red-500 hover:text-red-700 px-3 py-1.5 border border-red-200 rounded-md hover:bg-red-50 transition-colors shadow-sm">Clear All</button>
-                        </div>
-                        <div class="overflow-x-auto border border-gray-200 rounded-lg">
-                            <table class="w-full text-left border-collapse min-w-[800px]">
+                <!-- CONTACT LEADS -->
+                <div id="contact-leads" class="tab-content">
+                    <div class="bg-white border border-gray-200 rounded-xl p-5 md:p-8 shadow-sm">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-6">Contact Form Leads</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse min-w-[900px]">
                                 <thead>
                                     <tr class="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
-                                        <th class="p-4 border-b border-gray-200 font-semibold rounded-tl-lg">Date</th>
-                                        <th class="p-4 border-b border-gray-200 font-semibold">Type</th>
-                                        <th class="p-4 border-b border-gray-200 font-semibold">Name</th>
-                                        <th class="p-4 border-b border-gray-200 font-semibold">Email</th>
-                                        <th class="p-4 border-b border-gray-200 font-semibold">Phone/Subject</th>
-                                        <th class="p-4 border-b border-gray-200 font-semibold rounded-tr-lg">Message</th>
+                                        <th class="p-4 border-b">Date</th>
+                                        <th class="p-4 border-b">Name</th>
+                                        <th class="p-4 border-b">Email</th>
+                                        <th class="p-4 border-b">Phone</th>
+                                        <th class="p-4 border-b">Subject</th>
+                                        <th class="p-4 border-b">Message</th>
+                                        <th class="p-4 border-b text-center">Action</th>
                                     </tr>
                                 </thead>
-                                <tbody id="leads-table-body" class="text-sm divide-y divide-gray-100 bg-white"></tbody>
+                                <tbody id="contact-table-body" class="text-sm divide-y divide-gray-100 bg-white"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SERVICE LEADS -->
+                <div id="service-leads" class="tab-content">
+                    <div class="bg-white border border-gray-200 rounded-xl p-5 md:p-8 shadow-sm">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-6">Service Request Leads</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse min-w-[900px]">
+                                <thead>
+                                    <tr class="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
+                                        <th class="p-4 border-b">Date</th>
+                                        <th class="p-4 border-b">Name</th>
+                                        <th class="p-4 border-b">Email</th>
+                                        <th class="p-4 border-b">Phone</th>
+                                        <th class="p-4 border-b">Service</th>
+                                        <th class="p-4 border-b">Message</th>
+                                        <th class="p-4 border-b text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="service-table-body" class="text-sm divide-y divide-gray-100 bg-white"></tbody>
                             </table>
                         </div>
                     </div>
@@ -366,10 +543,10 @@
             </div>
         </div>
     </main>
-  </div>
+  </div> <!-- End App Wrapper -->
 
   <script>
-    // 1) Your Original Data Structure - Perfectly Intact!
+    // 1) Define Data Schema (Fully synced to index.html to prevent JSON parse errors)
     const defaultSiteData = {
       hero: [
         { title: "Boost Your Online <span>Presence</span>", desc: "Grow your business with professional SEO services in India.", image: "images/homeImg.png" },
@@ -495,7 +672,13 @@
         { q: "What are the advantages and disadvantages of bulk SMS?", a: "<b>Ans:- Advantages of Bulk SMS:</b> <br><br><b>1:- Wide Reach:</b> Bulk SMS allows you to reach a large number of recipients instantly. It is an effective way to communicate with a large audience, whether it's customers, employees, or members of an organization. <br><b>2:- Cost-Effective:</b> Bulk SMS is generally more cost-effective compared to other marketing and communication channels such as print media or phone calls. It offers a lower cost per message, especially when sending messages in large volumes. <br><b>3:- High Open Rates:</b> SMS messages typically have high open rates since most people have their mobile phones within close proximity. This makes bulk SMS an effective way to ensure that your messages are seen and read by the recipients.<br><br><b>Ans:- Disadvantages of Bulk SMS:</b> <br><br><b>1:- Character Limitations:</b> SMS messages are limited to a specific number of characters (usually 160 characters). This can restrict the amount of information you can convey in a single message and may require you to be concise and precise in your communication. <br><b>2:- No Multimedia Support:</b> SMS messages are text-based and do not support multimedia content such as images, videos, or audio files. If you need to deliver rich media content, bulk SMS may not be suitable. <br><b>3:- Opt-Out Requests:</b> Sending bulk SMS messages to recipients who have not explicitly consented or opted-in can lead to compliance issues. It is important to have proper consent mechanisms in place and provide recipients with an option to opt-out if they no longer wish to receive messages." },
         { q: "What is bulk SMS marketing?", a: "<b>Ans:-</b> Bulk SMS Marketing is a powerful communication tool that allows businesses to send promotional, transactional, or informational text messages to a large number of customers at once. It is widely used for marketing campaigns, customer engagement, reminders, and instant alerts because of its high open rates and instant delivery. <br><br>1. With Bulk SMS, you can: <br><br>2. Reach thousands of customers in seconds <br><br>3. Share offers, discounts, and updates instantly <br><br>4. Ensure 99% delivery rate with measurable reports <br><br>5. Personalize messages for better engagement <br><br>👉 In short, Bulk SMS Marketing helps businesses connect with their audience quickly, effectively, and at a very low cost." }
       ],
-      testimonials: [],
+      testimonialsHeading: "MOVICTEL THROUGH CLIENT'S EYES",
+      testimonialsText: "Authentic stories from businesses who chose Movictel and scaled faster. See what they have to say about our innovative services.",
+      testimonials: [
+        { name: "Rahul Sharma", role: "E-commerce Marketing Head", quote: "The project and the team associated with it are incredibly helpful. Movictel's IVR and bulk SMS transformed our customer communication. Engagement and satisfaction increased instantly. Hope they continue this association in future." },
+        { name: "Pooja Verma", role: "CEO, Healthcare Startup", quote: "It is one of the most wonderful experiences working with Movictel. Their WhatsApp automation helped us build direct customer relationships. Reliable, fast, and extremely effective. Great team to work with." },
+        { name: "Arjun Mehta", role: "Operations Manager", quote: "Their cloud communication platform scales effortlessly. Support quality is world-class. After switching to Movictel, we saw an incredible boost in operational efficiency. Will definitely be using them again for our next project." }
+      ],
       sections: { 
         hero: true, about: true, offers: true, services: true, cases: true, aboutUs: true, clients: true, faq: true, testimonials: true,
         aboutPageHero: true, aboutPageWho: true, aboutPageValues: true, aboutPageTeam: true,
@@ -507,6 +690,8 @@
 
     window.init = function() {
       const stored = localStorage.getItem('movictelCMSData');
+      
+      // JSON Parsing safety check
       try {
         if (stored && stored !== "undefined") {
           siteData = JSON.parse(stored);
@@ -514,13 +699,36 @@
           siteData = JSON.parse(JSON.stringify(defaultSiteData));
         }
       } catch (e) {
-        console.warn("Resetting CMS Data due to parse error", e);
+        console.warn("Storage parse error, resetting to default data", e);
         siteData = JSON.parse(JSON.stringify(defaultSiteData));
       }
       
       // Strict Fallbacks
+      if (!siteData.sections) siteData.sections = defaultSiteData.sections;
+      const defaultSections = [
+        'aboutUs', 'cases', 'clients', 
+        'aboutPageHero', 'aboutPageWho', 'aboutPageValues', 'aboutPageTeam', 
+        'blogPageHero', 'blogPageGrid'
+      ];
+      defaultSections.forEach(s => {
+          if (siteData.sections[s] === undefined) siteData.sections[s] = true;
+      });
+
+      // Guard ALL Array objects against being undefined
+      const arrayProps = ['hero', 'offers', 'clients', 'cases', 'services', 'testimonials', 'faqs', 'detailedServices'];
+      arrayProps.forEach(prop => {
+          if (!siteData[prop] || !Array.isArray(siteData[prop])) {
+              siteData[prop] = JSON.parse(JSON.stringify(defaultSiteData[prop]));
+          }
+      });
+
+      // Guard ALL Object properties
+      if(!siteData.about) siteData.about = defaultSiteData.about;
+      if(!siteData.homeAbout) siteData.homeAbout = defaultSiteData.homeAbout;
       if(!siteData.aboutPage) siteData.aboutPage = defaultSiteData.aboutPage;
       if(!siteData.blogPage) siteData.blogPage = defaultSiteData.blogPage;
+
+      // Text fallbacks
       if(!siteData.offersHeading) siteData.offersHeading = defaultSiteData.offersHeading;
       if(!siteData.offersSubtext) siteData.offersSubtext = defaultSiteData.offersSubtext;
       if(!siteData.clientsHeading) siteData.clientsHeading = defaultSiteData.clientsHeading;
@@ -531,42 +739,30 @@
       window.renderAllForms();
     }
 
-    window.renderLeads = function() {
-        let leads = JSON.parse(localStorage.getItem('movictelLeads') || '[]');
-        if (leads.length === 0) {
-            leads = [
-                { date: new Date().toLocaleDateString(), type: 'Contact', name: 'Ravi Kumar', email: 'ravi@example.in', phoneSubj: 'Partnership Inquiry', message: 'Looking to partner with Movictel for our real estate campaigns.' },
-                { date: new Date().toLocaleDateString(), type: 'Service', name: 'Neha Sharma', email: 'neha@business.com', phoneSubj: '+91 9876543210', message: 'Need bulk SMS pricing and Whatsapp API info.' }
-            ];
-            localStorage.setItem('movictelLeads', JSON.stringify(leads));
-        }
-        
-        const tbody = document.getElementById('leads-table-body');
-        if(!tbody) return;
-        tbody.innerHTML = leads.map(l => `
-            <tr class="hover:bg-gray-50 transition-colors">
-                <td class="p-4 text-gray-600 whitespace-nowrap">${l.date}</td>
-                <td class="p-4"><span class="px-2.5 py-1.5 rounded-md text-[10px] font-bold uppercase tracking-wider ${l.type === 'Contact' ? 'bg-blue-50 text-blue-600 border border-blue-100' : 'bg-purple-50 text-purple-600 border border-purple-100'}">${l.type}</span></td>
-                <td class="p-4 font-medium text-gray-900 whitespace-nowrap">${l.name}</td>
-                <td class="p-4 text-gray-600">${l.email}</td>
-                <td class="p-4 text-gray-600">${l.phoneSubj || '-'}</td>
-                <td class="p-4 text-gray-600 max-w-xs truncate" title="${(l.message||'').replace(/"/g, '&quot;')}">${l.message}</td>
-            </tr>
-        `).join('');
-    };
-
-    window.clearLeads = function() {
-        if(confirm("Are you sure you want to clear all form submissions?")) {
-            localStorage.setItem('movictelLeads', '[]');
-            window.renderLeads();
-        }
-    };
-
+    // 2) Render Logic
     window.renderAllForms = function() {
       const visGroups = [
-        { title: "Home Page Elements", keys: [{ k: 'hero', l: 'Hero Slider' }, { k: 'about', l: 'Who We Are' }, { k: 'offers', l: 'Festival Offers' }, { k: 'services', l: 'Services Section' }, { k: 'cases', l: 'Case Studies' }, { k: 'aboutUs', l: 'About Us Section' }, { k: 'clients', l: 'Clients Strip' }, { k: 'faq', l: 'FAQs' }, { k: 'testimonials', l: 'Testimonials' }] },
-        { title: "About Us Elements", keys: [{ k: 'aboutPageHero', l: 'Hero Section' }, { k: 'aboutPageWho', l: 'Who We Are' }, { k: 'aboutPageValues', l: 'Mission & Values' }, { k: 'aboutPageTeam', l: 'Team Section' }] },
-        { title: "Blog Elements", keys: [{ k: 'blogPageHero', l: 'Hero Section' }, { k: 'blogPageGrid', l: 'Blog Grid' }] }
+        {
+          title: "Home Page Elements",
+          keys: [
+            { k: 'hero', l: 'Hero Slider' }, { k: 'about', l: 'Who We Are' }, { k: 'offers', l: 'Festival Offers' },
+            { k: 'services', l: 'Services Section' }, { k: 'cases', l: 'Case Studies' }, { k: 'aboutUs', l: 'About Us Section' },
+            { k: 'clients', l: 'Clients Strip' }, { k: 'faq', l: 'FAQs' }, { k: 'testimonials', l: 'Testimonials' }
+          ]
+        },
+        {
+          title: "About Us Elements",
+          keys: [
+            { k: 'aboutPageHero', l: 'Hero Section' }, { k: 'aboutPageWho', l: 'Who We Are' }, 
+            { k: 'aboutPageValues', l: 'Mission & Values' }, { k: 'aboutPageTeam', l: 'Team Section' }
+          ]
+        },
+        {
+          title: "Blog Elements",
+          keys: [
+            { k: 'blogPageHero', l: 'Hero Section' }, { k: 'blogPageGrid', l: 'Blog Grid' }
+          ]
+        }
       ];
 
       let visibilityHtml = '';
@@ -578,7 +774,7 @@
                 <span class="text-sm font-medium text-gray-700">${v.l}</span>
                 <label class="relative inline-flex items-center cursor-pointer">
                   <input type="checkbox" class="sr-only peer toggle-checkbox" ${siteData.sections[v.k] ? 'checked' : ''} onchange="updateVis('${v.k}', this.checked)">
-                  <div class="w-10 h-5 bg-gray-200 rounded-full peer peer-focus:ring-2 peer-focus:ring-black/10 transition-colors duration-200 ease-in-out toggle-label after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-[20px] peer-checked:after:border-white shadow-sm"></div>
+                  <div class="w-10 h-5 bg-gray-200 rounded-full peer peer-focus:ring-2 transition-colors duration-200 toggle-label after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-[20px] peer-checked:after:border-white shadow-sm"></div>
                 </label>
               </div>`;
          });
@@ -642,7 +838,7 @@
       document.getElementById('bp-section-heading').oninput = e => siteData.blogPage.sectionHeading = e.target.value;
       window.renderBlogCards();
 
-      document.getElementById('services-heading').value = siteData.servicesHeading;
+      document.getElementById('services-heading').value = siteData.servicesHeading || '';
       document.getElementById('services-heading').oninput = e => siteData.servicesHeading = e.target.value;
       window.renderServices();
 
@@ -654,9 +850,9 @@
       document.getElementById('cases-subtext').oninput = e => siteData.casesSubtext = e.target.value;
       window.renderCases();
 
-      document.getElementById('testi-heading').value = siteData.testimonialsHeading;
+      document.getElementById('testi-heading').value = siteData.testimonialsHeading || '';
       document.getElementById('testi-heading').oninput = e => siteData.testimonialsHeading = e.target.value;
-      document.getElementById('testi-text').value = siteData.testimonialsText;
+      document.getElementById('testi-text').value = siteData.testimonialsText || '';
       document.getElementById('testi-text').oninput = e => siteData.testimonialsText = e.target.value;
       window.renderTestimonials();
 
@@ -665,27 +861,27 @@
       document.getElementById('faq-subheading').value = siteData.faqsSubHeading;
       document.getElementById('faq-subheading').oninput = e => siteData.faqsSubHeading = e.target.value;
       window.renderFaqs();
-      window.renderLeads();
     }
 
+    // 3) Sub-Render Lists
     window.renderHeroForms = function() {
       document.getElementById('hero-forms').innerHTML = `
-        <div class="flex justify-between items-center mb-6">
-            <h3 class="font-semibold text-lg text-gray-900">Hero Slides</h3>
-            <button onclick="addHeroSlide()" class="text-xs font-medium text-black bg-white border border-gray-200 px-3 py-1.5 rounded hover:bg-gray-50 transition-colors shadow-sm"><i class="fas fa-plus mr-1.5"></i> Add Slide</button>
+        <div class="flex justify-between items-center mb-4 mt-2">
+            <h3 class="font-semibold text-gray-900">Hero Slides</h3>
+            <button onclick="addHeroSlide()" class="text-xs font-medium text-black bg-white border border-gray-200 px-3 py-1.5 rounded hover:bg-gray-50 shadow-sm">+ Add Slide</button>
         </div>
         <div class="space-y-4">
             ${siteData.hero.map((slide, i) => `
-                <div class="bg-white border border-gray-200 rounded-xl p-6 relative group hover:border-gray-300 transition-colors animate-fade-in-up">
+                <div class="bg-white border border-gray-200 rounded-xl p-5 relative group hover:border-gray-300 transition-colors animate-fade-in-up">
                     <button onclick="removeHeroSlide(${i})" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"><i class="fas fa-trash-alt"></i></button>
-                    <h4 class="text-xs font-bold text-gray-400 uppercase mb-4 tracking-wider">Slide ${i + 1}</h4>
+                    <h4 class="text-xs font-bold text-gray-400 uppercase mb-4">Slide ${i + 1}</h4>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div><label class="label-modern">Headline (HTML Allowed)</label><input type="text" class="input-modern" value="${(slide.title || '').replace(/"/g, '&quot;')}" oninput="siteData.hero[${i}].title=this.value"></div>
                         <div>
                             <label class="label-modern">Image URL</label>
-                            <div class="flex gap-2">
-                                <input type="text" class="input-modern flex-1" value="${(slide.image || '').replace(/"/g, '&quot;')}" oninput="siteData.hero[${i}].image=this.value">
-                                <label class="bg-gray-100 hover:bg-gray-200 border border-gray-200 text-gray-700 px-3 py-1 rounded cursor-pointer text-xs font-medium flex items-center gap-1 transition-colors">
+                            <div class="flex flex-col xl:flex-row gap-2">
+                                <input type="text" class="input-modern flex-1" placeholder="Paste URL or click Upload ➔" value="${(slide.image || '').replace(/"/g, '&quot;')}" oninput="siteData.hero[${i}].image=this.value">
+                                <label class="bg-gray-100 hover:bg-gray-200 border border-gray-200 px-3 py-2 xl:py-1 rounded cursor-pointer text-xs font-medium flex items-center justify-center gap-1 w-full xl:w-auto">
                                     <i class="fas fa-upload"></i> Upload
                                     <input type="file" class="hidden" accept="image/*" onchange="handleImageUpload(this)">
                                 </label>
@@ -695,23 +891,22 @@
                     </div>
                 </div>
             `).join('')}
-        </div>
-      `;
+        </div>`;
     }
 
     window.renderOffers = function() {
       document.getElementById('offers-container').innerHTML = siteData.offers.map((o, i) => `
-        <div class="bg-white border border-gray-200 rounded-xl p-6 relative group hover:border-gray-300 transition-colors animate-fade-in-up">
+        <div class="bg-white border border-gray-200 rounded-xl p-5 relative group hover:border-gray-300 transition-colors animate-fade-in-up">
           <button onclick="removeOffer(${i})" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"><i class="fas fa-trash-alt"></i></button>
-          <div class="grid grid-cols-2 gap-4 pr-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pr-6">
             <div><label class="label-modern">Title</label><input type="text" class="input-modern" value="${(o.title || '').replace(/"/g, '&quot;')}" oninput="siteData.offers[${i}].title=this.value"></div>
             <div><label class="label-modern">Link URL</label><input type="text" class="input-modern" value="${(o.link || '')}" oninput="siteData.offers[${i}].link=this.value"></div>
-            <div class="col-span-2"><label class="label-modern">Offer Text (HTML Allowed)</label><textarea class="input-modern" rows="2" oninput="siteData.offers[${i}].text=this.value">${o.text || ''}</textarea></div>
-            <div class="col-span-2">
+            <div class="md:col-span-2"><label class="label-modern">Offer Text (HTML Allowed)</label><textarea class="input-modern" rows="2" oninput="siteData.offers[${i}].text=this.value">${o.text || ''}</textarea></div>
+            <div class="md:col-span-2">
                 <label class="label-modern">Background Image URL</label>
-                <div class="flex gap-2">
-                    <input type="text" class="input-modern flex-1" value="${(o.bgImage || '').replace(/"/g, '&quot;')}" oninput="siteData.offers[${i}].bgImage=this.value">
-                    <label class="bg-gray-100 hover:bg-gray-200 border border-gray-200 text-gray-700 px-3 py-1 rounded cursor-pointer text-xs font-medium flex items-center gap-1 transition-colors">
+                <div class="flex flex-col md:flex-row gap-2">
+                    <input type="text" class="input-modern flex-1" placeholder="Paste URL or click Upload ➔" value="${(o.bgImage || '').replace(/"/g, '&quot;')}" oninput="siteData.offers[${i}].bgImage=this.value">
+                    <label class="bg-gray-100 hover:bg-gray-200 border border-gray-200 px-3 py-2 md:py-1 rounded cursor-pointer text-xs font-medium flex items-center justify-center gap-1">
                         <i class="fas fa-upload"></i> Upload
                         <input type="file" class="hidden" accept="image/*" onchange="handleImageUpload(this)">
                     </label>
@@ -726,13 +921,13 @@
       document.getElementById('clients-container').innerHTML = siteData.clients.map((c, i) => `
         <div class="bg-white border border-gray-200 rounded-xl p-5 relative group hover:border-gray-300 transition-colors animate-fade-in-up">
           <button onclick="removeClient(${i})" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"><i class="fas fa-trash-alt"></i></button>
-          <div class="grid grid-cols-2 gap-4 pr-6">
+          <div class="grid grid-cols-1 gap-4 pr-6">
             <div><label class="label-modern">Client Name</label><input type="text" class="input-modern" value="${(c.name || '').replace(/"/g, '&quot;')}" oninput="siteData.clients[${i}].name=this.value"></div>
             <div>
                 <label class="label-modern">Logo URL</label>
-                <div class="flex gap-2">
-                    <input type="text" class="input-modern flex-1" value="${(c.image || '').replace(/"/g, '&quot;')}" oninput="siteData.clients[${i}].image=this.value">
-                    <label class="bg-gray-100 hover:bg-gray-200 border border-gray-200 text-gray-700 px-3 py-1 rounded cursor-pointer text-xs font-medium flex items-center gap-1 transition-colors">
+                <div class="flex flex-col md:flex-row gap-2">
+                    <input type="text" class="input-modern flex-1" placeholder="Paste URL or click Upload ➔" value="${(c.image || '').replace(/"/g, '&quot;')}" oninput="siteData.clients[${i}].image=this.value">
+                    <label class="bg-gray-100 hover:bg-gray-200 border border-gray-200 px-3 py-2 md:py-1 rounded cursor-pointer text-xs font-medium flex items-center justify-center gap-1">
                         <i class="fas fa-upload"></i> Upload
                         <input type="file" class="hidden" accept="image/*" onchange="handleImageUpload(this)">
                     </label>
@@ -745,20 +940,43 @@
     
     window.renderDetailedServices = function() {
       document.getElementById('detailed-services-container').innerHTML = siteData.detailedServices.map((s, i) => `
-        <div class="bg-white border border-gray-200 rounded-xl p-6 relative group hover:border-gray-300 transition-colors animate-fade-in-up">
+        <div class="bg-white border border-gray-200 rounded-xl p-5 relative group hover:border-gray-300 transition-colors animate-fade-in-up">
             <button onclick="removeDetailedService(${i})" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"><i class="fas fa-trash-alt"></i></button>
-            <div class="grid grid-cols-2 md:grid-cols-3 gap-4 pr-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pr-6">
                 <div><label class="label-modern text-gray-800">URL Slug (ID)</label><input type="text" class="input-modern bg-gray-100 font-mono" value="${s.id}" oninput="siteData.detailedServices[${i}].id=this.value"></div>
-                <div><label class="label-modern">Category</label><select class="input-modern" onchange="siteData.detailedServices[${i}].category=this.value"><option value="Marketing" ${s.category==='Marketing'?'selected':''}>Marketing</option><option value="Promote" ${s.category==='Promote'?'selected':''}>Promote</option><option value="Development" ${s.category==='Development'?'selected':''}>Development</option></select></div>
+                <div>
+                    <label class="label-modern">Category</label>
+                    <select class="input-modern" onchange="siteData.detailedServices[${i}].category=this.value">
+                        <option value="Marketing" ${s.category==='Marketing'?'selected':''}>Marketing</option>
+                        <option value="Promote" ${s.category==='Promote'?'selected':''}>Promote</option>
+                        <option value="Development" ${s.category==='Development'?'selected':''}>Development</option>
+                    </select>
+                </div>
                 <div><label class="label-modern">Icon (FontAwesome)</label><input type="text" class="input-modern" value="${s.navIcon}" oninput="siteData.detailedServices[${i}].navIcon=this.value"></div>
-                <div class="col-span-2 md:col-span-3"><label class="label-modern">Service Title</label><input type="text" class="input-modern font-semibold text-gray-900" value="${s.title}" oninput="siteData.detailedServices[${i}].title=this.value"></div>
-                <div class="col-span-2 md:col-span-3"><label class="label-modern">Short Description (Catalog)</label><textarea class="input-modern" rows="2" oninput="siteData.detailedServices[${i}].shortDesc=this.value">${s.shortDesc}</textarea></div>
-                <div class="col-span-2 md:col-span-3"><label class="label-modern">Long Description (Detail Page)</label><textarea class="input-modern" rows="2" oninput="siteData.detailedServices[${i}].longDesc=this.value">${s.longDesc}</textarea></div>
                 
-                <div class="col-span-2 md:col-span-3 mt-4 border-t border-gray-100 pt-4 flex items-center"><span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Features List</span></div>
-                <div class="space-y-2"><label class="label-modern">Feature 1</label><input type="text" class="input-modern" placeholder="Title" value="${s.f1T || ''}" oninput="siteData.detailedServices[${i}].f1T=this.value"><input type="text" class="input-modern text-gray-500" placeholder="Description" value="${s.f1D || ''}" oninput="siteData.detailedServices[${i}].f1D=this.value"></div>
-                <div class="space-y-2"><label class="label-modern">Feature 2</label><input type="text" class="input-modern" placeholder="Title" value="${s.f2T || ''}" oninput="siteData.detailedServices[${i}].f2T=this.value"><input type="text" class="input-modern text-gray-500" placeholder="Description" value="${s.f2D || ''}" oninput="siteData.detailedServices[${i}].f2D=this.value"></div>
-                <div class="space-y-2"><label class="label-modern">Feature 3</label><input type="text" class="input-modern" placeholder="Title" value="${s.f3T || ''}" oninput="siteData.detailedServices[${i}].f3T=this.value"><input type="text" class="input-modern text-gray-500" placeholder="Description" value="${s.f3D || ''}" oninput="siteData.detailedServices[${i}].f3D=this.value"></div>
+                <div class="md:col-span-3"><label class="label-modern">Service Title</label><input type="text" class="input-modern font-semibold" value="${s.title}" oninput="siteData.detailedServices[${i}].title=this.value"></div>
+                <div class="md:col-span-3"><label class="label-modern">Short Description</label><textarea class="input-modern" rows="2" oninput="siteData.detailedServices[${i}].shortDesc=this.value">${s.shortDesc}</textarea></div>
+                <div class="md:col-span-3"><label class="label-modern">Long Description</label><textarea class="input-modern" rows="2" oninput="siteData.detailedServices[${i}].longDesc=this.value">${s.longDesc}</textarea></div>
+
+                <div class="md:col-span-3 mt-4 border-t border-gray-100 pt-4 flex items-center"><span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Features List</span></div>
+                
+                <div class="space-y-2">
+                  <label class="label-modern">Feature 1</label>
+                  <input type="text" class="input-modern" placeholder="Title" value="${s.f1T || ''}" oninput="siteData.detailedServices[${i}].f1T=this.value">
+                  <input type="text" class="input-modern text-gray-500" placeholder="Description" value="${s.f1D || ''}" oninput="siteData.detailedServices[${i}].f1D=this.value">
+                </div>
+
+                <div class="space-y-2">
+                  <label class="label-modern">Feature 2</label>
+                  <input type="text" class="input-modern" placeholder="Title" value="${s.f2T || ''}" oninput="siteData.detailedServices[${i}].f2T=this.value">
+                  <input type="text" class="input-modern text-gray-500" placeholder="Description" value="${s.f2D || ''}" oninput="siteData.detailedServices[${i}].f2D=this.value">
+                </div>
+
+                <div class="space-y-2">
+                  <label class="label-modern">Feature 3</label>
+                  <input type="text" class="input-modern" placeholder="Title" value="${s.f3T || ''}" oninput="siteData.detailedServices[${i}].f3T=this.value">
+                  <input type="text" class="input-modern text-gray-500" placeholder="Description" value="${s.f3D || ''}" oninput="siteData.detailedServices[${i}].f3D=this.value">
+                </div>
             </div>
         </div>
       `).join('');
@@ -769,8 +987,8 @@
         <div class="bg-white border border-gray-200 rounded-xl p-5 relative group hover:border-gray-300 transition-colors animate-fade-in-up">
           <button onclick="removeAboutValue(${i})" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"><i class="fas fa-trash-alt"></i></button>
           <div class="grid grid-cols-1 gap-4 pr-6">
-            <div><label class="label-modern">Value Title</label><input type="text" class="input-modern font-medium" value="${(v.title || '').replace(/"/g, '&quot;')}" oninput="siteData.aboutPage.values[${i}].title=this.value"></div>
-            <div><label class="label-modern">Value Description</label><textarea class="input-modern" rows="2" oninput="siteData.aboutPage.values[${i}].text=this.value">${v.text}</textarea></div>
+            <div><label class="label-modern">Value Title</label><input type="text" class="input-modern" value="${(v.title || '').replace(/"/g, '&quot;')}" oninput="siteData.aboutPage.values[${i}].title=this.value"></div>
+            <div><label class="label-modern">Description</label><textarea class="input-modern" rows="2" oninput="siteData.aboutPage.values[${i}].text=this.value">${v.text}</textarea></div>
           </div>
         </div>
       `).join('');
@@ -785,9 +1003,12 @@
             <div><label class="label-modern">Role</label><input type="text" class="input-modern" value="${(t.role || '').replace(/"/g, '&quot;')}" oninput="siteData.aboutPage.team[${i}].role=this.value"></div>
             <div class="md:col-span-2">
                 <label class="label-modern">Image URL</label>
-                <div class="flex gap-2">
-                    <input type="text" class="input-modern flex-1" value="${(t.image || '').replace(/"/g, '&quot;')}" oninput="siteData.aboutPage.team[${i}].image=this.value">
-                    <label class="bg-gray-100 hover:bg-gray-200 border border-gray-200 text-gray-700 px-3 py-1 rounded cursor-pointer text-xs font-medium flex items-center gap-1 transition-colors"><i class="fas fa-upload"></i> Upload<input type="file" class="hidden" accept="image/*" onchange="handleImageUpload(this)"></label>
+                <div class="flex flex-col md:flex-row gap-2">
+                    <input type="text" class="input-modern flex-1" placeholder="Paste URL or click Upload ➔" value="${(t.image || '').replace(/"/g, '&quot;')}" oninput="siteData.aboutPage.team[${i}].image=this.value">
+                    <label class="bg-gray-100 hover:bg-gray-200 border border-gray-200 px-3 py-2 md:py-1 rounded cursor-pointer text-xs font-medium flex items-center justify-center gap-1">
+                        <i class="fas fa-upload"></i> Upload
+                        <input type="file" class="hidden" accept="image/*" onchange="handleImageUpload(this)">
+                    </label>
                 </div>
             </div>
           </div>
@@ -797,17 +1018,20 @@
 
     window.renderBlogCards = function() {
       document.getElementById('bp-cards-container').innerHTML = siteData.blogPage.blogs.map((b, i) => `
-        <div class="bg-white border border-gray-200 rounded-xl p-6 relative group hover:border-gray-300 transition-colors animate-fade-in-up">
+        <div class="bg-white border border-gray-200 rounded-xl p-5 relative group hover:border-gray-300 transition-colors animate-fade-in-up">
           <button onclick="removeBlogCard(${i})" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"><i class="fas fa-trash-alt"></i></button>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pr-6">
+          <div class="grid grid-cols-1 gap-4 pr-6">
             <div><label class="label-modern">Title</label><input type="text" class="input-modern font-semibold" value="${(b.title || '').replace(/"/g, '&quot;')}" oninput="siteData.blogPage.blogs[${i}].title=this.value"></div>
             <div><label class="label-modern">Link URL</label><input type="text" class="input-modern" value="${(b.link || '').replace(/"/g, '&quot;')}" oninput="siteData.blogPage.blogs[${i}].link=this.value"></div>
             <div class="md:col-span-2"><label class="label-modern">Description</label><textarea class="input-modern" rows="2" oninput="siteData.blogPage.blogs[${i}].desc=this.value">${b.desc}</textarea></div>
-            <div class="md:col-span-2">
+            <div>
                 <label class="label-modern">Image URL</label>
-                <div class="flex gap-2">
-                    <input type="text" class="input-modern flex-1" value="${(b.image || '').replace(/"/g, '&quot;')}" oninput="siteData.blogPage.blogs[${i}].image=this.value">
-                    <label class="bg-gray-100 hover:bg-gray-200 border border-gray-200 text-gray-700 px-3 py-1 rounded cursor-pointer text-xs font-medium flex items-center gap-1 transition-colors"><i class="fas fa-upload"></i> Upload<input type="file" class="hidden" accept="image/*" onchange="handleImageUpload(this)"></label>
+                <div class="flex flex-col md:flex-row gap-2">
+                    <input type="text" class="input-modern flex-1" placeholder="Paste URL or click Upload ➔" value="${(b.image || '').replace(/"/g, '&quot;')}" oninput="siteData.blogPage.blogs[${i}].image=this.value">
+                    <label class="bg-gray-100 hover:bg-gray-200 border border-gray-200 px-3 py-2 md:py-1 rounded cursor-pointer text-xs font-medium flex items-center justify-center gap-1">
+                        <i class="fas fa-upload"></i> Upload
+                        <input type="file" class="hidden" accept="image/*" onchange="handleImageUpload(this)">
+                    </label>
                 </div>
             </div>
           </div>
@@ -817,17 +1041,20 @@
 
     window.renderCases = function() {
       document.getElementById('cases-container').innerHTML = siteData.cases.map((c, i) => `
-        <div class="bg-white border border-gray-200 rounded-xl p-6 relative group hover:border-gray-300 transition-colors animate-fade-in-up">
+        <div class="bg-white border border-gray-200 rounded-xl p-5 relative group hover:border-gray-300 transition-colors animate-fade-in-up">
           <button onclick="removeCase(${i})" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"><i class="fas fa-trash-alt"></i></button>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pr-6">
-            <div><label class="label-modern">Industry Tag</label><input type="text" class="input-modern text-xs font-bold uppercase text-gray-500" value="${(c.tag || '').replace(/"/g, '&quot;')}" oninput="siteData.cases[${i}].tag=this.value"></div>
-            <div><label class="label-modern">Title</label><input type="text" class="input-modern font-semibold" value="${(c.title || '').replace(/"/g, '&quot;')}" oninput="siteData.cases[${i}].title=this.value"></div>
-            <div><label class="label-modern">Brief Description</label><textarea class="input-modern" rows="2" oninput="siteData.cases[${i}].cardDesc=this.value">${c.cardDesc}</textarea></div>
-            <div>
+            <div><label class="label-modern">Industry Tag</label><input type="text" class="input-modern" value="${(c.tag || '').replace(/"/g, '&quot;')}" oninput="siteData.cases[${i}].tag=this.value"></div>
+            <div><label class="label-modern">Title</label><input type="text" class="input-modern" value="${(c.title || '').replace(/"/g, '&quot;')}" oninput="siteData.cases[${i}].title=this.value"></div>
+            <div class="md:col-span-2"><label class="label-modern">Brief Description</label><textarea class="input-modern" rows="2" oninput="siteData.cases[${i}].cardDesc=this.value">${c.cardDesc}</textarea></div>
+            <div class="md:col-span-2">
                 <label class="label-modern">Image URL</label>
-                <div class="flex gap-2">
-                    <input type="text" class="input-modern flex-1" value="${(c.image || '').replace(/"/g, '&quot;')}" oninput="siteData.cases[${i}].image=this.value">
-                    <label class="bg-gray-100 hover:bg-gray-200 border border-gray-200 text-gray-700 px-3 py-1 rounded cursor-pointer text-xs font-medium flex items-center gap-1 transition-colors"><i class="fas fa-upload"></i> Upload<input type="file" class="hidden" accept="image/*" onchange="handleImageUpload(this)"></label>
+                <div class="flex flex-col md:flex-row gap-2">
+                    <input type="text" class="input-modern flex-1" placeholder="Paste URL or click Upload ➔" value="${(c.image || '').replace(/"/g, '&quot;')}" oninput="siteData.cases[${i}].image=this.value">
+                    <label class="bg-gray-100 hover:bg-gray-200 border border-gray-200 px-3 py-2 md:py-1 rounded cursor-pointer text-xs font-medium flex items-center justify-center gap-1">
+                        <i class="fas fa-upload"></i> Upload
+                        <input type="file" class="hidden" accept="image/*" onchange="handleImageUpload(this)">
+                    </label>
                 </div>
             </div>
             <div class="md:col-span-2 border-t border-gray-100 pt-4 mt-2"><label class="label-modern text-gray-800 font-semibold mb-3">Popup Detail Settings</label></div>
@@ -844,10 +1071,10 @@
       document.getElementById('services-container').innerHTML = siteData.services.map((s, i) => `
         <div class="bg-white border border-gray-200 rounded-xl p-5 relative group hover:border-gray-300 transition-colors animate-fade-in-up">
           <button onclick="removeService(${i})" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"><i class="fas fa-trash-alt"></i></button>
-          <div class="grid grid-cols-2 gap-4 pr-6">
-            <div><label class="label-modern">Category Title</label><input type="text" class="input-modern font-semibold text-gray-900" value="${s.title}" oninput="siteData.services[${i}].title=this.value"></div>
-            <div><label class="label-modern">Link URL</label><input type="text" class="input-modern text-blue-500" value="${s.link}" oninput="siteData.services[${i}].link=this.value"></div>
-            <div class="col-span-2"><label class="label-modern">Description</label><input type="text" class="input-modern" value="${s.desc}" oninput="siteData.services[${i}].desc=this.value"></div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pr-6">
+            <div><label class="label-modern">Category Title</label><input type="text" class="input-modern font-semibold" value="${s.title}" oninput="siteData.services[${i}].title=this.value"></div>
+            <div><label class="label-modern">Link URL</label><input type="text" class="input-modern" value="${s.link}" oninput="siteData.services[${i}].link=this.value"></div>
+            <div class="md:col-span-2"><label class="label-modern">Description</label><input type="text" class="input-modern" value="${s.desc}" oninput="siteData.services[${i}].desc=this.value"></div>
           </div>
         </div>
       `).join('');
@@ -857,10 +1084,10 @@
       document.getElementById('testimonials-container').innerHTML = siteData.testimonials.map((t, i) => `
         <div class="bg-white border border-gray-200 rounded-xl p-5 relative group hover:border-gray-300 transition-colors animate-fade-in-up">
           <button onclick="removeTestimonial(${i})" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"><i class="fas fa-trash-alt"></i></button>
-          <div class="grid grid-cols-2 gap-4 pr-6">
-            <div><label class="label-modern">Name</label><input type="text" class="input-modern font-medium" value="${t.name}" oninput="siteData.testimonials[${i}].name=this.value"></div>
+          <div class="grid grid-cols-1 gap-4 pr-6">
+            <div><label class="label-modern">Name / Company</label><input type="text" class="input-modern font-medium" value="${t.name}" oninput="siteData.testimonials[${i}].name=this.value"></div>
             <div><label class="label-modern">Role</label><input type="text" class="input-modern text-gray-500" value="${t.role}" oninput="siteData.testimonials[${i}].role=this.value"></div>
-            <div class="col-span-2"><label class="label-modern">Quote</label><textarea class="input-modern italic text-gray-700" rows="2" oninput="siteData.testimonials[${i}].quote=this.value">${t.quote}</textarea></div>
+            <div class="md:col-span-2"><label class="label-modern">Quote</label><textarea class="input-modern" rows="2" oninput="siteData.testimonials[${i}].quote=this.value">${t.quote}</textarea></div>
           </div>
         </div>
       `).join('');
@@ -878,61 +1105,64 @@
       `).join('');
     }
 
-    window.addHeroSlide = function() { siteData.hero.push({ title: 'New Slide', desc: 'Add description...', image: 'images/homeImg.png' }); window.renderHeroForms(); }
+    // 4) Array Operations
+    window.addHeroSlide = function() { siteData.hero.push({ title: 'New Slide', desc: '', image: '' }); window.renderHeroForms(); }
     window.removeHeroSlide = function(i) { siteData.hero.splice(i, 1); window.renderHeroForms(); }
-    window.addDetailedService = function() { siteData.detailedServices.push({ id: "new-service", category: "Marketing", navIcon: "fa-solid fa-star", title: "New Service", shortDesc: "Summary.", longDesc: "Detailed desc.", f1T: "Feature 1", f1D: "Desc", f2T: "Feature 2", f2D: "Desc", f3T: "Feature 3", f3D: "Desc" }); window.renderDetailedServices(); }
+    window.addDetailedService = function() { siteData.detailedServices.push({ id: "new-service", category: "Marketing", title: "New Service", shortDesc: "" }); window.renderDetailedServices(); }
     window.removeDetailedService = function(i) { siteData.detailedServices.splice(i, 1); window.renderDetailedServices(); }
-    window.addOffer = function() { siteData.offers.push({ title: 'New Offer', text: 'Discount text...', link: 'services.html', bgImage: 'images/19483797.jpg' }); window.renderOffers(); }
+    window.addOffer = function() { siteData.offers.push({ title: 'New Offer', text: '', link: '#', bgImage: '' }); window.renderOffers(); }
     window.removeOffer = function(i) { siteData.offers.splice(i, 1); window.renderOffers(); }
-    window.addClient = function() { siteData.clients.push({ name: 'New Client', image: 'https://upload.wikimedia.org/wikipedia/commons/a/ae/Google_2015_logo.svg' }); window.renderClients(); }
+    window.addClient = function() { siteData.clients.push({ name: 'Client Name', image: '' }); window.renderClients(); }
     window.removeClient = function(i) { siteData.clients.splice(i, 1); window.renderClients(); }
-    window.addAboutValue = function() { siteData.aboutPage.values.push({ title: 'New Value', text: 'Add text...' }); window.renderAboutPageValues(); }
+    window.addAboutValue = function() { siteData.aboutPage.values.push({ title: 'Value', text: '' }); window.renderAboutPageValues(); }
     window.removeAboutValue = function(i) { siteData.aboutPage.values.splice(i, 1); window.renderAboutPageValues(); }
-    window.addAboutTeam = function() { siteData.aboutPage.team.push({ name: 'Name', role: 'Role', image: 'https://picsum.photos/200' }); window.renderAboutPageTeam(); }
+    window.addAboutTeam = function() { siteData.aboutPage.team.push({ name: 'Name', role: 'Role', image: '' }); window.renderAboutPageTeam(); }
     window.removeAboutTeam = function(i) { siteData.aboutPage.team.splice(i, 1); window.renderAboutPageTeam(); }
-    window.addBlogCard = function() { siteData.blogPage.blogs.push({ title: 'New Blog Post', desc: 'Summary text...', image: 'https://picsum.photos/400/250', link: '#' }); window.renderBlogCards(); }
+    window.addBlogCard = function() { siteData.blogPage.blogs.push({ title: 'Title', desc: '', image: '', link: '#' }); window.renderBlogCards(); }
     window.removeBlogCard = function(i) { siteData.blogPage.blogs.splice(i, 1); window.renderBlogCards(); }
-    window.addCase = function() { siteData.cases.push({ tag: 'Tag', title: 'New Case', cardDesc: 'Summary...', image: 'images/4334329.jpg', popupIntro: 'Intro...', challenge: 'Challenge...', solution: 'Solution...', benefits: 'Benefit 1\nBenefit 2' }); window.renderCases(); }
+    window.addCase = function() { siteData.cases.push({ tag: 'Tag', title: 'Case', cardDesc: '', image: '' }); window.renderCases(); }
     window.removeCase = function(i) { siteData.cases.splice(i, 1); window.renderCases(); }
-    window.addService = function() { siteData.services.push({ title: 'New Category', desc: 'Desc...', link: '#' }); window.renderServices(); }
+    window.addService = function() { siteData.services.push({ title: 'Category', desc: '', link: '#' }); window.renderServices(); }
     window.removeService = function(i) { siteData.services.splice(i, 1); window.renderServices(); }
-    window.addTestimonial = function() { siteData.testimonials.push({ name: 'Name', role: 'Role', quote: 'Quote text...' }); window.renderTestimonials(); }
+    window.addTestimonial = function() { siteData.testimonials.push({ name: 'Name', quote: '' }); window.renderTestimonials(); }
     window.removeTestimonial = function(i) { siteData.testimonials.splice(i, 1); window.renderTestimonials(); }
     window.addFaq = function() { siteData.faqs.push({ q: 'Question?', a: 'Answer...' }); window.renderFaqs(); }
     window.removeFaq = function(i) { siteData.faqs.splice(i, 1); window.renderFaqs(); }
 
     window.updateVis = function(key, val) { siteData.sections[key] = val; }
+
     window.saveData = function() {
       localStorage.setItem('movictelCMSData', JSON.stringify(siteData));
       const toast = document.getElementById('toast-notification');
       toast.style.transform = 'translateX(0)'; toast.style.opacity = '1';
-      setTimeout(() => { toast.style.transform = 'translateX(10px)'; toast.style.opacity = '0'; }, 3000);
+      setTimeout(() => { toast.style.transform = 'translateX(20px)'; toast.style.opacity = '0'; }, 3000);
     }
+
     window.switchTab = function(id) {
       document.querySelectorAll('.tab-content').forEach(e => e.classList.remove('active'));
       document.querySelectorAll('.nav-link').forEach(e => {
           e.classList.remove('bg-gray-100', 'text-black', 'active-nav');
           e.classList.add('text-gray-600', 'hover:bg-gray-50', 'hover:text-black');
-          e.querySelector('i').classList.remove('text-black');
-          e.querySelector('i').classList.add('text-gray-400');
+          e.querySelector('i').classList.replace('text-gray-500', 'text-gray-400');
       });
       document.getElementById(id).classList.add('active');
       const nav = document.querySelector(`.nav-link[data-tab="${id}"]`);
       if(nav) {
           nav.classList.add('bg-gray-100', 'text-black', 'active-nav');
-          nav.classList.remove('text-gray-600', 'hover:bg-gray-50', 'hover:text-black');
-          nav.querySelector('i').classList.add('text-gray-500');
-          nav.querySelector('i').classList.remove('text-gray-400');
+          nav.classList.remove('text-gray-600', 'hover:bg-gray-50');
+          nav.querySelector('i').classList.replace('text-gray-400', 'text-gray-500');
           document.getElementById('current-tab-title').innerHTML = nav.innerText.trim();
       }
     }
+
     window.onload = window.init;
   </script>
 
-  <!-- FIREBASE AUTH SCRIPT -->
+  <!-- FIREBASE AUTH & DATABASE SCRIPT -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
+    import { getFirestore, collection, onSnapshot, query, orderBy, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCmMeoeZFsUeRKg2B6GM1riE1DpkmCHllw",
@@ -946,6 +1176,7 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
+    const db = getFirestore(app);
 
     const loginOverlay = document.getElementById('login-overlay');
     const appWrapper = document.getElementById('app-wrapper');
@@ -954,49 +1185,104 @@
     const loginBtn = document.getElementById('login-btn');
     const logoutBtn = document.getElementById('logout-btn');
 
+    let unsubContact = null;
+    let unsubService = null;
+
+    // GLOBAL DELETE FUNCTION
+    window.deleteLead = async (collectionName, documentId) => {
+        if (confirm("Are you sure you want to delete this lead? This cannot be undone.")) {
+            try {
+                await deleteDoc(doc(db, collectionName, documentId));
+            } catch (err) {
+                console.error("Delete error:", err);
+                alert("Failed to delete. Check console.");
+            }
+        }
+    };
+
+    // Render Database Rows (Exactly 7 Columns as requested)
+    const renderRows = (data, tbodyId, collectionName) => {
+      const tbody = document.getElementById(tbodyId);
+      if (!tbody) return;
+      tbody.innerHTML = data.map(l => `
+        <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+            <td class="p-4 text-gray-600 whitespace-nowrap">${l.timestamp ? new Date(l.timestamp).toLocaleString() : '-'}</td>
+            <td class="p-4 font-medium text-gray-900 whitespace-nowrap">${l.name || '-'}</td>
+            <td class="p-4 text-gray-600">${l.email || '-'}</td>
+            
+            <!-- Phone Column -->
+            <td class="p-4 text-gray-600 font-medium">${l.phone || '-'}</td>
+            
+            <!-- Subject or Service Column -->
+            <td class="p-4 text-gray-600">
+                ${collectionName === 'service_leads' 
+                  ? (l.service_type ? `<span class="bg-blue-100 text-blue-700 px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wider uppercase">${l.service_type}</span>` : '-') 
+                  : (l.subject || '-')}
+            </td>
+            
+            <!-- Message Column -->
+            <td class="p-4 text-gray-600 max-w-xs truncate" title="${(l.message || '').replace(/"/g, '&quot;')}">${l.message || '-'}</td>
+            
+            <!-- Action Column -->
+            <td class="p-4 text-center">
+                <button onclick="deleteLead('${collectionName}', '${l.id}')" class="text-red-500 hover:text-red-700 p-2 rounded-full hover:bg-red-50 transition-colors" title="Delete Lead">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+        </tr>
+      `).join('');
+    };
+
+    // Listen to Auth State (PREVENTS PERMISSION CRASHES)
     onAuthStateChanged(auth, (user) => {
-        if (user) {
-            loginOverlay.classList.add('opacity-0', 'pointer-events-none');
-            setTimeout(() => loginOverlay.classList.add('hidden'), 300);
-            appWrapper.classList.remove('hidden');
-            appWrapper.classList.add('flex');
-            if (typeof window.init === 'function') window.init();
+      if (user) {
+        loginOverlay.classList.add('opacity-0', 'pointer-events-none');
+        setTimeout(() => loginOverlay.classList.add('hidden'), 300);
+        appWrapper.classList.remove('hidden');
+        appWrapper.classList.add('flex');
+
+        if (typeof window.init === 'function') window.init();
 
         // ONLY LOAD DATABASE AFTER LOGIN
         unsubContact = onSnapshot(query(collection(db, "contact_leads"), orderBy("timestamp", "desc")), (snapshot) => {
           renderRows(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })), 'contact-table-body', 'contact_leads');
-        }, (error) => console.warn("Firebase Contact Leads Blocked:", error.message));
+        });
 
         unsubService = onSnapshot(query(collection(db, "service_leads"), orderBy("timestamp", "desc")), (snapshot) => {
           renderRows(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })), 'service-table-body', 'service_leads');
-        }, (error) => console.warn("Firebase Service Leads Blocked:", error.message));
+        });
 
       } else {
-            loginOverlay.classList.remove('hidden');
-            setTimeout(() => loginOverlay.classList.remove('opacity-0', 'pointer-events-none'), 10);
-            appWrapper.classList.add('hidden');
-            appWrapper.classList.remove('flex');
-        }
+        loginOverlay.classList.remove('hidden');
+        setTimeout(() => loginOverlay.classList.remove('opacity-0', 'pointer-events-none'), 10);
+        appWrapper.classList.add('hidden');
+        appWrapper.classList.remove('flex');
+
+        if (unsubContact) unsubContact();
+        if (unsubService) unsubService();
+      }
     });
 
+    // Handle Login
     loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        loginBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Authenticating...';
-        loginBtn.disabled = true;
-        loginError.classList.add('hidden');
-        try {
-            await signInWithEmailAndPassword(auth, document.getElementById('admin-email').value, document.getElementById('admin-password').value);
-            loginForm.reset();
-        } catch (error) {
-            loginError.textContent = "Invalid email or password. Please try again.";
-            loginError.classList.remove('hidden');
-        } finally {
-            loginBtn.innerHTML = 'Sign In to CMS';
-            loginBtn.disabled = false;
-        }
+      e.preventDefault();
+      loginBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Authenticating...';
+      loginBtn.disabled = true;
+      loginError.classList.add('hidden');
+      try {
+        await signInWithEmailAndPassword(auth, document.getElementById('admin-email').value, document.getElementById('admin-password').value);
+        loginForm.reset();
+      } catch (error) {
+        loginError.textContent = "Invalid email or password. Please try again.";
+        loginError.classList.remove('hidden');
+      } finally {
+        loginBtn.innerHTML = 'Sign In to CMS';
+        loginBtn.disabled = false;
+      }
     });
 
-    if(logoutBtn) logoutBtn.addEventListener('click', () => signOut(auth));
+    // Handle Logout
+    if (logoutBtn) logoutBtn.addEventListener('click', () => signOut(auth));
   </script>
 </body>
 </html>
