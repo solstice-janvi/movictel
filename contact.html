@@ -482,10 +482,12 @@
   <!-- CMS DATA BINDING SCRIPT -->
   <script>
     (function() {
-      const storedData = localStorage.getItem('movictelCMSData');
-      if (!storedData) return;
-      try {
-        const data = JSON.parse(storedData);
+     const storedData = localStorage.getItem('movictelCMSData');
+    // Block the script if data is missing OR if it equals the word "undefined"
+    if (!storedData || storedData === "undefined") return; 
+    
+    try {
+      const data = JSON.parse(storedData);
         
         // UPDATE HEADER AND FOOTER SERVICE LINKS DYNAMICALLY
         if (data.detailedServices && Array.isArray(data.detailedServices)) {
