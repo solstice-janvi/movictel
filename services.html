@@ -840,10 +840,13 @@
 
   // 1.5 CMS DATA INJECTION
   (function() {
+     
       const storedData = localStorage.getItem('movictelCMSData');
-      if(!storedData) return;
-      try {
-          const data = JSON.parse(storedData);
+    // Block the script if data is missing OR if it equals the word "undefined"
+    if (!storedData || storedData === "undefined") return; 
+    
+    try {
+      const data = JSON.parse(storedData);
           if(data.detailedServices && data.detailedServices.length > 0) {
               
               // Clear hardcoded data completely to prevent ghost entries
