@@ -1651,22 +1651,32 @@
 
 <!-- New Split Testimonial Swiper Initialization -->
 <script>
-  if(document.querySelector('.splitTestimonialSwiper')) {
-    new Swiper('.splitTestimonialSwiper', {
-      slidesPerView: 1,
-      spaceBetween: 20,
-      navigation: {
-        nextEl: '.custom-testi-next',
-        prevEl: '.custom-testi-prev',
-      },
-      breakpoints: {
-        768: {
-          slidesPerView: 2,
-          spaceBetween: 30,
+  // Wait for CMS data to load before triggering Swiper
+  window.addEventListener('DOMContentLoaded', () => {
+    if(document.querySelector('.splitTestimonialSwiper')) {
+      new Swiper('.splitTestimonialSwiper', {
+        slidesPerView: 1,
+        spaceBetween: 20,
+        loop: true, /* Enables infinite scrolling */
+        observer: true, /* Watches for dynamic CMS data updates */
+        observeParents: true,
+        autoplay: {
+          delay: 3000, /* 3 seconds delay between slides */
+          disableOnInteraction: false, /* Keeps autoplaying even if the user clicks arrows */
+        },
+        navigation: {
+          nextEl: '.custom-testi-next',
+          prevEl: '.custom-testi-prev',
+        },
+        breakpoints: {
+          768: {
+            slidesPerView: 2,
+            spaceBetween: 30,
+          }
         }
-      }
-    });
-  }
+      });
+    }
+  });
 </script>
 
 <script src="js/script.js"></script>
@@ -1674,3 +1684,4 @@
 <script src="js/hoperise-motion.js"></script>
 
 </html>
+
