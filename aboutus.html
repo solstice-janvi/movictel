@@ -764,7 +764,49 @@
     });
   }
   </script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
 
+  const app = initializeApp({
+      apiKey: "AIzaSyCmMeoeZFsUeRKg2B6GM1riE1DpkmCHllw",
+      authDomain: "movictel.firebaseapp.com",
+      projectId: "movictel"
+  });
+  const db = getFirestore(app);
+
+  const form = document.querySelector('.service-form');
+  if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = form.querySelector('button');
+        const ogText = btn.innerHTML;
+        btn.innerHTML = 'Sending...';
+        btn.disabled = true;
+
+        let activeService = window.location.hash ? window.location.hash.substring(1).replace(/-/g, ' ').toUpperCase() : document.getElementById('form-service-type').value;
+
+        try {
+          await addDoc(collection(db, 'service_leads'), { 
+            name: form.querySelector('input[name="Name"]').value,
+            email: form.querySelector('input[name="Email"]').value,
+            phone: form.querySelector('input[name="Phone"]').value, // Correctly grabs Phone
+            service_type: activeService, 
+            message: form.querySelector('textarea[name="Message"]').value,
+            timestamp: Date.now()
+          });
+          alert('Service request sent successfully!');
+          form.reset();
+        } catch (error) {
+          console.error("Firebase Error:", error);
+          alert('Error sending message. Check console.');
+        } finally {
+          btn.innerHTML = ogText;
+          btn.disabled = false;
+        }
+      });
+  }
+</script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script src="js/script.js"></script>
 
