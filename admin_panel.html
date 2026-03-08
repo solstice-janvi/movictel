@@ -685,8 +685,19 @@
     let siteData = {};
 
     window.init = function() {
-      const stored = localStorage.getItem('movictelCMSData');
-      siteData = stored ? JSON.parse(stored) : JSON.parse(JSON.stringify(defaultSiteData));
+  const stored = localStorage.getItem('movictelCMSData');
+  try {
+    // Safely check that it exists AND isn't the literal string "undefined"
+    if (stored && stored !== "undefined") {
+      siteData = JSON.parse(stored);
+    } else {
+      siteData = JSON.parse(JSON.stringify(defaultSiteData));
+    }
+  } catch (e) {
+    console.warn("Storage parse error, resetting to default data", e);
+    siteData = JSON.parse(JSON.stringify(defaultSiteData));
+  }
+
       
       // Strict Fallbacks
       if (!siteData.sections) siteData.sections = defaultSiteData.sections;
