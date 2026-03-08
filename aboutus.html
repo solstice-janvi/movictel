@@ -549,9 +549,11 @@
   <script>
     (function() {
       const storedData = localStorage.getItem('movictelCMSData');
-      if (!storedData) return;
-      try {
-        const data = JSON.parse(storedData);
+    // Block the script if data is missing OR if it equals the word "undefined"
+    if (!storedData || storedData === "undefined") return; 
+    
+    try {
+      const data = JSON.parse(storedData);
         
         // 0. SECTION VISIBILITY CONTROLS
         if(data.sections) {
