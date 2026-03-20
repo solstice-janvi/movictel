@@ -159,6 +159,8 @@
       display: flex;
       flex-wrap: wrap;
       width: 100%;
+      max-width: 1400px; /* Constrains width on large screens */
+      margin: 0 auto;    /* Centers the section */
       /* background-color: #f4f5f7; */
       position: relative;
     }
@@ -389,67 +391,29 @@
 
   <!-- Full Width Stack Carousel -->
 <!-- Services Stack Carousel -->
-<section class="hero-slider">
-  <div class="slider-container">
+<!-- ===== NEW IMAGE BANNER SLIDER ===== -->
+<section class="banner-section">
+  <div class="banner-container">
+    <div class="swiper bannerSwiper">
+      <div class="swiper-wrapper" id="bannerWrapper">
+        
+        <!-- Fallback Static Slides (Will be overwritten by CMS) -->
+        <div class="swiper-slide">
+          <img src="images/homeImg.png" alt="Banner Image">
+        </div>
+        <div class="swiper-slide">
+          <img src="images/homeImg.png" alt="Banner Image">
+        </div>
 
-    <!-- Slide 1 -->
-    <div class="slide active">
-      <div class="slide-content">
-        <div class="text">
-          <h1>Boost Your Online <span>Presence</span></h1>
-          <p>Grow your business with professional SEO services in India.</p>
-          <a href="#"><button>Get Started</button></a>
-        </div>
-        <div class="image">
-          <img src="images/homeImg.png">
-        </div>
       </div>
+      
+      <!-- Navigation Arrows -->
+      <div class="swiper-button-next banner-next"></div>
+      <div class="swiper-button-prev banner-prev"></div>
+      
+      <!-- Pagination Dots -->
+      <div class="swiper-pagination banner-pagination"></div>
     </div>
-
-    <!-- Slide 2 -->
-    <div class="slide">
-      <div class="slide-content">
-        <div class="text">
-          <h1>Grow Your Business <span>Digitally</span></h1>
-          <p>Expert digital marketing services including SEO, PPC, and Social Media Marketing.</p>
-          <a href="#"><button>Get Started</button></a>
-        </div>
-        <div class="image">
-          <img src="images/homeImg.png">
-        </div>
-      </div>
-    </div>
-
-    <!-- Slide 3 -->
-    <div class="slide">
-      <div class="slide-content">
-        <div class="text">
-          <h1>Web & App <span>Development</span></h1>
-          <p>Responsive websites, landing pages, and scalable applications for your business.</p>
-          <a href="#"><button>Get Started</button></a>
-        </div>
-        <div class="image">
-          <img src="images/homeImg.png">
-        </div>
-      </div>
-    </div>
-
-    <!-- Navigation Arrows -->
-    <button class="prev">&#10094;</button>
-    <button class="next">&#10095;</button>
-
-    <!-- Dots -->
-    <div class="dots">
-      <span class="dot active"></span>
-      <span class="dot"></span>
-      <span class="dot"></span>
-    </div>
-
-    <!-- Floating Background Elements -->
-    <div class="floating circle1"></div>
-    <div class="floating circle2"></div>
-    <div class="floating circle3"></div>
-
   </div>
 </section>
 
@@ -1317,8 +1281,10 @@
 <!-- CMS DATA BINDING SCRIPT -->
 <script>
   (function() {
+    
     const storedData = localStorage.getItem('movictelCMSData');
-    if (!storedData) return; // Ignore if no CMS data exists
+    // Block the script if data is missing OR if it equals the word "undefined"
+    if (!storedData || storedData === "undefined") return; 
     
     try {
       const data = JSON.parse(storedData);
@@ -1339,33 +1305,17 @@
       toggleVis('.split-testimonial-wrap', data.sections.testimonials);
 
       // 2. HERO SLIDER
-      const sliderCont = document.querySelector('.hero-slider .slider-container');
-      if (sliderCont && data.hero && Array.isArray(data.hero)) {
-        // Clean out old slides 
-        sliderCont.querySelectorAll('.slide').forEach(e => e.remove());
-        const dotsContainer = sliderCont.querySelector('.dots');
-        if (dotsContainer) dotsContainer.innerHTML = '';
-        const prevBtn = sliderCont.querySelector('.prev');
+      // 2. HERO BANNER SLIDER (Updated for Image-Only Layout)
+      const bannerWrapper = document.getElementById('bannerWrapper');
+      if (bannerWrapper && data.hero && Array.isArray(data.hero)) {
+        bannerWrapper.innerHTML = ''; // Clean out hardcoded fallback slides
         
-        data.hero.forEach((slide, i) => {
+        data.hero.forEach((slide) => {
            const div = document.createElement('div');
-           div.className = `slide ${i === 0 ? 'active' : ''}`;
-           div.innerHTML = `
-              <div class="slide-content">
-                <div class="text">
-                  <h1>${slide.title}</h1>
-                  <p>${slide.desc}</p>
-                  <a href="#"><button>Get Started</button></a>
-                </div>
-                <div class="image"><img src="${slide.image}"></div>
-              </div>`;
-           sliderCont.insertBefore(div, prevBtn);
-           
-           if (dotsContainer) {
-               const dot = document.createElement('span');
-               dot.className = `dot ${i === 0 ? 'active' : ''}`;
-               dotsContainer.appendChild(dot);
-           }
+           div.className = 'swiper-slide';
+           // Injects ONLY the image to act as a banner
+           div.innerHTML = `<img src="${slide.image}" alt="Banner Image">`;
+           bannerWrapper.appendChild(div);
         });
       }
 
@@ -1678,10 +1628,36 @@
     }
   });
 </script>
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    
+    // ===== Initialize the New Image Banner Slider =====
+    if(document.querySelector('.bannerSwiper')) {
+      new Swiper('.bannerSwiper', {
+        slidesPerView: 1,
+        loop: true,
+        autoplay: {
+          delay: 4000, /* 4 seconds per image */
+          disableOnInteraction: false,
+        },
+        navigation: {
+          nextEl: '.banner-next',
+          prevEl: '.banner-prev',
+        },
+        pagination: {
+          el: '.banner-pagination',
+          clickable: true,
+        },
+        effect: 'fade', /* Optional: Creates a smooth cross-fade effect like Xiaomi */
+        fadeEffect: { crossFade: true }
+      });
+    }
 
+    // ... (Your other Swiper initializations like .splitTestimonialSwiper are here) ...
+  });
+</script>
 <script src="js/script.js"></script>
 <!-- Your animation file (AFTER GSAP) -->
 <script src="js/hoperise-motion.js"></script>
 
 </html>
-
