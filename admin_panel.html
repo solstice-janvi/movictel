@@ -867,16 +867,15 @@
     window.renderHeroForms = function() {
       document.getElementById('hero-forms').innerHTML = `
         <div class="flex justify-between items-center mb-4 mt-2">
-            <h3 class="font-semibold text-gray-900">Hero Slides</h3>
-            <button onclick="addHeroSlide()" class="text-xs font-medium text-black bg-white border border-gray-200 px-3 py-1.5 rounded hover:bg-gray-50 shadow-sm">+ Add Slide</button>
+            <h3 class="font-semibold text-gray-900">Banner Slides (Images Only)</h3>
+            <button onclick="addHeroSlide()" class="text-xs font-medium text-black bg-white border border-gray-200 px-3 py-1.5 rounded hover:bg-gray-50 shadow-sm">+ Add Image</button>
         </div>
         <div class="space-y-4">
             ${siteData.hero.map((slide, i) => `
                 <div class="bg-white border border-gray-200 rounded-xl p-5 relative group hover:border-gray-300 transition-colors animate-fade-in-up">
                     <button onclick="removeHeroSlide(${i})" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all"><i class="fas fa-trash-alt"></i></button>
-                    <h4 class="text-xs font-bold text-gray-400 uppercase mb-4">Slide ${i + 1}</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div><label class="label-modern">Headline (HTML Allowed)</label><input type="text" class="input-modern" value="${(slide.title || '').replace(/"/g, '&quot;')}" oninput="siteData.hero[${i}].title=this.value"></div>
+                    <h4 class="text-xs font-bold text-gray-400 uppercase mb-4">Banner Image ${i + 1}</h4>
+                    <div class="grid grid-cols-1 gap-4">
                         <div>
                             <label class="label-modern">Image URL</label>
                             <div class="flex flex-col xl:flex-row gap-2">
@@ -887,13 +886,11 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="md:col-span-2"><label class="label-modern">Description</label><input type="text" class="input-modern" value="${(slide.desc || '').replace(/"/g, '&quot;')}" oninput="siteData.hero[${i}].desc=this.value"></div>
                     </div>
                 </div>
             `).join('')}
         </div>`;
     }
-
     window.renderOffers = function() {
       document.getElementById('offers-container').innerHTML = siteData.offers.map((o, i) => `
         <div class="bg-white border border-gray-200 rounded-xl p-5 relative group hover:border-gray-300 transition-colors animate-fade-in-up">
