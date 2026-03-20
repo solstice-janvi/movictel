@@ -150,7 +150,9 @@ header .container {
   justify-content: space-between;
   align-items: center;
   height: 100%;
-  width: 90%;
+  width: 96%; 
+  max-width: 1800px; 
+  margin: 0 auto;
 }
 
 /* Logo */
@@ -2975,13 +2977,38 @@ header nav ul li.dropdown.open > .dropdown-menu {
 }
 
 /* --- Large Screens (Min: 1400px) --- */
+/* --- Large Screens (Min: 1400px) --- */
 @media (min-width: 1400px) {
   .slide-content h1 {
-    font-size: 3.5rem;
+    font-size: 4.2rem; /* Scaled up properly */
   }
  
   .image-content img {
-    width: 360px;
+    width: 400px;
+  }
+  
+  /* Force main sections to center and not over-stretch */
+  .festival-offers .swiper,
+  .client-flow .flow-wrap {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+}
+
+/* --- Ultra-Wide Screens (4K / Min: 1920px) --- */
+@media (min-width: 1920px) {
+  html, body {
+    font-size: 18px; /* Slightly bumps up global text size for readability */
+  }
+  
+  .slider-container, 
+  header .container,
+  .footer-container {
+    max-width: 1600px; /* Gives a bit more breathing room on 4K */
+  }
+  
+  .hero-slider {
+    min-height: 75vh; /* Prevents hero from being overly tall */
   }
 }
 
@@ -3341,4 +3368,420 @@ button,
         background-color: #018eec;
       }
     }
+  /* --- Large & Ultra-Wide Screens (Min: 1400px) --- */
+@media (min-width: 1400px) {
+  header { height: 100px; } /* Taller header */
+  header .logo img { max-height: 220px; } /* Bigger logo */
+  header nav { gap: 40px; } /* More space between menu and icons */
+  header nav ul li { margin: 15px; } 
+  header nav ul li a { font-size: 18px; } /* Bigger menu text */
+  header .social-icons a { 
+    width: 44px; 
+    height: 44px; 
+    font-size: 1.2rem; /* Bigger icons */
+  }
+}
+
+/* ==============================================================
+   FULL WIDTH RESPONSIVENESS FOR LARGE SCREENS (1400px & Ultra-Wide)
+   ============================================================== */
+@media (min-width: 1400px) {
+  /* 1. Force all main wrappers to spread 96% (matching the header spacing) */
+  .container,
+  .footer-container,
+  .ivr-container,
+  .about-container,
+  .slider-container,
+  .services-grid,
+  .split-testimonial-wrap,
+  .faq-container,
+  .case-wrapper,
+  .contact-section,
+  .blog-section,
+  .about-section,
+  .values-cards,
+  .team h2, 
+  .team-cards,
+  .swiper.servicesSwiper {
+    max-width: 96% !important;
+    width: 96% !important;
+  }
+
+  /* 2. Hero Section Spread */
+  .slide-content {
+    padding: 0 4%;
+  }
+  .image img {
+    max-width: 120%; /* Scales hero image up slightly to fill space */
+  }
+
+  /* 3. Who We Are Section Spread */
+  .who-we-are .container {
+    gap: 120px; /* Pushes text and image apart to fill the wide screen */
+  }
+  .image-content img {
+    max-width: 450px; /* Makes the spinning image larger */
+  }
+
+  /* 4. Services Grid / Slider Spread */
+  .services-grid {
+    gap: 40px;
+  }
+  .ser-card {
+    padding: 40px 30px;
+  }
+
+  /* 5. Split Testimonials Spread */
+  .split-testi-left {
+    width: 30%; /* Adjusts ratio for ultra-wide */
+  }
+  .split-testi-right {
+    width: 70%;
+  }
+  .custom-testi-prev {
+    left: -80px; 
+  }
+
+  /* 6. FAQ Grid (Prevents text lines from getting too long to read) */
+  .faq-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+  .faq-item {
+    margin-bottom: 0;
+    height: max-content;
+  }
+
+  /* 7. Footer Spread */
+  .footer-container {
+    grid-template-columns: 1.5fr 1fr 2.5fr; 
+    gap: 80px;
+  }
+}
+
+/* ==============================================================
+   4K MONITOR SCALING (1920px and up)
+   ============================================================== */
+@media (min-width: 1920px) {
+  /* Scale up text so the 100% width doesn't look empty */
+  .text h1 { font-size: 5rem; }
+  .text p { font-size: 1.5rem; }
+  .text button { font-size: 1.2rem; padding: 1rem 3rem; }
   
+  .ser-card h3 { font-size: 2.2rem; }
+  .ser-card p { font-size: 1.2rem; }
+  .sub-services li { font-size: 1.1rem; padding: 16px; }
+
+  .case-header h2 { font-size: 3rem; }
+  .case-header .subtext { font-size: 1.2rem; }
+  
+  .split-testi-card { min-height: 400px; padding: 60px 50px; }
+  .testi-text { font-size: 1.2rem; }
+}
+/* ============================
+   PREMIUM RESPONSIVE BANNER SLIDER
+============================ */
+/* 1. Base Styles (Laptops & Standard Desktops) */
+.banner-section {
+  width: 100%;
+
+  padding: 40px 0 50px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.banner-container {
+  width: 96%;
+  max-width: 1600px;
+  position: relative;
+}
+
+.bannerSwiper {
+  width: 100%;
+  height: 65vh; 
+  min-height: 400px;
+  max-height: 700px;
+  border-radius: 24px;
+  border: 2px solid var(--ig-blue);
+  overflow: hidden;
+  background-color: #f8f9ff;
+  transition: all 0.4s ease;
+}
+
+/* UI/UX: Blue Box Shadow & Lift on Hover */
+.bannerSwiper:hover {
+  box-shadow: 0 20px 50px rgba(1, 142, 236, 0.35);
+  transform: translateY(-5px);
+}
+
+.bannerSwiper .swiper-slide {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bannerSwiper .swiper-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures image fills the box without distortion */
+  object-position: center;
+}
+
+/* UI/UX: Beautiful Navigation Arrows */
+.banner-next, .banner-prev {
+  color: white !important;
+  background: var(--ig-blue);
+  width: 50px !important;
+  height: 50px !important;
+  border-radius: 50%;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+  opacity: 0; 
+  transform: scale(0.8);
+}
+
+.bannerSwiper:hover .banner-next,
+.bannerSwiper:hover .banner-prev {
+  opacity: 1; 
+  transform: scale(1);
+}
+
+.banner-next:after, .banner-prev:after {
+  font-size: 20px !important;
+  font-weight: bold;
+}
+
+.banner-next:hover, .banner-prev:hover {
+  background: var(--ig-purple);
+  box-shadow: 0 6px 20px rgba(1, 142, 236, 0.5);
+}
+
+/* Modern Pill-Shaped Pagination Dots */
+.banner-pagination {
+  bottom: 20px !important;
+}
+.banner-pagination .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background: white;
+  opacity: 0.6;
+  border: 1px solid rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+.banner-pagination .swiper-pagination-bullet-active {
+  opacity: 1;
+  background: var(--ig-blue);
+  width: 30px; 
+  border-radius: 10px;
+  border: none;
+}
+
+/* ============================
+   RESPONSIVE BREAKPOINTS
+============================ */
+
+/* 2. Ultra-Wide & 4K Monitors (1800px and up) */
+@media (min-width: 1800px) {
+  .banner-container {
+    width: 98%; /* Spread wider to the edges */
+    max-width: 2400px; /* Allow massive expansion */
+  }
+  .bannerSwiper {
+    height: 75vh;
+    max-height: 950px; /* Allow slider to be taller so it doesn't look squished */
+    border-radius: 30px; /* Slightly larger curve for massive screens */
+  }
+}
+
+/* 3. Tablets (Max: 1024px) */
+@media (max-width: 1024px) {
+  .bannerSwiper {
+    height: 45vh;
+    min-height: 300px;
+  }
+}
+
+/* 4. Mobile Phones (Max: 768px) */
+@media (max-width: 768px) {
+  .banner-section {
+    margin-top: 20px; /* Less space needed under mobile header */
+    padding-bottom: 30px;
+  }
+  .banner-container {
+    width: 92%; /* Gives a bit of breathing room so border is clearly visible */
+  }
+  .bannerSwiper {
+    height: 30vh;
+    min-height: 180px !important; /* Critical override: prevents cutoff on phones */
+    border-radius: 16px;
+    border: 1px solid var(--ig-blue); /* Thinner border for small screens */
+  }
+  /* Hide hover effects and arrows for touch screens */
+  .bannerSwiper:hover {
+    transform: none;
+    box-shadow: none;
+  }
+  .banner-next, .banner-prev {
+    display: none !important;
+  }
+  /* Smaller pagination dots */
+  .banner-pagination {
+    bottom: 10px !important;
+  }
+  .banner-pagination .swiper-pagination-bullet {
+    width: 8px;
+    height: 8px;
+  }
+  .banner-pagination .swiper-pagination-bullet-active {
+    width: 22px;
+  }
+}
+
+/* =========================================================
+   FESTIVAL OFFERS - LARGE SCREEN RESPONSIVENESS
+========================================================= */
+
+/* 1. Center and constrain the slider width so it matches your new banner */
+.festival-offers .swiper {
+  width: 96%;
+  max-width: 1600px;
+  margin: 0 auto;
+  border-radius: 18px;
+}
+
+/* --- 2. Laptops & Standard Desktops (Min: 1400px) --- */
+@media (min-width: 1400px) {
+  .offer-card {
+    height: 400px; /* Increase height so background image looks proportional */
+  }
+  .offer-content h3 {
+    font-size: 2.2rem;
+  }
+  .offer-content p {
+    font-size: 1.25rem;
+  }
+  .offer-content .btn {
+    font-size: 1.1rem;
+    padding: 12px 28px;
+  }
+}
+
+/* --- 3. Ultra-Wide & 4K Monitors (Min: 1800px) --- */
+@media (min-width: 1800px) {
+  .festival-offers .swiper {
+    width: 98%;
+    max-width: 2400px; /* Allow massive expansion to the edges */
+  }
+  .offer-card {
+    height: 500px; /* Much taller height to prevent 'squished' look */
+  }
+  .festival-offers h2 {
+    font-size: 3.5rem;
+  }
+  .festival-offers .sub-text {
+    font-size: 1.4rem;
+    margin-bottom: 60px;
+  }
+  .offer-content h3 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+  }
+  .offer-content p {
+    font-size: 1.5rem;
+    margin-bottom: 25px;
+  }
+  .offer-content .btn {
+    font-size: 1.3rem;
+    padding: 15px 35px;
+  }
+}
+/* =========================================================
+   LANDING PAGE HERO BANNER - MOBILE RESPONSIVENESS
+========================================================= */
+
+/* --- Tablets (Max: 1024px) --- */
+@media (max-width: 1024px) {
+  .banner-container {
+    width: 94%;
+  }
+  .bannerSwiper {
+    height: 45vh;
+    min-height: 300px;
+  }
+}
+
+/* --- Mobile Phones (Max: 768px) --- */
+@media (max-width: 768px) {
+  .banner-section { 
+    margin-top: 15px; 
+    padding-bottom: 0px !important; /* Removes the huge gap between the slider and 'Who We Are' */
+    margin-bottom: 0px !important;
+  }
+  
+  .banner-container { 
+    width: 94%; 
+  }
+  
+  .bannerSwiper {
+    /* MAGIC FIX: Prevents the image from squishing or cropping badly on mobile */
+    height: clamp(180px, 50vw, 280px) !important; 
+    min-height: 180px !important; 
+    border-radius: 16px;
+    border-width: 1.5px;
+    padding-bottom: 0px !important; /* Removes the white bar inside the slider border */
+    display: flex;
+  }
+  
+  /* Forces the image to perfectly fill the container */
+  .bannerSwiper .swiper-slide {
+    height: 100% !important;
+  }
+  
+  .bannerSwiper .swiper-slide img {
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block;
+  }
+
+  /* Disable hover lift effect on touch devices */
+  .bannerSwiper:hover { 
+    transform: translateZ(0); 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
+  }
+  
+  /* Hide arrows to save space for the image */
+  .banner-next, .banner-prev { 
+    display: none !important; 
+  }
+  
+  /* Adjust Pagination Dots to overlay beautifully on the image */
+  .banner-pagination { 
+    bottom: 12px !important; 
+  }
+  .banner-pagination .swiper-pagination-bullet { 
+    width: 8px; 
+    height: 8px; 
+    margin: 0 4px !important;
+    background: white !important; /* White dots so they show up over dark images */
+    opacity: 0.8; 
+    border: 1px solid rgba(0,0,0,0.2);
+  }
+  .banner-pagination .swiper-pagination-bullet-active { 
+    width: 24px !important; /* Pill shape for active dot */
+    border-radius: 10px !important;
+    background: var(--ig-blue) !important;
+    border: none !important;
+    opacity: 1;
+  }
+}
+
+/* --- Extra Small Phones (Max: 480px) --- */
+@media (max-width: 480px) {
+  .bannerSwiper {
+    height: clamp(150px, 55vw, 220px) !important; /* Slightly more compact for tiny screens */
+    min-height: 150px !important;
+  }
+}
