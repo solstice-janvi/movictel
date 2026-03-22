@@ -1342,6 +1342,7 @@
       toggleVis('.split-testimonial-wrap', data.sections.testimonials);
 
       // 2. HERO BANNER SLIDER (Responsive Picture Layout)
+      // 2. HERO BANNER SLIDER (Responsive Picture Layout)
       const bannerWrapper = document.getElementById('bannerWrapper');
       if (bannerWrapper && data.hero && Array.isArray(data.hero)) {
         bannerWrapper.innerHTML = ''; 
@@ -1353,11 +1354,11 @@
            // Fallback to desktop image if no mobile image is provided yet
            const mobileImgSrc = slide.imageMobile ? slide.imageMobile : slide.image;
            
-           // Use the <picture> tag to swap images at the 768px breakpoint
+           // Added inline styles to <picture> and <img> to force full coverage
            div.innerHTML = `
-             <picture>
+             <picture style="display: block; width: 100%; height: 100%;">
                <source media="(max-width: 768px)" srcset="${mobileImgSrc}">
-               <img src="${slide.image}" alt="Banner Image" style="width: 100%; height: 100%; object-fit: cover;">
+               <img src="${slide.image}" alt="Banner Image" style="width: 100%; height: 100%; object-fit: cover; display: block; object-position: center;">
              </picture>
            `;
            bannerWrapper.appendChild(div);
