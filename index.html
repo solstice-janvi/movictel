@@ -23,6 +23,7 @@
 
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.12/typed.min.js"></script>
+
   
   <!-- Custom Styles for Scroll & Footer Features -->
   <style>
@@ -42,6 +43,16 @@
     }
     body {
       padding-top: 80px; 
+    }
+    @media (max-width: 1023px) {
+      body {
+        padding-top: 90px; /* Adjust for mobile header auto-height */
+      }
+    }
+    @media (min-width: 1400px) {
+      body {
+        padding-top: 100px; /* Adjust for large screen 100px header */
+      }
     }
 
     /* Back to Top Button */
@@ -387,11 +398,27 @@
 
   </div>
 </header>
-<!-- ... existing code ... -->
-
-  <!-- Full Width Stack Carousel -->
-<!-- Services Stack Carousel -->
-<!-- ===== NEW IMAGE BANNER SLIDER ===== -->
+<div class="service-marquee">
+  <div class="marquee-content">
+    <span><i class="fa-solid fa-bullhorn"></i> Social Media Marketing</span>
+    <span><i class="fa-solid fa-chart-line"></i> Google & Meta Ads</span>
+    <span><i class="fa-solid fa-message"></i> Bulk SMS</span>
+    <span><i class="fa-brands fa-whatsapp"></i> WhatsApp Business API</span>
+    <span><i class="fa-solid fa-microphone"></i> Voice SMS</span>
+    <span><i class="fa-solid fa-code"></i> Website Development</span>
+    <span><i class="fa-solid fa-mobile-screen"></i> App Development</span>
+    <span><i class="fa-solid fa-magnifying-glass"></i> SEO & Visibility</span>
+    <!-- Seamless Loop Match -->
+    <span><i class="fa-solid fa-bullhorn"></i> Social Media Marketing</span>
+    <span><i class="fa-solid fa-chart-line"></i> Google & Meta Ads</span>
+    <span><i class="fa-solid fa-message"></i> Bulk SMS</span>
+    <span><i class="fa-brands fa-whatsapp"></i> WhatsApp Business API</span>
+    <span><i class="fa-solid fa-microphone"></i> Voice SMS</span>
+    <span><i class="fa-solid fa-code"></i> Website Development</span>
+    <span><i class="fa-solid fa-mobile-screen"></i> App Development</span>
+    <span><i class="fa-solid fa-magnifying-glass"></i> SEO & Visibility</span>
+  </div>
+</div>
 <section class="banner-section">
   <div class="banner-container">
     <div class="swiper bannerSwiper">
@@ -1161,15 +1188,15 @@
   // ==========================================
   // MOBILE MENU
   // ==========================================
-  const menuToggle = document.getElementById("menuToggle");
-  const navMenu = document.querySelector("header nav");
-
-  if (menuToggle && navMenu) {
-    menuToggle.addEventListener("click", () => {
-      navMenu.classList.toggle("active");
-      menuToggle.classList.toggle("active");
+  const dropdownLinks = document.querySelectorAll("header nav ul li.dropdown > a");
+  dropdownLinks.forEach(link => {
+    link.addEventListener("click", function(e) {
+      if (window.innerWidth <= 992) {
+        e.preventDefault();
+        this.parentElement.classList.toggle("open");
+      }
     });
-  }
+  });
 
   // ==========================================
   // TILT HOVER EFFECT
@@ -1633,24 +1660,30 @@
     
     // ===== Initialize the New Image Banner Slider =====
     if(document.querySelector('.bannerSwiper')) {
-      new Swiper('.bannerSwiper', {
-        slidesPerView: 1,
-        loop: true,
-        autoplay: {
-          delay: 4000, /* 4 seconds per image */
-          disableOnInteraction: false,
-        },
-        navigation: {
-          nextEl: '.banner-next',
-          prevEl: '.banner-prev',
-        },
-        pagination: {
-          el: '.banner-pagination',
-          clickable: true,
-        },
-        effect: 'fade', /* Optional: Creates a smooth cross-fade effect like Xiaomi */
-        fadeEffect: { crossFade: true }
-      });
+     new Swiper('.bannerSwiper', {
+  slidesPerView: 1,
+  loop: true,
+  speed: 1000, /* 1-second smooth transition */
+  autoplay: {
+    delay: 4000,
+    disableOnInteraction: false,
+  },
+  navigation: { nextEl: '.banner-next', prevEl: '.banner-prev' },
+  pagination: { el: '.banner-pagination', clickable: true },
+  
+  /* --- NEW UNIQUE TRANSITION EFFECT --- */
+  effect: 'creative',
+  creativeEffect: {
+    prev: {
+      shadow: true,
+      translate: ["-20%", 0, -1],
+      scale: 0.8
+    },
+    next: {
+      translate: ["100%", 0, 0],
+    },
+  }
+});
     }
 
     // ... (Your other Swiper initializations like .splitTestimonialSwiper are here) ...
