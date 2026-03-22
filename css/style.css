@@ -1,4 +1,3 @@
-
 :root {
   /* Instagram-Inspired Palette */
   --ig-blue: #018eec;
@@ -56,8 +55,6 @@ body {
   line-height: 1.6;
   scrollbar-width: thin;
   scrollbar-color: #018eec transparent;
- 
-  /* color: var(--ig-dark); */
 }
 
 img {
@@ -130,7 +127,7 @@ header {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 999;
+  z-index: 1001; /* Elevated z-index */
   transition:
     background 0.4s ease,
     padding 0.3s ease;
@@ -257,80 +254,80 @@ header .social-icons a:hover {
   transform: translateY(-3px);
 }
 
-  #main-header {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      transition: transform 0.3s ease-in-out;
-      background-color: #fff; /* Ensures background stays solid when sticky */
-    }
-    #main-header.nav-hidden {
-      transform: translateY(-100%);
-    }
+#main-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transition: transform 0.3s ease-in-out;
+    background-color: #fff; /* Ensures background stays solid when sticky */
+  }
+  #main-header.nav-hidden {
+    transform: translateY(-100%);
+  }
 
-    /* Back to Top Arrow */
-    #backToTop {
-      display: none;
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      z-index: 999;
-      background-color: #018eec;
-      color: white;
-      border: none;
-      outline: none;
-      cursor: pointer;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      font-size: 20px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      transition: background-color 0.3s, transform 0.3s;
-      align-items: center;
-      justify-content: center;
-    }
-    #backToTop:hover {
-      background-color: #0056b3;
-      transform: translateY(-5px);
-    }
-    #backToTop.show {
-      display: flex;
-      animation: fadeInArrow 0.3s ease-in-out;
-    }
-    @keyframes fadeInArrow {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+  /* Back to Top Arrow */
+  #backToTop {
+    display: none;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 999;
+    background-color: #018eec;
+    color: white;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    transition: background-color 0.3s, transform 0.3s;
+    align-items: center;
+    justify-content: center;
+  }
+  #backToTop:hover {
+    background-color: #0056b3;
+    transform: translateY(-5px);
+  }
+  #backToTop.show {
+    display: flex;
+    animation: fadeInArrow 0.3s ease-in-out;
+  }
+  @keyframes fadeInArrow {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
 
-    /* Expandable Footer */
-    .footer-collapsible {
-      display: none; /* Hidden by default */
-      opacity: 0;
-    }
-    .footer-collapsible.expanded {
-      display: block;
-      animation: expandFooter 0.5s ease forwards;
-    }
-    @keyframes expandFooter {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .footer-toggle-btn {
-      background: none;
-      border: none;
-      color: #018eec;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      padding: 10px 0;
-      margin-top: 15px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .footer-toggle-btn i {
-      transition: transform 0.3s ease;
-    }
+  /* Expandable Footer */
+  .footer-collapsible {
+    display: none; /* Hidden by default */
+    opacity: 0;
+  }
+  .footer-collapsible.expanded {
+    display: block;
+    animation: expandFooter 0.5s ease forwards;
+  }
+  @keyframes expandFooter {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .footer-toggle-btn {
+    background: none;
+    border: none;
+    color: #018eec;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 10px 0;
+    margin-top: 15px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .footer-toggle-btn i {
+    transition: transform 0.3s ease;
+  }
 
 
 .menu-toggle {
@@ -338,6 +335,7 @@ header .social-icons a:hover {
   font-size: 26px;
   cursor: pointer;
   color: var(--ig-blue);
+  z-index: 1002;
 }
 
 /* Mobile Social Icons (Hidden by default) */
@@ -447,24 +445,53 @@ header nav ul li .dropdown-menu li.has-submenu:hover > .submenu {
   text-align: center;
   margin-right: 6px;
   font-size: 16px;
-  /* color: #018eec; */
 }
 
 .submenu a:hover {
-  /* background: #dcf0ff; */
   transform: translateX(4px);
-  /* color: var(--ig-gray); */
 }
 
 /* ============================
-   HERO / HOME SLIDER
+   ROLLING MARQUEE
+============================ */
+.service-marquee {
+  width: 100%;
+  background: linear-gradient(90deg, #018eec, #015fa8);
+  color: #fff;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  z-index: 10;
+}
+.marquee-content {
+  display: flex;
+  white-space: nowrap;
+  animation: marqueeRoll 25s linear infinite;
+  min-width: 200%;
+}
+.marquee-content span {
+  margin: 0 40px;
+  font-size: 15px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+@keyframes marqueeRoll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ============================
+   HERO / HOME SLIDER (FULL SCREEN)
 ============================ */
 /* ===== Hero Slider Styles ===== */
 .hero-slider {
   position: relative;
   width: 100%;
   min-height: 90vh;
- /* background: radial-gradient(circle at left, var(--ig-gray), #fff 60%); */
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -474,12 +501,11 @@ header nav ul li .dropdown-menu li.has-submenu:hover > .submenu {
 
 .slider-container {
   width: 100%;
-  max-width: 1400px;   /* keeps content centered on large screens */
+  max-width: 1400px;
   margin: auto;
-  padding: 2rem 60px;  /* inner spacing for text only */
+  padding: 2rem 60px;
   position: relative;
 }
-
 
 /* ===== Slides ===== */
 .slide {
@@ -503,8 +529,7 @@ header nav ul li .dropdown-menu li.has-submenu:hover > .submenu {
   align-items: center;
   gap: 2rem;
   flex-wrap: nowrap;
- 
-  padding: 0 2rem; /* Adds padding so text doesn't touch edges */
+  padding: 0 2rem;
 }
 
 .text {
@@ -551,8 +576,6 @@ header nav ul li .dropdown-menu li.has-submenu:hover > .submenu {
 }
 .image img {
   max-width: 100%;
-  /* border-radius: 20px; */
-  /* box-shadow: 0 20px 60px rgba(1, 142, 236, 0.2); */
   transition: transform 0.5s ease;
 }
 .image img:hover {
@@ -577,7 +600,6 @@ header nav ul li .dropdown-menu li.has-submenu:hover > .submenu {
   transition: 0.3s;
 }
 
-/* push fully to edges */
 .prev {
   left: 10px;
 }
@@ -591,7 +613,6 @@ header nav ul li .dropdown-menu li.has-submenu:hover > .submenu {
   background: #0166b3;
   transform: translateY(-50%) scale(1.15);
 }
-
 
 /* ===== Dots ===== */
 .dots {
@@ -861,9 +882,6 @@ header nav ul li .dropdown-menu li.has-submenu:hover > .submenu {
 .illustration-card {
   width: 360px;
   aspect-ratio: 4 / 5;
-  /* border-radius: 32px; */
-  /* background: linear-gradient(180deg, #f8f9ff, #ffffff); */
-  /* box-shadow: 0 50px 90px rgba(0, 0, 0, 0.18); */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -895,13 +913,6 @@ header nav ul li .dropdown-menu li.has-submenu:hover > .submenu {
     transform: translateX(0);
   }
 }
-
-/* ============================
-   SERVICES STACK CAROUSEL
-============================ */
-/* ================================
-   SERVICES – CLASSY LANDING CAROUSEL
-================================ */
 
 /* ============================
    IVR SECTION
@@ -968,7 +979,6 @@ header nav ul li .dropdown-menu li.has-submenu:hover > .submenu {
 ============================ */
 .client-flow {
   padding:10px 0;
-    /* background: radial-gradient(circle at left, var(--ig-gray), #fff 60%); */
   overflow: hidden;
 }
 
@@ -983,10 +993,8 @@ header nav ul li .dropdown-menu li.has-submenu:hover > .submenu {
 
 .flow-wrap {
   position: relative;
-  /* overflow: hidden; */
 }
 
-/* Edge blur mask */
 .flow-wrap::before,
 .flow-wrap::after {
   content: "";
@@ -1000,11 +1008,9 @@ header nav ul li .dropdown-menu li.has-submenu:hover > .submenu {
 
 .flow-wrap::before {
   left: 0;
-  /* background: linear-gradient(to right, var(--ig-gray) 20%, transparent); */
 }
 .flow-wrap::after {
   right: 0;
-  /* background: linear-gradient(to left,  var(--ig-gray) 20%, transparent); */
 }
 
 .flow-track {
@@ -1023,7 +1029,6 @@ header nav ul li .dropdown-menu li.has-submenu:hover > .submenu {
   height: 200px;
   border-radius: 28px;
   background: var(--ig-gray);
-  /* box-shadow: 0 20px 45px rgba(0, 0, 0, 0.12); */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1040,7 +1045,6 @@ header nav ul li .dropdown-menu li.has-submenu:hover > .submenu {
 }
 .flow-card:hover {
   transform: translateY(-14px) rotate(-1deg);
-  /* box-shadow: 0 30px 70px rgba(106, 27, 154, 0.25); */
 }
 .flow-card img {
   max-width: 120px;
@@ -1067,23 +1071,12 @@ header nav ul li .dropdown-menu li.has-submenu:hover > .submenu {
     transform: translateX(-50%);
   }
 }
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-12px);
-  }
-}
 
 /* ============================
    CASE STUDIES & ELEGANT
 ============================ */
 .case-elegant {
   padding: 60px 40px 10px 40px;
-  /* background: radial-gradient(circle at left, var(--ig-gray), #fff 60%); */
-
 }
 
 .case-header {
@@ -1143,7 +1136,6 @@ header nav ul li .dropdown-menu li.has-submenu:hover > .submenu {
   top: -48px;
   left: 35px;
   background: #fff;
-  /* box-shadow: 0 10px 25px rgba(1,142,236,0.25); */
   transition: transform 0.35s ease;
 }
 
@@ -1178,15 +1170,12 @@ header nav ul li .dropdown-menu li.has-submenu:hover > .submenu {
 .case-item h3 {
   margin-top: 28px;
   font-size: 18px;
-  /* color: #1b1b1b; */
-  /* color: #015fa8; */
 }
 
 .case-item p {
   margin: 14px 0 22px;
   font-size: 14px;
   line-height: 1.7;
-  /* color: #555; */
 }
 
 .case-item a {
@@ -1205,7 +1194,6 @@ header nav ul li .dropdown-menu li.has-submenu:hover > .submenu {
   transform: translateX(4px);
 }
 .case-item {
- 
   position: absolute;
   width: 90%;
   max-width: 360px;
@@ -1280,7 +1268,6 @@ header nav ul li .dropdown-menu li.has-submenu:hover > .submenu {
 .popup-intro {
   margin: 10px 0 25px;
   color: #405de6;
-  /* color: #555; */
 }
 
 .popup-sections {
@@ -1324,7 +1311,6 @@ background: linear-gradient(135deg, #0166b3, #018eec);
 ============================ */
 .carousel-container {
   width: 100%;
-  /* max-width: 900px; */
   height: 420px;
   position: relative;
   perspective: 1200px;
@@ -1334,7 +1320,6 @@ background: linear-gradient(135deg, #0166b3, #018eec);
 .carousel-track {
   width: 100%;
   height: 100%;
-  /* padding: 40px; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1381,14 +1366,12 @@ background: linear-gradient(135deg, #0166b3, #018eec);
 .card.right-1 {
   z-index: 5;
   transform: scale(0.9) translateZ(-100px);
-  /* opacity: 0.8; */
   filter: blur(2px) grayscale(100%);
 }
 .card.left-2,
 .card.right-2 {
   z-index: 1;
   transform: scale(0.8) translateZ(-200px);
-  /* opacity: 0.6; */
   filter: blur(4px) grayscale(100%);
 }
 .card.hidden {
@@ -1618,7 +1601,6 @@ background: linear-gradient(135deg, #0166b3, #018eec);
 }
 .testimonials {
   padding: 90px 20px;
-  /* background: linear-gradient(135deg, #eef2f7, #ffffff); */
   font-family: 'Poppins', sans-serif;
   text-align: center;
 }
@@ -1701,7 +1683,6 @@ background: linear-gradient(135deg, #0166b3, #018eec);
   position: absolute;
   width: 320px;
   height: 320px;
-  /* background: radial-gradient(circle, var(--ig-pink), transparent); */
   filter: blur(140px);
   opacity: 0.35;
   animation: orbFloat 22s ease-in-out infinite alternate;
@@ -1963,7 +1944,6 @@ background: linear-gradient(135deg, #0166b3, #018eec);
 
   .ser-card p {
     font-size: 0.95rem;
-    /* align-items: center; */
     text-align: center;
     color:  #050505;
     line-height: 1.55;
@@ -1982,7 +1962,7 @@ background: linear-gradient(135deg, #0166b3, #018eec);
   }
   
 .sub-services a {
-  color: #333;                 /* clean dark */
+  color: #333;                 
   font-size: 0.88rem;
   text-decoration: none;
   display: inline-flex;
@@ -1992,12 +1972,10 @@ background: linear-gradient(135deg, #0166b3, #018eec);
     transform 0.25s ease;
 }
 
-/* remove underline effect inside cards */
 .sub-services a::after {
   display: none;
 }
 
-/* hover state */
 .sub-services a:hover {
   
   text-decoration: none;
@@ -2091,15 +2069,15 @@ background: linear-gradient(135deg, #0166b3, #018eec);
 }
 
 .footer-logo {
-  line-height: 0; /* kills inline image gap */
+  line-height: 0;
 }
 
 /* LOGO */
 .footer-logo img {
-  display: block;   /* VERY IMPORTANT */
+  display: block;   
   width: 150px;
   height: auto;
-  margin: 0;        /* remove bottom spacing */
+  margin: 0;        
   padding: 0;
 }
 
@@ -2430,26 +2408,22 @@ background: linear-gradient(135deg, #0166b3, #018eec);
     width: 100%;
     margin-left: 15px;
   }
-  /* header nav ul li.dropdown:hover > .dropdown-menu,
-  header nav ul li .dropdown-menu li.has-submenu:hover > .submenu {
-    all: unset;
-  } */
 
   header nav ul li .dropdown-menu {
-  position: static;
-  display: none;
-  opacity: 1;
-  visibility: visible;
-  transform: none;
-  background: #f8f9ff;
-  margin-top: 6px;
-  border-radius: 10px;
-  padding: 6px 0;
-  width: 100%;
-}
-header nav ul li.dropdown.open > .dropdown-menu {
-  display: block;
-}
+    position: static;
+    display: none;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    background: #f8f9ff;
+    margin-top: 6px;
+    border-radius: 10px;
+    padding: 6px 0;
+    width: 100%;
+  }
+  header nav ul li.dropdown.open > .dropdown-menu {
+    display: block;
+  }
 
   /* Swiper Arrows */
   .swiper-button-next,
@@ -2464,19 +2438,28 @@ header nav ul li.dropdown.open > .dropdown-menu {
   header .container {
     flex-wrap: wrap;
   }
+  
+  /* ======== FIX: Mobile Nav Overlay properly isolated ======== */
   header nav {
-    max-height: calc(100vh - 80px); /* adjust if header height differs */
+    position: absolute;
+    top: 80px; /* Right below the header height */
+    left: 0;
+    width: 100%;
+    background: #fff;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    z-index: 1000;
+    display: none; 
+    flex-direction: column;
+    padding: 20px 0;
+    max-height: calc(100vh - 80px);
     overflow-y: auto;
     overscroll-behavior: contain;
-    -webkit-overflow-scrolling: touch;
-    width: 100%;
-    display: none;
-   background: var(--ig-gray);
-    padding: 20px 0;
   }
+  
   header nav.active {
-    display: block;
+    display: flex !important;
   }
+  
   header nav > ul {
     flex-direction: column;
     gap: 15px;
@@ -2498,6 +2481,8 @@ header nav ul li.dropdown.open > .dropdown-menu {
   }
   .menu-toggle {
     display: block;
+    z-index: 1002;
+    position: relative;
   }
 
   /* Social Icons */
@@ -2516,92 +2501,6 @@ header nav ul li.dropdown.open > .dropdown-menu {
     width: 42px;
     height: 42px;
     border-radius: 50%;
-    /* festival offer */
-.festival-offers {
-  padding: 80px 20px;
-  background:transparent;
-  text-align: center;
-  font-family: 'Poppins', sans-serif;
-}
-
-.festival-offers h2 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 10px;
-  color: #222;
-  position: relative;
-}
-
-.festival-offers h2::after {
-  content: "";
-  width: 90px;
-  height: 4px;
-    background: linear-gradient(135deg, #018eec, #0166b3);
-  display: block;
-  margin: 12px auto 0;
-  border-radius: 4px;
-}
-
-.festival-offers .sub-text {
-  font-size: 1rem;
-  color: #444;
-  margin-bottom: 40px;
-}
-
-.offer-card {
-  position: relative;
-  height: 300px;
-  border-radius: 18px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  background-size: cover;
-  background-position: center;
-  box-shadow: 0px 8px 25px rgba(0,0,0,0.2);
-}
-
-.offer-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.55);
-}
-
-.offer-content {
-  position: relative;
-  color: #fff;
-  z-index: 2;
-  padding: 20px;
-}
-
-.offer-content h3 {
-  font-size: 1.8rem;
-  margin-bottom: 10px;
-}
-
-.offer-content p {
-  font-size: 1.1rem;
-  margin-bottom: 15px;
-}
-
-.offer-content strong {
-  color: #018eec;
-}
-
-.offer-content .btn {
-  padding: 10px 22px;
-  background: linear-gradient(135deg, #018eec, #0166b3);
-  border-radius: 25px;
-  text-decoration: none;
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: #fff;
-  transition: 0.3s;
-}
-
-.offer-content .btn:hover {
-   background: linear-gradient(135deg, #0166b3, #018eec);
     color: #fff !important;
     display: flex;
     align-items: center;
@@ -2680,7 +2579,7 @@ header nav ul li.dropdown.open > .dropdown-menu {
     height: 320px;
   }
 }
-}
+
 /* --- Mobile (Max: 768px) --- */
 @media (max-width: 768px) {
   /* Nav */
@@ -2861,7 +2760,6 @@ header nav ul li.dropdown.open > .dropdown-menu {
   .slide-content p {
     margin-bottom: 14px;
     font-size: 0.95rem;
-    /* color: #333; */
   }
   .slide-content .btn {
     margin-bottom: 18px;
@@ -2931,34 +2829,6 @@ header nav ul li.dropdown.open > .dropdown-menu {
     padding-right: 10px;
   }
 
-  /* IVR Cards */
-  /* .ivr-card,
-  .ivr-box,
-  .service-card {
-    width: 100% !important;
-    max-width: 100% !important;
-    margin: 0 auto 20px;
-  } */
-
-  /* Services Stack */
-  /* .service-item {
-    flex: 0 0 160px;
-    height: 240px;
-  }
-  .service-content {
-    padding: 10px;
-  }
-  .service-content h2 {
-    font-size: 16px;
-  }
-  .service-content p {
-    font-size: 11px;
-  }
-  .service-content button {
-    padding: 5px 12px;
-    font-size: 11px;
-  } */
-
   /* Popup */
   .case-popup {
     padding: 28px;
@@ -2976,7 +2846,6 @@ header nav ul li.dropdown.open > .dropdown-menu {
   }
 }
 
-/* --- Large Screens (Min: 1400px) --- */
 /* --- Large Screens (Min: 1400px) --- */
 @media (min-width: 1400px) {
   .slide-content h1 {
@@ -3011,11 +2880,6 @@ header nav ul li.dropdown.open > .dropdown-menu {
     min-height: 75vh; /* Prevents hero from being overly tall */
   }
 }
-
-/* HopeRise-style softness */
-/* section {
-  padding: clamp(80px, 10vw, 140px) 0;
-} */
 
 /* Card motion */
 .service-card,
@@ -3115,8 +2979,6 @@ button,
     right: 5px;
   }
 }
-
-
 
     /* ==========================================
        SCROLL & FOOTER FEATURES
@@ -3227,13 +3089,11 @@ button,
       display: flex;
       flex-wrap: wrap;
       width: 100%;
-      /* background-color: #f4f5f7; */
       position: relative;
     }
     .split-testi-left {
       width: 40%;
-      background: linear-gradient(135deg, #018eec, #0166b3); /* Dark navy/black theme color */
-      
+      background: linear-gradient(135deg, #018eec, #0166b3); 
       color: #fff;
   font-weight: 600;
       padding: 8% 8% 8% 8%;
@@ -3304,13 +3164,13 @@ button,
       margin-top: auto;
     }
     .testi-author-name {
-      color: #018eec; /* Muted name like in the image */
+      color: #018eec; 
       font-size: 0.95rem;
       font-weight: 500;
       margin-bottom: 5px;
     }
     .testi-author-role {
-      color:  #242d3f; /* Dark role like in the image */
+      color:  #242d3f; 
       font-size: 1rem;
       font-weight: 700;
     }
@@ -3320,7 +3180,7 @@ button,
       background-color: rgba(255, 255, 255, 0.1); 
       border: 1px solid rgba(255,255,255,0.2);
       color: #018eec;
-      background-color: #018eec; /* Using the yellow-gold from the image for buttons */
+      background-color: #018eec; 
       color: white;
       width: 45px;
       height: 45px;
@@ -3337,10 +3197,10 @@ button,
       transition: all 0.3s ease;
     }
     .custom-testi-prev:hover, .custom-testi-next:hover {
-      background-color: #018eec; /* Hover state adapts to your blue theme */
+      background-color: #018eec; 
     }
     .custom-testi-prev {
-      left: -140px; /* Positions perfectly in the dark space */
+      left: -140px; 
     }
     .custom-testi-next {
       right: 20px;
@@ -3370,15 +3230,15 @@ button,
     }
   /* --- Large & Ultra-Wide Screens (Min: 1400px) --- */
 @media (min-width: 1400px) {
-  header { height: 100px; } /* Taller header */
-  header .logo img { max-height: 220px; } /* Bigger logo */
-  header nav { gap: 40px; } /* More space between menu and icons */
+  header { height: 100px; } 
+  header .logo img { max-height: 220px; } 
+  header nav { gap: 40px; } 
   header nav ul li { margin: 15px; } 
-  header nav ul li a { font-size: 18px; } /* Bigger menu text */
+  header nav ul li a { font-size: 18px; } 
   header .social-icons a { 
     width: 44px; 
     height: 44px; 
-    font-size: 1.2rem; /* Bigger icons */
+    font-size: 1.2rem; 
   }
 }
 
@@ -3386,7 +3246,6 @@ button,
    FULL WIDTH RESPONSIVENESS FOR LARGE SCREENS (1400px & Ultra-Wide)
    ============================================================== */
 @media (min-width: 1400px) {
-  /* 1. Force all main wrappers to spread 96% (matching the header spacing) */
   .container,
   .footer-container,
   .ivr-container,
@@ -3407,23 +3266,20 @@ button,
     width: 96% !important;
   }
 
-  /* 2. Hero Section Spread */
   .slide-content {
     padding: 0 4%;
   }
   .image img {
-    max-width: 120%; /* Scales hero image up slightly to fill space */
+    max-width: 120%; 
   }
 
-  /* 3. Who We Are Section Spread */
   .who-we-are .container {
-    gap: 120px; /* Pushes text and image apart to fill the wide screen */
+    gap: 120px; 
   }
   .image-content img {
-    max-width: 450px; /* Makes the spinning image larger */
+    max-width: 450px; 
   }
 
-  /* 4. Services Grid / Slider Spread */
   .services-grid {
     gap: 40px;
   }
@@ -3431,9 +3287,8 @@ button,
     padding: 40px 30px;
   }
 
-  /* 5. Split Testimonials Spread */
   .split-testi-left {
-    width: 30%; /* Adjusts ratio for ultra-wide */
+    width: 30%; 
   }
   .split-testi-right {
     width: 70%;
@@ -3442,7 +3297,6 @@ button,
     left: -80px; 
   }
 
-  /* 6. FAQ Grid (Prevents text lines from getting too long to read) */
   .faq-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -3453,7 +3307,6 @@ button,
     height: max-content;
   }
 
-  /* 7. Footer Spread */
   .footer-container {
     grid-template-columns: 1.5fr 1fr 2.5fr; 
     gap: 80px;
@@ -3464,7 +3317,6 @@ button,
    4K MONITOR SCALING (1920px and up)
    ============================================================== */
 @media (min-width: 1920px) {
-  /* Scale up text so the 100% width doesn't look empty */
   .text h1 { font-size: 5rem; }
   .text p { font-size: 1.5rem; }
   .text button { font-size: 1.2rem; padding: 1rem 3rem; }
@@ -3479,40 +3331,40 @@ button,
   .split-testi-card { min-height: 400px; padding: 60px 50px; }
   .testi-text { font-size: 1.2rem; }
 }
+
 /* ============================
-   PREMIUM RESPONSIVE BANNER SLIDER
+   PREMIUM RESPONSIVE BANNER SLIDER (FULL SCREEN)
 ============================ */
-/* 1. Base Styles (Laptops & Standard Desktops) */
 .banner-section {
   width: 100%;
-
-  padding: 40px 0 50px 0;
+  padding: 0;
+  margin: 0;
   display: flex;
   justify-content: center;
 }
 
 .banner-container {
-  width: 96%;
-  max-width: 1600px;
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
   position: relative;
 }
 
 .bannerSwiper {
   width: 100%;
-  height: 65vh; 
+  height: calc(100vh - 120px); /* Fill space below header (80px) and marquee (40px) */
   min-height: 400px;
-  max-height: 700px;
-  border-radius: 24px;
-  border: 2px solid var(--ig-blue);
+  border-radius: 0; /* Fully square */
+  border: none;
   overflow: hidden;
-  background-color: #f8f9ff;
+  background-color: #000;
   transition: all 0.4s ease;
 }
 
-/* UI/UX: Blue Box Shadow & Lift on Hover */
 .bannerSwiper:hover {
-  box-shadow: 0 20px 50px rgba(1, 142, 236, 0.35);
-  transform: translateY(-5px);
+  box-shadow: none;
+  transform: none;
 }
 
 .bannerSwiper .swiper-slide {
@@ -3526,37 +3378,39 @@ button,
 .bannerSwiper .swiper-slide img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Ensures image fills the box without distortion */
+  object-fit: cover; 
   object-position: center;
 }
 
-/* UI/UX: Beautiful Navigation Arrows */
+/* UI/UX: Huge Classy Arrows */
 .banner-next, .banner-prev {
-  color: white !important;
-  background: var(--ig-blue);
-  width: 50px !important;
-  height: 50px !important;
-  border-radius: 50%;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  background: transparent !important;
+  box-shadow: none !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  width: 80px !important;
+  height: 100px !important;
+  border-radius: 0 !important;
   transition: all 0.3s ease;
-  opacity: 0; 
-  transform: scale(0.8);
+  transform: translateY(-50%) !important;
+  margin-top: 0 !important;
 }
 
 .bannerSwiper:hover .banner-next,
 .bannerSwiper:hover .banner-prev {
-  opacity: 1; 
-  transform: scale(1);
+  color: #ffffff !important;
 }
 
 .banner-next:after, .banner-prev:after {
-  font-size: 20px !important;
-  font-weight: bold;
+  font-size: 80px !important;
+  font-weight: 200 !important; /* Elegant thin font weight */
+  text-shadow: 0 4px 15px rgba(0,0,0,0.4);
 }
 
 .banner-next:hover, .banner-prev:hover {
-  background: var(--ig-purple);
-  box-shadow: 0 6px 20px rgba(1, 142, 236, 0.5);
+  background: transparent !important;
+  box-shadow: none !important;
+  color: #fff !important;
+  transform: translateY(-50%) scale(1.1) !important;
 }
 
 /* Modern Pill-Shaped Pagination Dots */
@@ -3580,54 +3434,58 @@ button,
 }
 
 /* ============================
-   RESPONSIVE BREAKPOINTS
+   RESPONSIVE BREAKPOINTS FOR BANNER
 ============================ */
 
 /* 2. Ultra-Wide & 4K Monitors (1800px and up) */
 @media (min-width: 1800px) {
   .banner-container {
-    width: 98%; /* Spread wider to the edges */
-    max-width: 2400px; /* Allow massive expansion */
+    width: 100%; 
+    max-width: 100%; 
   }
   .bannerSwiper {
-    height: 75vh;
-    max-height: 950px; /* Allow slider to be taller so it doesn't look squished */
-    border-radius: 30px; /* Slightly larger curve for massive screens */
+    height: calc(100vh - 120px);
+    max-height: none; 
+    border-radius: 0; 
   }
 }
 
 /* 3. Tablets (Max: 1024px) */
 @media (max-width: 1024px) {
   .bannerSwiper {
-    height: 45vh;
-    min-height: 300px;
+    height: 50vh;
+    min-height: 350px;
   }
 }
 
 /* 4. Mobile Phones (Max: 768px) */
 @media (max-width: 768px) {
   .banner-section {
-    margin-top: 20px; /* Less space needed under mobile header */
+    margin-top: 0px; 
     padding-bottom: 30px;
   }
   .banner-container {
-    width: 92%; /* Gives a bit of breathing room so border is clearly visible */
+    width: 100%; 
   }
   .bannerSwiper {
-    height: 30vh;
-    min-height: 180px !important; /* Critical override: prevents cutoff on phones */
-    border-radius: 16px;
-    border: 1px solid var(--ig-blue); /* Thinner border for small screens */
+    height: calc(100vh - 120px) !important; 
+    min-height: 300px !important; 
+    border-radius: 0;
+    border: none; 
   }
-  /* Hide hover effects and arrows for touch screens */
+  
   .bannerSwiper:hover {
     transform: none;
     box-shadow: none;
   }
+  /* Keep arrows visible but smaller */
   .banner-next, .banner-prev {
-    display: none !important;
+    display: flex !important;
+    width: 40px !important;
   }
-  /* Smaller pagination dots */
+  .banner-next:after, .banner-prev:after {
+    font-size: 40px !important;
+  }
   .banner-pagination {
     bottom: 10px !important;
   }
@@ -3644,7 +3502,6 @@ button,
    FESTIVAL OFFERS - LARGE SCREEN RESPONSIVENESS
 ========================================================= */
 
-/* 1. Center and constrain the slider width so it matches your new banner */
 .festival-offers .swiper {
   width: 96%;
   max-width: 1600px;
@@ -3652,10 +3509,9 @@ button,
   border-radius: 18px;
 }
 
-/* --- 2. Laptops & Standard Desktops (Min: 1400px) --- */
 @media (min-width: 1400px) {
   .offer-card {
-    height: 400px; /* Increase height so background image looks proportional */
+    height: 400px; 
   }
   .offer-content h3 {
     font-size: 2.2rem;
@@ -3669,14 +3525,13 @@ button,
   }
 }
 
-/* --- 3. Ultra-Wide & 4K Monitors (Min: 1800px) --- */
 @media (min-width: 1800px) {
   .festival-offers .swiper {
     width: 98%;
-    max-width: 2400px; /* Allow massive expansion to the edges */
+    max-width: 2400px; 
   }
   .offer-card {
-    height: 500px; /* Much taller height to prevent 'squished' look */
+    height: 500px; 
   }
   .festival-offers h2 {
     font-size: 3.5rem;
@@ -3698,44 +3553,13 @@ button,
     padding: 15px 35px;
   }
 }
-/* =========================================================
-   LANDING PAGE HERO BANNER - MOBILE RESPONSIVENESS
-========================================================= */
-
-/* --- Tablets (Max: 1024px) --- */
-@media (max-width: 1024px) {
-  .banner-container {
-    width: 94%;
-  }
-  .bannerSwiper {
-    height: 45vh;
-    min-height: 300px;
-  }
-}
 
 /* --- Mobile Phones (Max: 768px) --- */
 @media (max-width: 768px) {
-  .banner-section { 
-    margin-top: 15px; 
-    padding-bottom: 0px !important; /* Removes the huge gap between the slider and 'Who We Are' */
-    margin-bottom: 0px !important;
-  }
-  
-  .banner-container { 
-    width: 94%; 
-  }
-  
   .bannerSwiper {
-    /* MAGIC FIX: Prevents the image from squishing or cropping badly on mobile */
-    height: clamp(180px, 50vw, 280px) !important; 
-    min-height: 180px !important; 
-    border-radius: 16px;
-    border-width: 1.5px;
-    padding-bottom: 0px !important; /* Removes the white bar inside the slider border */
     display: flex;
   }
   
-  /* Forces the image to perfectly fill the container */
   .bannerSwiper .swiper-slide {
     height: 100% !important;
   }
@@ -3746,42 +3570,17 @@ button,
     display: block;
   }
 
-  /* Disable hover lift effect on touch devices */
-  .bannerSwiper:hover { 
-    transform: translateZ(0); 
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08); 
-  }
-  
-  /* Hide arrows to save space for the image */
-  .banner-next, .banner-prev { 
-    display: none !important; 
-  }
-  
-  /* Adjust Pagination Dots to overlay beautifully on the image */
-  .banner-pagination { 
-    bottom: 12px !important; 
-  }
   .banner-pagination .swiper-pagination-bullet { 
-    width: 8px; 
-    height: 8px; 
     margin: 0 4px !important;
-    background: white !important; /* White dots so they show up over dark images */
+    background: white !important; 
     opacity: 0.8; 
     border: 1px solid rgba(0,0,0,0.2);
   }
   .banner-pagination .swiper-pagination-bullet-active { 
-    width: 24px !important; /* Pill shape for active dot */
+    width: 24px !important; 
     border-radius: 10px !important;
     background: var(--ig-blue) !important;
     border: none !important;
     opacity: 1;
-  }
-}
-
-/* --- Extra Small Phones (Max: 480px) --- */
-@media (max-width: 480px) {
-  .bannerSwiper {
-    height: clamp(150px, 55vw, 220px) !important; /* Slightly more compact for tiny screens */
-    min-height: 150px !important;
   }
 }
