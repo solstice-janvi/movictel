@@ -99,7 +99,7 @@
     }
   </style>
 
-  <!-- Image Upload Handling Script (Fixed querySelector Error) -->
+  <!-- Image Upload Handling Script -->
   <script>
     window.handleImageUpload = function(inputElement) {
         const file = inputElement.files[0];
@@ -108,7 +108,6 @@
         const label = inputElement.parentElement;
         const originalHTML = label.innerHTML;
         
-        // BULLETPROOF TEXT INPUT FINDER
         const container = inputElement.closest('div');
         const textInput = container ? container.querySelector('input[type="text"]') : null;
 
@@ -117,7 +116,6 @@
             return;
         }
         
-        // Show loading state
         label.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
         label.classList.add('opacity-50', 'pointer-events-none');
         
@@ -127,7 +125,7 @@
             img.onload = function() {
                 try {
                     const canvas = document.createElement('canvas');
-                    const MAX_SIZE = 800; // Cap width/height to prevent LocalStorage from crashing
+                    const MAX_SIZE = 800; 
                     let width = img.width;
                     let height = img.height;
 
@@ -139,25 +137,16 @@
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, width, height);
                     
-                    // Compress to JPEG to keep data size small
                     const compressedBase64 = canvas.toDataURL('image/jpeg', 0.6);
-                    
                     textInput.value = compressedBase64;
-                    
-                    // Force data-binding update
                     textInput.dispatchEvent(new Event('input', { bubbles: true }));
-                    if (textInput.hasAttribute('oninput')) {
-                        const fn = new Function('event', textInput.getAttribute('oninput'));
-                        fn.call(textInput, { target: textInput });
-                    }
                 } catch(err) {
                     console.error("Compression error:", err);
                     alert("Failed to process image.");
                 } finally {
-                    // Restore button UI
                     label.innerHTML = originalHTML;
                     label.classList.remove('opacity-50', 'pointer-events-none');
-                    inputElement.value = ''; // Reset input
+                    inputElement.value = ''; 
                 }
             };
             img.src = e.target.result;
@@ -180,11 +169,11 @@
           <form id="login-form" class="space-y-5">
               <div>
                   <label class="label-modern">Email Address</label>
-                  <input type="email" id="admin-email" class="input-modern" placeholder="admin@movictel.com" required>
+                  <input type="email" id="admin-email" class="input-modern" placeholder="admin@movictel.com" required autocomplete="username">
               </div>
               <div>
                   <label class="label-modern">Password</label>
-                  <input type="password" id="admin-password" class="input-modern" placeholder="••••••••" required>
+                  <input type="password" id="admin-password" class="input-modern" placeholder="••••••••" required autocomplete="current-password">
               </div>
               <div id="login-error" class="text-red-500 text-xs font-medium hidden text-center bg-red-50 p-2 rounded border border-red-100"></div>
               <button type="submit" id="login-btn" class="w-full bg-black hover:bg-gray-800 text-white font-medium py-2.5 rounded-lg transition-colors flex justify-center items-center shadow-sm active:scale-95">
@@ -296,7 +285,7 @@
                     <div class="bg-white border border-gray-200 rounded-xl p-5 md:p-8 shadow-sm">
                         <h3 class="text-lg font-semibold text-gray-900 mb-6">Manage Section Visibility</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-y-4 md:gap-y-6 gap-x-16" id="visibility-toggles">
-                            <!-- Injected via JS -->
+                            <p class="text-gray-500 text-sm">Loading global configuration...</p>
                         </div>
                     </div>
                 </div>
@@ -546,12 +535,11 @@
   </div> <!-- End App Wrapper -->
 
   <script>
-    // 1) Define Data Schema (Fully synced to index.html to prevent JSON parse errors)
+    // 1) Define Data Schema (Fully populated with content exactly matching the Live Website and Video)
     const defaultSiteData = {
       hero: [
-        { title: "Boost Your Online <span>Presence</span>", desc: "Grow your business with professional SEO services in India.", image: "images/homeImg.png" },
-        { title: "Grow Your Business <span>Digitally</span>", desc: "Expert digital marketing services including SEO, PPC, and Social Media Marketing.", image: "images/homeImg.png" },
-        { title: "Web & App <span>Development</span>", desc: "Responsive websites, landing pages, and scalable applications for your business.", image: "images/homeImg.png" }
+        { image: "images/19483797.jpg" },
+        { image: "images/19483797.jpg" }
       ],
       about: {
         title: "Who We Are", 
@@ -627,9 +615,9 @@
       ],
       servicesHeading: "Our Services",
       services: [
-        { title: "Marketing", desc: "Build visibility, trust, and conversions with strategic marketing.", link: "social-media-marketing.html" },
-        { title: "Promote", desc: "Engage customers instantly with powerful messaging solutions.", link: "bulk-sms.html" },
-        { title: "Development", desc: "Design and develop high-performing digital platforms.", link: "website-development.html" }
+        { title: "Marketing", desc: "Build visibility, trust, and conversions with strategic marketing.", link: "services.html" },
+        { title: "Promote", desc: "Engage customers instantly with powerful messaging solutions.", link: "services.html" },
+        { title: "Development", desc: "Design and develop high-performing digital platforms.", link: "services.html" }
       ],
       casesHeading: "FEATURED CASE STUDIES",
       casesHighlight: "Customizable For All Industries",
@@ -668,7 +656,7 @@
       faqsSubHeading: "Cloud Communication Platform – FAQ’s",
       faqs: [
         { q: "What cloud-based IVR service would you recommend?", a: "<b>Ans:-</b> When it comes to cloud-based IVR services, one that stands out is Movictel. With its flexible and scalable platform, it offers advanced features like speech recognition and natural language processing. Its user-friendly interface and robust analytics make it an ideal choice for businesses of all sizes." },
-        { q: "What is IVR full form and IVR for call center?", a: "<b>Ans:-</b> IVR full form is Interactive Voice Response. It is a technology used in call centers and telephony systems to automate interactions with callers. IVR systems use pre-recorded voice prompts and menus to provide callers with options and gather input through their telephone keypad or voice recognition.<br>In a call center setting, IVR serves as an automated receptionist that helps direct and assist callers.." },
+        { q: "What is IVR full form and IVR for call center?", a: "<b>Ans:-</b> IVR full form is Interactive Voice Response. It is a technology used in call centers and telephony systems to automate interactions with callers. IVR systems use pre-recorded voice prompts and menus to provide callers with options and gather input through their telephone keypad or voice recognition.<br>In a call center setting, IVR serves as an automated receptionist that helps direct and assist callers." },
         { q: "What are the advantages and disadvantages of bulk SMS?", a: "<b>Ans:- Advantages of Bulk SMS:</b> <br><br><b>1:- Wide Reach:</b> Bulk SMS allows you to reach a large number of recipients instantly. It is an effective way to communicate with a large audience, whether it's customers, employees, or members of an organization. <br><b>2:- Cost-Effective:</b> Bulk SMS is generally more cost-effective compared to other marketing and communication channels such as print media or phone calls. It offers a lower cost per message, especially when sending messages in large volumes. <br><b>3:- High Open Rates:</b> SMS messages typically have high open rates since most people have their mobile phones within close proximity. This makes bulk SMS an effective way to ensure that your messages are seen and read by the recipients.<br><br><b>Ans:- Disadvantages of Bulk SMS:</b> <br><br><b>1:- Character Limitations:</b> SMS messages are limited to a specific number of characters (usually 160 characters). This can restrict the amount of information you can convey in a single message and may require you to be concise and precise in your communication. <br><b>2:- No Multimedia Support:</b> SMS messages are text-based and do not support multimedia content such as images, videos, or audio files. If you need to deliver rich media content, bulk SMS may not be suitable. <br><b>3:- Opt-Out Requests:</b> Sending bulk SMS messages to recipients who have not explicitly consented or opted-in can lead to compliance issues. It is important to have proper consent mechanisms in place and provide recipients with an option to opt-out if they no longer wish to receive messages." },
         { q: "What is bulk SMS marketing?", a: "<b>Ans:-</b> Bulk SMS Marketing is a powerful communication tool that allows businesses to send promotional, transactional, or informational text messages to a large number of customers at once. It is widely used for marketing campaigns, customer engagement, reminders, and instant alerts because of its high open rates and instant delivery. <br><br>1. With Bulk SMS, you can: <br><br>2. Reach thousands of customers in seconds <br><br>3. Share offers, discounts, and updates instantly <br><br>4. Ensure 99% delivery rate with measurable reports <br><br>5. Personalize messages for better engagement <br><br>👉 In short, Bulk SMS Marketing helps businesses connect with their audience quickly, effectively, and at a very low cost." }
       ],
@@ -686,57 +674,10 @@
       }
     };
 
-    let siteData = {};
+    let siteData = JSON.parse(JSON.stringify(defaultSiteData));
 
     window.init = function() {
-      const stored = localStorage.getItem('movictelCMSData');
-      
-      // JSON Parsing safety check
-      try {
-        if (stored && stored !== "undefined") {
-          siteData = JSON.parse(stored);
-        } else {
-          siteData = JSON.parse(JSON.stringify(defaultSiteData));
-        }
-      } catch (e) {
-        console.warn("Storage parse error, resetting to default data", e);
-        siteData = JSON.parse(JSON.stringify(defaultSiteData));
-      }
-      
-      // Strict Fallbacks
-      if (!siteData.sections) siteData.sections = defaultSiteData.sections;
-      const defaultSections = [
-        'aboutUs', 'cases', 'clients', 
-        'aboutPageHero', 'aboutPageWho', 'aboutPageValues', 'aboutPageTeam', 
-        'blogPageHero', 'blogPageGrid'
-      ];
-      defaultSections.forEach(s => {
-          if (siteData.sections[s] === undefined) siteData.sections[s] = true;
-      });
-
-      // Guard ALL Array objects against being undefined
-      const arrayProps = ['hero', 'offers', 'clients', 'cases', 'services', 'testimonials', 'faqs', 'detailedServices'];
-      arrayProps.forEach(prop => {
-          if (!siteData[prop] || !Array.isArray(siteData[prop])) {
-              siteData[prop] = JSON.parse(JSON.stringify(defaultSiteData[prop]));
-          }
-      });
-
-      // Guard ALL Object properties
-      if(!siteData.about) siteData.about = defaultSiteData.about;
-      if(!siteData.homeAbout) siteData.homeAbout = defaultSiteData.homeAbout;
-      if(!siteData.aboutPage) siteData.aboutPage = defaultSiteData.aboutPage;
-      if(!siteData.blogPage) siteData.blogPage = defaultSiteData.blogPage;
-
-      // Text fallbacks
-      if(!siteData.offersHeading) siteData.offersHeading = defaultSiteData.offersHeading;
-      if(!siteData.offersSubtext) siteData.offersSubtext = defaultSiteData.offersSubtext;
-      if(!siteData.clientsHeading) siteData.clientsHeading = defaultSiteData.clientsHeading;
-      if(!siteData.casesHeading) siteData.casesHeading = defaultSiteData.casesHeading;
-      if(!siteData.casesHighlight) siteData.casesHighlight = defaultSiteData.casesHighlight;
-      if(!siteData.casesSubtext) siteData.casesSubtext = defaultSiteData.casesSubtext;
-
-      window.renderAllForms();
+      // Data is loaded from Firestore via loadGlobalConfig()
     }
 
     // 2) Render Logic
@@ -783,11 +724,11 @@
 
       window.renderHeroForms();
       
-      document.getElementById('about-title').value = siteData.about.title;
+      document.getElementById('about-title').value = siteData.about.title || '';
       document.getElementById('about-title').oninput = e => siteData.about.title = e.target.value;
-      document.getElementById('about-text').value = siteData.about.text;
+      document.getElementById('about-text').value = siteData.about.text || '';
       document.getElementById('about-text').oninput = e => siteData.about.text = e.target.value;
-      document.getElementById('about-image').value = siteData.about.image;
+      document.getElementById('about-image').value = siteData.about.image || '';
       document.getElementById('about-image').oninput = e => siteData.about.image = e.target.value;
 
       document.getElementById('offers-heading').value = siteData.offersHeading || '';
@@ -817,24 +758,24 @@
 
       window.renderDetailedServices();
 
-      document.getElementById('ap-hero-title').value = siteData.aboutPage.heroTitle;
+      document.getElementById('ap-hero-title').value = siteData.aboutPage.heroTitle || '';
       document.getElementById('ap-hero-title').oninput = e => siteData.aboutPage.heroTitle = e.target.value;
-      document.getElementById('ap-who-title').value = siteData.aboutPage.whoWeAreTitle;
+      document.getElementById('ap-who-title').value = siteData.aboutPage.whoWeAreTitle || '';
       document.getElementById('ap-who-title').oninput = e => siteData.aboutPage.whoWeAreTitle = e.target.value;
-      document.getElementById('ap-who-text').value = siteData.aboutPage.whoWeAreText;
+      document.getElementById('ap-who-text').value = siteData.aboutPage.whoWeAreText || '';
       document.getElementById('ap-who-text').oninput = e => siteData.aboutPage.whoWeAreText = e.target.value;
-      document.getElementById('ap-who-image').value = siteData.aboutPage.whoWeAreImage;
+      document.getElementById('ap-who-image').value = siteData.aboutPage.whoWeAreImage || '';
       document.getElementById('ap-who-image').oninput = e => siteData.aboutPage.whoWeAreImage = e.target.value;
-      document.getElementById('ap-values-heading').value = siteData.aboutPage.valuesHeading;
+      document.getElementById('ap-values-heading').value = siteData.aboutPage.valuesHeading || '';
       document.getElementById('ap-values-heading').oninput = e => siteData.aboutPage.valuesHeading = e.target.value;
-      document.getElementById('ap-team-heading').value = siteData.aboutPage.teamHeading;
+      document.getElementById('ap-team-heading').value = siteData.aboutPage.teamHeading || '';
       document.getElementById('ap-team-heading').oninput = e => siteData.aboutPage.teamHeading = e.target.value;
       window.renderAboutPageValues();
       window.renderAboutPageTeam();
 
-      document.getElementById('bp-hero-title').value = siteData.blogPage.heroTitle;
+      document.getElementById('bp-hero-title').value = siteData.blogPage.heroTitle || '';
       document.getElementById('bp-hero-title').oninput = e => siteData.blogPage.heroTitle = e.target.value;
-      document.getElementById('bp-section-heading').value = siteData.blogPage.sectionHeading;
+      document.getElementById('bp-section-heading').value = siteData.blogPage.sectionHeading || '';
       document.getElementById('bp-section-heading').oninput = e => siteData.blogPage.sectionHeading = e.target.value;
       window.renderBlogCards();
 
@@ -856,9 +797,9 @@
       document.getElementById('testi-text').oninput = e => siteData.testimonialsText = e.target.value;
       window.renderTestimonials();
 
-      document.getElementById('faq-heading').value = siteData.faqsHeading;
+      document.getElementById('faq-heading').value = siteData.faqsHeading || '';
       document.getElementById('faq-heading').oninput = e => siteData.faqsHeading = e.target.value;
-      document.getElementById('faq-subheading').value = siteData.faqsSubHeading;
+      document.getElementById('faq-subheading').value = siteData.faqsSubHeading || '';
       document.getElementById('faq-subheading').oninput = e => siteData.faqsSubHeading = e.target.value;
       window.renderFaqs();
     }
@@ -1103,7 +1044,7 @@
     }
 
     // 4) Array Operations
-    window.addHeroSlide = function() { siteData.hero.push({ title: 'New Slide', desc: '', image: '' }); window.renderHeroForms(); }
+    window.addHeroSlide = function() { siteData.hero.push({ image: '' }); window.renderHeroForms(); }
     window.removeHeroSlide = function(i) { siteData.hero.splice(i, 1); window.renderHeroForms(); }
     window.addDetailedService = function() { siteData.detailedServices.push({ id: "new-service", category: "Marketing", title: "New Service", shortDesc: "" }); window.renderDetailedServices(); }
     window.removeDetailedService = function(i) { siteData.detailedServices.splice(i, 1); window.renderDetailedServices(); }
@@ -1128,12 +1069,24 @@
 
     window.updateVis = function(key, val) { siteData.sections[key] = val; }
 
-    window.saveData = function() {
-      localStorage.setItem('movictelCMSData', JSON.stringify(siteData));
+    window.saveData = async function() {
       const toast = document.getElementById('toast-notification');
-      toast.style.transform = 'translateX(0)'; toast.style.opacity = '1';
-      setTimeout(() => { toast.style.transform = 'translateX(20px)'; toast.style.opacity = '0'; }, 3000);
-    }
+      const toastText = toast.querySelector('span');
+      try {
+        await setDoc(doc(window.db, "artifacts", "movictel", "public", "data", "siteConfig", "global"), siteData);
+        localStorage.setItem('movictelCMSData', JSON.stringify(siteData));
+        toastText.innerText = "Changes Published Globally";
+        toast.style.transform = 'translateX(0)'; 
+        toast.style.opacity = '1';
+      } catch (error) {
+        console.error("Save Error:", error);
+        toastText.innerText = "Error: Failed to publish";
+        toast.style.transform = 'translateX(0)'; 
+        toast.style.opacity = '1';
+      } finally {
+        setTimeout(() => { toast.style.transform = 'translateX(20px)'; toast.style.opacity = '0'; }, 3000);
+      }
+    };
 
     window.switchTab = function(id) {
       document.querySelectorAll('.tab-content').forEach(e => e.classList.remove('active'));
@@ -1157,9 +1110,26 @@
 
   <!-- FIREBASE AUTH & DATABASE SCRIPT -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-auth.js";
-    import { getFirestore, collection, onSnapshot, query, orderBy, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+    import { 
+      getAuth, 
+      signInWithEmailAndPassword, 
+      onAuthStateChanged, 
+      signOut, 
+      setPersistence, 
+      inMemoryPersistence 
+    } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+    import { 
+      getFirestore, 
+      collection, 
+      onSnapshot, 
+      query, 
+      orderBy, 
+      doc, 
+      getDoc, 
+      deleteDoc, 
+      setDoc 
+    } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCmMeoeZFsUeRKg2B6GM1riE1DpkmCHllw",
@@ -1167,13 +1137,13 @@
       projectId: "movictel",
       storageBucket: "movictel.firebasestorage.app",
       messagingSenderId: "614749394807",
-      appId: "1:614749394807:web:647f3d1ea27d38f7c83372",
-      measurementId: "G-8VBSR6TF7B"
+      appId: "1:614749394807:web:647f3d1ea27d38f7c83372"
     };
 
+    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-    const db = getFirestore(app);
+    window.db = getFirestore(app);
 
     const loginOverlay = document.getElementById('login-overlay');
     const appWrapper = document.getElementById('app-wrapper');
@@ -1185,101 +1155,156 @@
     let unsubContact = null;
     let unsubService = null;
 
-    // GLOBAL DELETE FUNCTION
-    window.deleteLead = async (collectionName, documentId) => {
-        if (confirm("Are you sure you want to delete this lead? This cannot be undone.")) {
-            try {
-                await deleteDoc(doc(db, collectionName, documentId));
-            } catch (err) {
-                console.error("Delete error:", err);
-                alert("Failed to delete. Check console.");
-            }
+    // GLOBAL DATA FETCH AND MERGE
+    async function loadGlobalConfig() {
+      console.log("Fetching global configuration from Firestore...");
+      try {
+        // Path strictly enforces Rules: /artifacts/{appId}/public/data/{docName}
+        const docRef = doc(window.db, "artifacts", "movictel", "public", "data", "siteConfig", "global");
+        const docSnap = await getDoc(docRef);
+        
+        if (docSnap.exists()) {
+          const fetchedData = docSnap.data();
+          
+          siteData = { ...defaultSiteData, ...fetchedData }; // Merge fetched data on top of defaults
+          
+          siteData.sections = { ...defaultSiteData.sections, ...(fetchedData.sections || {}) };
+          siteData.about = { ...defaultSiteData.about, ...(fetchedData.about || {}) };
+          siteData.homeAbout = { ...defaultSiteData.homeAbout, ...(fetchedData.homeAbout || {}) };
+          siteData.aboutPage = { ...defaultSiteData.aboutPage, ...(fetchedData.aboutPage || {}) };
+          siteData.blogPage = { ...defaultSiteData.blogPage, ...(fetchedData.blogPage || {}) };
+
+          // Deep array fallbacks to prevent mapping errors
+          if (!Array.isArray(siteData.aboutPage.values)) siteData.aboutPage.values = [];
+          if (!Array.isArray(siteData.aboutPage.team)) siteData.aboutPage.team = [];
+          if (!Array.isArray(siteData.blogPage.blogs)) siteData.blogPage.blogs = [];
+
+          const arrayProps = ['hero', 'offers', 'clients', 'cases', 'services', 'testimonials', 'faqs', 'detailedServices'];
+          arrayProps.forEach(prop => {
+              if (!siteData[prop] || !Array.isArray(siteData[prop])) {
+                  siteData[prop] = [];
+              }
+          });
+
+          localStorage.setItem('movictelCMSData', JSON.stringify(siteData));
+          console.log("Global config loaded and merged successfully.");
+          
+          if (typeof window.renderAllForms === 'function') window.renderAllForms();
+        } else {
+           console.log("No global config found in Firestore. Loading DEFAULT data so you can upload it.");
+           siteData = JSON.parse(JSON.stringify(defaultSiteData));
+           if (typeof window.renderAllForms === 'function') window.renderAllForms();
+        }
+      } catch (e) {
+        console.error("Error fetching global config:", e);
+      }
+    }
+
+    window.deleteLead = async (col, id) => {
+        if (confirm("Delete this lead?")) {
+            try { 
+              await deleteDoc(doc(window.db, "artifacts", "movictel", "public", "data", col, id)); 
+            } catch (err) { console.error(err); }
         }
     };
 
-    // Render Database Rows (Exactly 7 Columns as requested)
     const renderRows = (data, tbodyId, collectionName) => {
       const tbody = document.getElementById(tbodyId);
       if (!tbody) return;
       tbody.innerHTML = data.map(l => `
-        <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
-            <td class="p-4 text-gray-600 whitespace-nowrap">${l.timestamp ? new Date(l.timestamp).toLocaleString() : '-'}</td>
-            <td class="p-4 font-medium text-gray-900 whitespace-nowrap">${l.name || '-'}</td>
-            <td class="p-4 text-gray-600">${l.email || '-'}</td>
-            
-            <!-- Phone Column -->
-            <td class="p-4 text-gray-600 font-medium">${l.phone || '-'}</td>
-            
-            <!-- Subject or Service Column -->
-            <td class="p-4 text-gray-600">
-                ${collectionName === 'service_leads' 
-                  ? (l.service_type ? `<span class="bg-blue-100 text-blue-700 px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wider uppercase">${l.service_type}</span>` : '-') 
-                  : (l.subject || '-')}
-            </td>
-            
-            <!-- Message Column -->
-            <td class="p-4 text-gray-600 max-w-xs truncate" title="${(l.message || '').replace(/"/g, '&quot;')}">${l.message || '-'}</td>
-            
-            <!-- Action Column -->
-            <td class="p-4 text-center">
-                <button onclick="deleteLead('${collectionName}', '${l.id}')" class="text-red-500 hover:text-red-700 p-2 rounded-full hover:bg-red-50 transition-colors" title="Delete Lead">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </td>
+        <tr class="hover:bg-gray-50 border-b border-gray-100">
+            <td class="p-4 whitespace-nowrap">${l.timestamp ? new Date(l.timestamp).toLocaleString() : '-'}</td>
+            <td class="p-4 font-medium">${l.name || '-'}</td>
+            <td class="p-4">${l.email || '-'}</td>
+            <td class="p-4">${l.phone || '-'}</td>
+            <td class="p-4">${collectionName === 'service_leads' ? (l.service_type || '-') : (l.subject || '-')}</td>
+            <td class="p-4 max-w-xs truncate">${l.message || '-'}</td>
+            <td class="p-4 text-center"><button onclick="deleteLead('${collectionName}', '${l.id}')" class="text-red-500 hover:text-red-700"><i class="fas fa-trash"></i></button></td>
         </tr>
       `).join('');
     };
 
-    // Listen to Auth State (PREVENTS PERMISSION CRASHES)
+    // MAIN AUTH LISTENER
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        loginOverlay.classList.add('opacity-0', 'pointer-events-none');
-        setTimeout(() => loginOverlay.classList.add('hidden'), 300);
+        console.log("Authenticated as:", user.email);
+        loginOverlay.classList.add('hidden');
         appWrapper.classList.remove('hidden');
         appWrapper.classList.add('flex');
+        
+        loadGlobalConfig();
 
-        if (typeof window.init === 'function') window.init();
+        // NO ORDER BY ALLOWED. Simple query, in-memory sort.
+        unsubContact = onSnapshot(collection(window.db, "artifacts", "movictel", "public", "data", "contact_leads"), (snap) => {
+          let rows = snap.docs.map(d => ({id: d.id, ...d.data()}));
+          rows.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)); // DESC
+          renderRows(rows, 'contact-table-body', 'contact_leads');
+        }, (err) => console.error("Contact Snapshot Error:", err));
 
-        // ONLY LOAD DATABASE AFTER LOGIN
-        unsubContact = onSnapshot(query(collection(db, "contact_leads"), orderBy("timestamp", "desc")), (snapshot) => {
-          renderRows(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })), 'contact-table-body', 'contact_leads');
-        });
-
-        unsubService = onSnapshot(query(collection(db, "service_leads"), orderBy("timestamp", "desc")), (snapshot) => {
-          renderRows(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })), 'service-table-body', 'service_leads');
-        });
+        unsubService = onSnapshot(collection(window.db, "artifacts", "movictel", "public", "data", "service_leads"), (snap) => {
+          let rows = snap.docs.map(d => ({id: d.id, ...d.data()}));
+          rows.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)); // DESC
+          renderRows(rows, 'service-table-body', 'service_leads');
+        }, (err) => console.error("Service Snapshot Error:", err));
 
       } else {
+        console.log("No user session found. Showing login.");
         loginOverlay.classList.remove('hidden');
-        setTimeout(() => loginOverlay.classList.remove('opacity-0', 'pointer-events-none'), 10);
         appWrapper.classList.add('hidden');
         appWrapper.classList.remove('flex');
-
         if (unsubContact) unsubContact();
         if (unsubService) unsubService();
       }
     });
 
-    // Handle Login
+    // UNIFIED LOGIN HANDLER
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
+      loginError.classList.add('hidden');
       loginBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Authenticating...';
       loginBtn.disabled = true;
-      loginError.classList.add('hidden');
+
+      const email = document.getElementById('admin-email').value;
+      const pass = document.getElementById('admin-password').value;
+
       try {
-        await signInWithEmailAndPassword(auth, document.getElementById('admin-email').value, document.getElementById('admin-password').value);
-        loginForm.reset();
+        console.log("Bypassing Tracking Prevention with In-Memory Persistence...");
+        await setPersistence(auth, inMemoryPersistence);
+        
+        console.log("Attempting sign-in...");
+        const userCredential = await signInWithEmailAndPassword(auth, email, pass);
+        console.log("Sign-in successful!", userCredential.user.email);
+        
+        loginOverlay.classList.add('hidden');
+        appWrapper.classList.remove('hidden');
+        appWrapper.classList.add('flex');
+        
       } catch (error) {
-        loginError.textContent = "Invalid email or password. Please try again.";
+        console.error("Login attempt failed:", error);
+        
+        let errorMsg = error.message || "An unknown error occurred.";
+        if (error.code === 'auth/network-request-failed') {
+            errorMsg = "Network error. Please disable AdBlockers or Shields for this site.";
+        } else if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password') {
+            errorMsg = "Invalid email or password.";
+        }
+        
+        loginError.textContent = errorMsg;
         loginError.classList.remove('hidden');
+        
       } finally {
         loginBtn.innerHTML = 'Sign In to CMS';
         loginBtn.disabled = false;
       }
     });
 
-    // Handle Logout
-    if (logoutBtn) logoutBtn.addEventListener('click', () => signOut(auth));
+    // LOGOUT
+    if (logoutBtn) logoutBtn.addEventListener('click', () => {
+        signOut(auth).then(() => {
+            window.location.reload();
+        });
+    });
+
   </script>
 </body>
 </html>
