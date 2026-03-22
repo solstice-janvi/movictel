@@ -56,6 +56,29 @@ body {
   scrollbar-width: thin;
   scrollbar-color: #018eec transparent;
 }
+ body {
+      padding-top: 80px; 
+    }
+    @media (max-width: 1023px) {
+      body {
+        padding-top: 115px; /* Fully clears auto-height header on tablets */
+      }
+    }
+    @media (max-width: 768px) {
+      body {
+        padding-top: 105px; /* Safely clears mobile header */
+      }
+    }
+    @media (max-width: 480px) {
+      body {
+        padding-top: 90px; /* Adjusts for smaller logo on tiny phones */
+      }
+    }
+    @media (min-width: 1400px) {
+      body {
+        padding-top: 100px; /* Adjust for large screen 100px header */
+      }
+    }
 
 img {
   max-width: 100%;
@@ -3358,7 +3381,7 @@ button,
   border-radius: 0; /* Fully square */
   border: none;
   overflow: hidden;
-  background-color: #000;
+  background-color: transparent;
   transition: all 0.4s ease;
 }
 
@@ -3373,6 +3396,7 @@ button,
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: transparent;
 }
 
 .bannerSwiper .swiper-slide img {
