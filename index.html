@@ -46,7 +46,17 @@
     }
     @media (max-width: 1023px) {
       body {
-        padding-top: 90px; /* Adjust for mobile header auto-height */
+        padding-top: 115px; /* Fully clears auto-height header on tablets */
+      }
+    }
+    @media (max-width: 768px) {
+      body {
+        padding-top: 105px; /* Safely clears mobile header */
+      }
+    }
+    @media (max-width: 480px) {
+      body {
+        padding-top: 90px; /* Adjusts for smaller logo on tiny phones */
       }
     }
     @media (min-width: 1400px) {
@@ -1331,17 +1341,25 @@
       toggleVis('.faq-section', data.sections.faq);
       toggleVis('.split-testimonial-wrap', data.sections.testimonials);
 
-      // 2. HERO SLIDER
-      // 2. HERO BANNER SLIDER (Updated for Image-Only Layout)
+      // 2. HERO BANNER SLIDER (Responsive Picture Layout)
       const bannerWrapper = document.getElementById('bannerWrapper');
       if (bannerWrapper && data.hero && Array.isArray(data.hero)) {
-        bannerWrapper.innerHTML = ''; // Clean out hardcoded fallback slides
+        bannerWrapper.innerHTML = ''; 
         
         data.hero.forEach((slide) => {
            const div = document.createElement('div');
            div.className = 'swiper-slide';
-           // Injects ONLY the image to act as a banner
-           div.innerHTML = `<img src="${slide.image}" alt="Banner Image">`;
+           
+           // Fallback to desktop image if no mobile image is provided yet
+           const mobileImgSrc = slide.imageMobile ? slide.imageMobile : slide.image;
+           
+           // Use the <picture> tag to swap images at the 768px breakpoint
+           div.innerHTML = `
+             <picture>
+               <source media="(max-width: 768px)" srcset="${mobileImgSrc}">
+               <img src="${slide.image}" alt="Banner Image" style="width: 100%; height: 100%; object-fit: cover;">
+             </picture>
+           `;
            bannerWrapper.appendChild(div);
         });
       }
