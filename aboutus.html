@@ -105,8 +105,8 @@
       grid-template-columns: 1.5fr 1fr;
       gap: 50px;
       width: 100%;
-      padding: 80px;
-      /* max-width:1200px;  */
+      padding: 80px 20px;
+      max-width: 1200px; /* Uncommented and enforced */
       margin: auto;
       align-items: center;
       opacity: 0;
@@ -209,6 +209,13 @@
       padding: 100px 20px;
       background: #f4f6fa;
       position: relative;
+    }
+    
+    /* Added to center the team wrapper content on large screens */
+    .team h2, .team-cards {
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .team h2 {
@@ -765,47 +772,96 @@
   }
   </script>
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
-  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-firestore.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+  import { getFirestore, collection, addDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
 
-  const app = initializeApp({
-      apiKey: "AIzaSyCmMeoeZFsUeRKg2B6GM1riE1DpkmCHllw",
-      authDomain: "movictel.firebaseapp.com",
-      projectId: "movictel"
-  });
+  // 1. Initialize Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyCmMeoeZFsUeRKg2B6GM1riE1DpkmCHllw",
+    authDomain: "movictel.firebaseapp.com",
+    projectId: "movictel",
+    storageBucket: "movictel.firebasestorage.app",
+    messagingSenderId: "614749394807",
+    appId: "1:614749394807:web:647f3d1ea27d38f7c83372"
+  };
+
+  const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  const form = document.querySelector('.service-form');
-  if (form) {
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const btn = form.querySelector('button');
-        const ogText = btn.innerHTML;
-        btn.innerHTML = 'Sending...';
-        btn.disabled = true;
+  // --- 2. GLOBAL CONTENT SYNC (PURE FIREBASE, NO LOCAL STORAGE) ---
+  const configRef = doc(db, "artifacts", "movictel", "public", "data", "siteConfig", "global");
 
-        let activeService = window.location.hash ? window.location.hash.substring(1).replace(/-/g, ' ').toUpperCase() : document.getElementById('form-service-type').value;
+  onSnapshot(configRef, (docSnap) => {
+    if (docSnap.exists()) {
+      const globalData = docSnap.data();
+      
+      // Store data in a global window variable for immediate access
+      window.firebaseSiteData = globalData;
+      
+      // Dispatch a real-time event so your script.js knows data is ready to be drawn
+      document.dispatchEvent(new CustomEvent('firebaseDataLoaded', { detail: globalData }));
+    } else {
+      console.warn("No CMS data found in Firestore yet.");
+    }
+  }, (err) => console.error("CMS Sync Error:", err));
 
-        try {
-          await addDoc(collection(db, 'service_leads'), { 
-            name: form.querySelector('input[name="Name"]').value,
-            email: form.querySelector('input[name="Email"]').value,
-            phone: form.querySelector('input[name="Phone"]').value, // Correctly grabs Phone
-            service_type: activeService, 
-            message: form.querySelector('textarea[name="Message"]').value,
-            timestamp: Date.now()
-          });
-          alert('Service request sent successfully!');
-          form.reset();
-        } catch (error) {
-          console.error("Firebase Error:", error);
-          alert('Error sending message. Check console.');
-        } finally {
-          btn.innerHTML = ogText;
-          btn.disabled = false;
+
+  // --- 3. LEAD SUBMISSION LOGIC ---
+  const handleForm = (selector, collectionName) => {
+    const form = document.querySelector(selector);
+    if (!form) return;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = form.querySelector('button[type="submit"]') || form.querySelector('button');
+      const ogText = btn ? btn.innerHTML : 'Submit';
+      
+      if (btn) {
+          btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+          btn.disabled = true;
+      }
+
+      const formData = {
+        name: form.querySelector('[name="Name"]')?.value || 'N/A',
+        email: form.querySelector('[name="Email"]')?.value || 'N/A',
+        phone: form.querySelector('[name="Phone"]')?.value || 'N/A',
+        timestamp: Date.now()
+      };
+
+      if (collectionName === 'service_leads') {
+        const activeService = window.location.hash 
+          ? window.location.hash.substring(1).replace(/-/g, ' ').toUpperCase() 
+          : (document.getElementById('form-service-type')?.value || 'GENERAL');
+          
+        formData.service_type = activeService;
+        formData.message = form.querySelector('textarea[name="Message"]')?.value || form.querySelector('textarea')?.value || '';
+      } else {
+        formData.subject = form.querySelector('input[name="Subject"]')?.value || 'N/A';
+        formData.message = form.querySelector('textarea[name="Message"]')?.value || form.querySelector('textarea')?.value || '';
+      }
+
+      try {
+        // Saving leads to the secure database paths mapped to your Admin Panel
+        await addDoc(collection(db, "artifacts", "movictel", "public", "data", collectionName), formData);
+        alert('Request sent successfully!');
+        form.reset();
+      } catch (error) {
+        console.error("Submission Error:", error);
+        alert('Failed to send. Please try again.');
+      } finally {
+        if (btn) {
+            btn.innerHTML = ogText;
+            btn.disabled = false;
         }
-      });
-  }
+      }
+    });
+  };
+
+  // Attach form listeners once the DOM is fully loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    handleForm('.service-form', 'service_leads');
+    handleForm('.contact-form-fb', 'contact_leads');
+  });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script src="js/script.js"></script>
