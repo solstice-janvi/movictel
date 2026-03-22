@@ -750,8 +750,9 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1">
                         <div><label class="label-modern">Title (HTML Allowed)</label><input type="text" class="input-modern" value="${(slide.title || '').replace(/"/g, '&quot;')}" oninput="siteData.hero[${i}].title=this.value"></div>
                         <div><label class="label-modern">Subtitle/Description</label><input type="text" class="input-modern" value="${(slide.desc || '').replace(/"/g, '&quot;')}" oninput="siteData.hero[${i}].desc=this.value"></div>
+                        
                         <div class="md:col-span-2">
-                            <label class="label-modern">Image URL</label>
+                            <label class="label-modern">Desktop Image (Landscape)</label>
                             <div class="flex flex-col md:flex-row gap-2">
                                 <input type="text" class="input-modern flex-1" placeholder="Paste URL or click Upload ➔" value="${(slide.image || '').replace(/"/g, '&quot;')}" oninput="siteData.hero[${i}].image=this.value">
                                 <label class="bg-gray-100 hover:bg-gray-200 border border-gray-200 px-3 py-2.5 md:py-1 rounded cursor-pointer text-sm md:text-xs font-medium flex items-center justify-center gap-1 w-full md:w-auto">
@@ -760,6 +761,18 @@
                                 </label>
                             </div>
                         </div>
+
+                        <div class="md:col-span-2">
+                            <label class="label-modern">Mobile Image (Portrait)</label>
+                            <div class="flex flex-col md:flex-row gap-2">
+                                <input type="text" class="input-modern flex-1" placeholder="Paste URL or click Upload ➔" value="${(slide.imageMobile || '').replace(/"/g, '&quot;')}" oninput="siteData.hero[${i}].imageMobile=this.value">
+                                <label class="bg-gray-100 hover:bg-gray-200 border border-gray-200 px-3 py-2.5 md:py-1 rounded cursor-pointer text-sm md:text-xs font-medium flex items-center justify-center gap-1 w-full md:w-auto">
+                                    <i class="fas fa-upload"></i> Upload
+                                    <input type="file" class="hidden" accept="image/*" onchange="handleImageUpload(this)">
+                                </label>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             `).join('')}
@@ -977,7 +990,7 @@
     }
 
     // 4) Array Operations
-    window.addHeroSlide = function() { siteData.hero.push({ title: 'New Slide', desc: '', image: '' }); window.renderHeroForms(); }
+    window.addHeroSlide = function() { siteData.hero.push({ title: 'New Slide', desc: '', image: '', imageMobile: '' }); window.renderHeroForms(); }
     window.removeHeroSlide = function(i) { siteData.hero.splice(i, 1); window.renderHeroForms(); }
     window.addDetailedService = function() { siteData.detailedServices.push({ id: "new-service", category: "Marketing", title: "New Service", shortDesc: "" }); window.renderDetailedServices(); }
     window.removeDetailedService = function(i) { siteData.detailedServices.splice(i, 1); window.renderDetailedServices(); }
