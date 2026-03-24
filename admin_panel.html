@@ -144,7 +144,9 @@
             img.onload = function() {
                 try {
                     const canvas = document.createElement('canvas');
-                    const MAX_SIZE = 800; 
+                    
+                    // FIXED: Increased size to 1440px for high quality without crashing Firebase
+                    const MAX_SIZE = 1440; 
                     let width = img.width;
                     let height = img.height;
 
@@ -156,7 +158,8 @@
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, width, height);
                     
-                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.6);
+                    // FIXED: Increased quality to 70% to keep images crisp
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
                     textInput.value = compressedBase64;
                     textInput.dispatchEvent(new Event('input', { bubbles: true }));
                 } catch(err) {
@@ -172,7 +175,7 @@
         };
         reader.readAsDataURL(file);
     }
-  </script>
+</script>
 </head>
 <body class="h-screen w-full text-gray-900 overflow-hidden text-base bg-gray-50 flex flex-col md:flex-row">
 
