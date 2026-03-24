@@ -3322,7 +3322,7 @@ button,
 
   .faq-container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: 30px;
   }
   .faq-item {
@@ -3607,4 +3607,168 @@ button,
     border: none !important;
     opacity: 1;
   }
+}
+
+/* ==========================================
+   FIX 1: SERVICE SECTION REFINEMENTS
+   ========================================== */
+/* Make the "Our Services" heading uppercase */
+.section-heading h2 {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Prevent the service boxes from stretching massively on large screens */
+@media (min-width: 1400px) {
+  .services-section .services-grid {
+    max-width: 1200px !important; /* Overrides the 96% width rule */
+    width: 100% !important;
+    margin: 0 auto !important;
+  }
+}
+
+
+/* ==========================================
+   FIX 2: FOOTER ALIGNMENT & SPACING
+   ========================================== */
+@media (min-width: 1024px) {
+  /* Fix the main 3 columns (About | Quick Links | Our Services) */
+  .footer-container {
+    grid-template-columns: 350px 180px 1fr !important;
+    gap: 40px !important;
+    justify-content: start !important;
+  }
+  
+  /* Tighten the gap between Marketing, Promote, and Development */
+  .footer-col.services-col .services-grid {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 50px !important;
+  }
+}
+
+/* Clean up the vertical spacing for the lists */
+.footer-col ul li {
+  margin-bottom: 12px !important;
+}
+
+.footer-col ul li a {
+  font-size: 0.9rem !important;
+}
+
+.service-heading {
+  display: inline-block;
+  margin-bottom: 15px !important;
+  font-size: 0.95rem !important;
+  font-weight: 700 !important;
+}
+
+
+.footer-col {
+  text-align: left !important; 
+}
+.footer-logo img {
+  margin: 0 0 15px 0 !important; 
+}
+.footer-col h3::after {
+  margin: 8px 0 20px 0 !important; 
+}
+.footer-social {
+  justify-content: flex-start !important; 
+  display: flex !important;
+}
+
+/* Structured Grid Layout for Large Screens */
+@media (min-width: 1024px) {
+  .footer-container {
+    display: grid !important;
+    /* Proportions: About (28%), Links (15%), Services (57%) */
+    grid-template-columns: 2.8fr 1.5fr 5.7fr !important; 
+    max-width: 1250px !important;
+    margin: 0 auto !important; /* Centers the whole block on the screen */
+    gap: 60px !important;
+    align-items: start !important;
+  }
+  
+  /* Reset widths so the grid controls the sizing */
+  .footer-col { width: auto !important; } 
+
+  /* The Services Sub-Grid (Marketing, Promote, Dev) */
+  .footer-col.services-col .services-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 30px !important;
+  }
+}
+
+/* Clean List Spacing */
+.footer-col ul li {
+  margin-bottom: 12px !important;
+}
+
+.service-heading {
+  display: block !important;
+  margin-bottom: 15px !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  color: var(--ig-blue) !important;
+}
+@media (min-width: 1400px) {
+  .faq-container {
+    grid-template-columns: 1fr !important; /* Forces a single column */
+    max-width: 900px !important; /* Keeps it from stretching too wide */
+    margin: 0 auto !important;
+  }
+}
+
+
+@media (min-width: 1400px) {
+  .carousel-container {
+    height: 550px !important; /* Increases overall container height */
+  }
+  .case-item {
+    max-width: 460px !important; /* Makes the cards wider */
+    padding: 100px 40px 40px !important; 
+  }
+  .case-item img {
+    height: 240px !important; /* Makes the images taller */
+  }
+}
+
+
+@media (min-width: 1400px) {
+  
+  .about-container {
+    max-width: 1200px !important; 
+    width: 100% !important;
+    margin: 0 auto !important; /* Centers the block on the screen */
+    gap: 40px !important; /* Brings the text and image closer together */
+  }
+}
+
+/* Removes the large vertical gap between the two sections */
+
+.about-section {
+  padding-top: 20px !important; 
+}
+
+.site-footer {
+ 
+  background: linear-gradient(180deg, #d0e6ff 0%, #f0f7ff 100%) !important; 
+  
+
+  /* border-top: 2px solid #018eec !important;  */
+
+  margin-top: 40px !important; 
+  
+  
+  padding-top: 10px !important;
+  padding-bottom: 20px !important;
+}
+
+/* Optional: Subtle adjustment to the bottom bar for the gradient theme */
+.footer-bottom {
+  /* background: #ffffff !important; */
+  border-top: 1px solid var(--ig-blue) !important;
+  margin-top: 30px !important;
 }
