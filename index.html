@@ -439,7 +439,7 @@
           <img src="images/19483797.jpg" alt="Banner Image">
         </div>
         <div class="swiper-slide">
-          <img src="images/19483797.jpg alt="Banner Image">
+          <img src="images/19483797.jpg" alt="Banner Image">
         </div>
 
       </div>
@@ -1115,7 +1115,7 @@
         <!-- Column 2: Quick Links -->
         <div class="footer-col">
           <h3>Quick Links</h3>
-          <ul>
+          <ul id="quick-links-list">
             <li><a href="index.html">Home</a></li>
             <li><a href="aboutus.html">About Us</a></li>
             <li><a href="services.html">Services</a></li>
@@ -1430,6 +1430,16 @@
               let targetFoot = s.category === 'Marketing' ? footMarketing : (s.category === 'Promote' ? footPromote : footDev);
               if(targetFoot) {
                   targetFoot.innerHTML += `<li><a href="services.html#${s.id}">${s.title}</a></li>`;
+              }
+          });
+      }
+
+      // 5b. UPDATE FOOTER QUICK LINKS WITH DYNAMIC PAGES
+      const quickLinksList = document.getElementById("quick-links-list");
+      if (quickLinksList && data.dynamicPages && Array.isArray(data.dynamicPages)) {
+          data.dynamicPages.forEach(p => {
+              if (p.title && p.slug) {
+                  quickLinksList.innerHTML += `<li><a href="page.html?id=${p.slug}">${p.title}</a></li>`;
               }
           });
       }
