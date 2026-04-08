@@ -407,7 +407,8 @@
   <!-- FIREBASE DATA FETCH FOR DYNAMIC PAGE CONTENT -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-    import { getFirestore, doc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+    import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCmMeoeZFsUeRKg2B6GM1riE1DpkmCHllw",
@@ -419,6 +420,7 @@
     };
 
     const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
     const db = getFirestore(app);
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -502,22 +504,19 @@
         }
     }
 
-    // Step 1: Render immediately from Local Storage for zero delay
-    try {
-        const storedData = localStorage.getItem('movictelCMSData');
-        if (storedData && storedData !== "undefined") {
-            window.renderPageUI(JSON.parse(storedData));
-        }
-    } catch(e) { console.error("Local storage read error", e); }
-
-    // Step 2: Listen for live updates from Firebase to override Local Storage
-    const configRef = doc(db, "artifacts", "movictel", "public", "data", "siteConfig", "global");
-    onSnapshot(configRef, (docSnap) => {
-        if (docSnap.exists()) {
-            const liveData = docSnap.data();
-            localStorage.setItem('movictelCMSData', JSON.stringify(liveData)); // update cache
-            window.renderPageUI(liveData);
-        }
+    // Listen for live updates directly from Firebase (No LocalStorage caching)
+    signInAnonymously(auth).then(() => {
+        const configRef = doc(db, "artifacts", "movictel", "public", "data", "siteConfig", "global");
+        onSnapshot(configRef, (docSnap) => {
+            if (docSnap.exists()) {
+                const liveData = docSnap.data();
+                window.renderPageUI(liveData);
+            }
+        }, (error) => {
+            console.error("Firebase sync error:", error);
+        });
+    }).catch((error) => {
+        console.error("Anonymous authentication failed:", error);
     });
   </script>
 </body>
