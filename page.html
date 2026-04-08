@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Loading Page... - Movictel</title>
+  <link rel="stylesheet" href="css/flip.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  
+  <style>
+    /* Header Hide on Scroll */
+    #main-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      transition: transform 0.3s ease-in-out;
+      background-color: #fff;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    body { padding-top: 80px; }
+    @media (max-width: 1023px) { body { padding-top: 115px; } }
+    @media (max-width: 768px) { body { padding-top: 105px; } }
+    @media (max-width: 480px) { body { padding-top: 90px; } }
+    @media (min-width: 1400px) { body { padding-top: 100px; } }
+
+    #backToTop {
+      display: none;
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 999;
+      border: none;
+      outline: none;
+      background-color: #018eec;
+      color: white;
+      cursor: pointer;
+      padding: 15px;
+      border-radius: 50%;
+      font-size: 20px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+      width: 50px;
+      height: 50px;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    #backToTop.show { display: flex; opacity: 1; visibility: visible; }
+    #backToTop:hover { background-color: #016bba; transform: translateY(-3px); }
+
+    #adminLoginBtn {
+      position: fixed;
+      bottom: 30px;
+      right: 90px; 
+      z-index: 999;
+      background-color: #242d3f; 
+      color: white;
+      text-decoration: none;
+      border-radius: 50%;
+      font-size: 18px;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+    #adminLoginBtn:hover { background-color: #018eec; transform: translateY(-3px); }
+
+    /* Footer Collapse Framework */
+    .footer-collapsible-wrapper { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.6s ease-in-out; width: 100%; }
+    .footer-collapsible-wrapper.open { grid-template-rows: 1fr; }
+    .footer-collapsible-inner { overflow: hidden; opacity: 0; visibility: hidden; transition: opacity 0.4s ease-in-out, visibility 0.6s; }
+    .footer-collapsible-wrapper.open .footer-collapsible-inner { opacity: 1; visibility: visible; transition: opacity 0.6s ease-in-out, visibility 0.1s; }
+
+    .footer-toggle-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      background: linear-gradient(135deg, #018eec, #0166b3); color: white;
+      font-size: 1rem; font-weight: 600; border: none; padding: 12px 28px;
+      border-radius: 30px; cursor: pointer; box-shadow: 0 4px 15px rgba(1, 142, 236, 0.4);
+      transition: all 0.3s ease;
+    }
+    .footer-toggle-btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(1, 142, 236, 0.6); }
+    .footer-toggle-btn.open i { transform: rotate(180deg); }
+
+    /* =======================================
+       NEW DYNAMIC PAGE STYLING (Hero + Content)
+       ======================================= */
+    .dyn-hero {
+        position: relative;
+        width: 100%;
+        padding: 100px 20px;
+        background-color: #018eec;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        color: white;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 350px;
+    }
+    .dyn-hero::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(to right, rgba(1, 41, 79, 0.85), rgba(1, 102, 179, 0.7)); 
+        z-index: 1;
+    }
+    .dyn-hero-content {
+        position: relative;
+        z-index: 2;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    .dyn-hero-content h1 {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+        text-transform: capitalize;
+        letter-spacing: 1px;
+    }
+    .dyn-hero-content p {
+        font-size: 1.25rem;
+        line-height: 1.6;
+        opacity: 0.95;
+    }
+
+    .dynamic-page-section {
+        padding: 60px 20px 100px;
+        min-height: 50vh;
+        background-color: #fafafa;
+    }
+    .dynamic-page-container {
+        max-width: 1000px;
+        margin: -80px auto 0; /* Creates an overlap over the hero */
+        position: relative;
+        z-index: 10;
+        background: #ffffff;
+        padding: 50px 60px;
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+    }
+    
+    /* Content Markdown/HTML Styles */
+    #dyn-content {
+        color: #444;
+        line-height: 1.8;
+        font-size: 1.05rem;
+    }
+    #dyn-content h1, #dyn-content h2, #dyn-content h3 {
+        color: #242d3f;
+        margin-top: 35px;
+        margin-bottom: 15px;
+        font-weight: 700;
+    }
+    #dyn-content p { margin-bottom: 20px; }
+    #dyn-content ul, #dyn-content ol {
+        margin-left: 20px;
+        margin-bottom: 20px;
+    }
+    #dyn-content ul { list-style-type: disc; }
+    #dyn-content ol { list-style-type: decimal; }
+    #dyn-content a { color: #018eec; text-decoration: underline; font-weight: 500; }
+    #dyn-content img { border-radius: 8px; max-width: 100%; height: auto; margin: 20px 0; }
+    
+    @media (max-width: 768px) {
+        .dyn-hero-content h1 { font-size: 2.2rem; }
+        .dyn-hero-content p { font-size: 1rem; }
+        .dynamic-page-container { padding: 40px 25px; margin-top: -50px; }
+    }
+  </style>
+</head>
+<body>
+  
+  <div id="preloader">
+    <img src="images/logo.gif" alt="Loading...">
+  </div>
+
+  <header id="main-header">
+    <div class="container">
+      <div class="logo">
+        <a href="index.html">
+          <img src="images/logo/Movictel 12 sept 25-01-01.png" alt="Movictel Logo">
+        </a>
+      </div>
+      <div class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+      </div>
+
+      <nav>
+        <ul class="menu">
+          <li><a href="index.html">Home</a></li>
+          <li class="dropdown">
+            <a href="services.html">Services</a>
+            <ul class="dropdown-menu">
+              <!-- Marketing -->
+              <li class="has-submenu">
+                <a href="#"><i class="fa-solid fa-bullhorn"></i>Marketing</a>
+                <ul class="submenu" id="nav-marketing-list">
+                  <li><a href="services.html#social-media-marketing"><i class="fa-solid fa-hashtag"></i>Social Media Marketing</a></li>
+                  <li><a href="services.html#google-meta-ads"><i class="fa-solid fa-chart-line"></i>Google & Meta Ads</a></li>
+                  <li><a href="services.html#brand-awareness"><i class="fa-solid fa-eye"></i>Brand Awareness Campaigns</a></li>
+                  <li><a href="services.html#seo-online-visibility"><i class="fa-solid fa-magnifying-glass"></i>SEO & Online Visibility</a></li>
+                  <li><a href="services.html#content-writing"><i class="fa-solid fa-pen-nib"></i> Content Writing</a></li>
+                </ul>
+              </li>
+              <!-- Promote -->
+              <li class="has-submenu">
+                <a href="#"><i class="fa-solid fa-paper-plane"></i>Promote</a>
+                <ul class="submenu" id="nav-promote-list">
+                  <li><a href="services.html#bulk-sms"><i class="fa-solid fa-message"></i>Bulk SMS</a></li>
+                  <li><a href="services.html#rcs-sms"><i class="fa-solid fa-comments"></i>RCS SMS</a></li>
+                  <li><a href="services.html#voice-sms"><i class="fa-solid fa-microphone"></i>Voice SMS</a></li>
+                  <li><a href="services.html#whatsapp-api"><i class="fa-brands fa-whatsapp"></i>WhatsApp Business API</a></li>
+                </ul>
+              </li>
+              <!-- Development -->
+              <li class="has-submenu">
+                <a href="#"><i class="fa-solid fa-code"></i> Development</a>
+                <ul class="submenu" id="nav-dev-list">
+                  <li><a href="services.html#website-development"><i class="fa-solid fa-globe"></i> Website Development</a></li>
+                  <li><a href="services.html#app-development"><i class="fa-solid fa-mobile-screen"></i>App Development</a></li>
+                  <li><a href="services.html#landing-pages"><i class="fa-solid fa-layer-group"></i> Landing Pages</a></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="aboutus.html">About Us</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="social-icons">
+        <a href="https://www.facebook.com/share/1CNLUSH1xV/"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/movictel?igsh=Mjg3cnowdnE3emd3"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.linkedin.com/company/movictel/"><i class="fab fa-linkedin-in"></i></a>
+        <a href="https://x.com/movictel"><i class="fab fa-x-twitter"></i></a>
+      </div>
+    </div>
+  </header>
+
+  <!-- DYNAMIC HERO SECTION -->
+  <section class="dyn-hero" id="dyn-hero-banner" style="background-image: url('images/19483797.jpg');">
+      <div class="dyn-hero-content">
+          <h1 id="dyn-heading">Loading...</h1>
+          <p id="dyn-subtitle">Fetching content securely from our servers.</p>
+      </div>
+  </section>
+
+  <!-- MAIN DYNAMIC CONTENT -->
+  <section class="dynamic-page-section">
+      <div class="dynamic-page-container">
+          <div id="dyn-content">
+              <p>Please wait a moment while the content is being generated.</p>
+          </div>
+      </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div style="text-align: center; padding-top: 30px; padding-bottom: 10px;">
+      <button id="footerToggleBtn" class="footer-toggle-btn">
+        <span>Show Footer</span>
+        <i class="fas fa-chevron-down"></i>
+      </button>
+    </div>
+
+    <div class="footer-collapsible-wrapper" id="footerCollapsible">
+      <div class="footer-collapsible-inner">
+        <div class="footer-container">
+          <!-- Column 1: Logo & About -->
+          <div class="footer-col">
+            <div class="footer-logo">
+              <img src="images/logo/Movictel 12 sept 25-01-01.png" alt="Movictel Logo">
+            </div>
+            <p class="footer-about">
+              Movictel is a growth-driven digital solutions company offering
+              Marketing, Messaging & Development services to help businesses
+              connect, engage & scale faster.
+            </p>
+            <div class="footer-social">
+              <a href="https://www.facebook.com/share/1CNLUSH1xV/"><i class="fab fa-facebook-f"></i></a>
+              <a href="https://www.instagram.com/movictel?igsh=Mjg3cnowdnE3emd3"><i class="fab fa-instagram"></i></a>
+              <a href="https://www.linkedin.com/company/movictel/"><i class="fab fa-linkedin-in"></i></a>
+              <a href="https://x.com/movictel"><i class="fab fa-x-twitter"></i></a>
+            </div>
+          </div>
+
+          <!-- Column 2: Quick Links -->
+          <div class="footer-col">
+            <h3>Quick Links</h3>
+            <ul id="quick-links-list">
+              <li><a href="index.html">Home</a></li>
+              <li><a href="aboutus.html">About Us</a></li>
+              <li><a href="services.html">Services</a></li>
+              <li><a href="contact.html">Contact</a></li>
+            </ul>
+          </div>
+
+          <!-- Column 3: Services -->
+          <div class="footer-col services-col">
+            <h3>Our Services</h3>
+            <div class="services-grid">
+              <div class="footer-service-group">
+                <span class="service-heading">Marketing</span>
+                <ul id="footer-marketing-list">
+                  <li><a href="services.html#social-media-marketing">Social Media Marketing</a></li>
+                  <li><a href="services.html#google-meta-ads">Google & Meta Ads</a></li>
+                </ul>
+              </div>
+              <div class="footer-service-group">
+                <span class="service-heading">Promote</span>
+                <ul id="footer-promote-list">
+                  <li><a href="services.html#bulk-sms">Bulk SMS</a></li>
+                  <li><a href="services.html#whatsapp-api">WhatsApp Business API</a></li>
+                </ul>
+              </div>
+              <div class="footer-service-group">
+                <span class="service-heading">Development</span>
+                <ul id="footer-dev-list">
+                  <li><a href="services.html#website-development">Website Development</a></li>
+                  <li><a href="services.html#app-development">App Development</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div> 
+      </div>
+    </div> 
+
+    <!-- Bottom Bar -->
+    <div class="footer-bottom">
+      <p>© 2025 Movictel. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Admin Login Floating Button -->
+  <a href="admin_panel.html" id="adminLoginBtn" title="CMS Admin Login"><i class="fas fa-lock"></i></a>
+  <button id="backToTop" title="Go to top"><i class="fas fa-arrow-up"></i></button>
+
+  <script>
+    (function() {
+      const hidePreloader = () => {
+        const preloader = document.getElementById("preloader");
+        if (preloader) preloader.style.display = "none";
+      };
+      window.addEventListener('load', hidePreloader);
+      setTimeout(hidePreloader, 3000);
+
+      const dropdownLinks = document.querySelectorAll("header nav ul li.dropdown > a");
+      dropdownLinks.forEach(link => {
+        link.addEventListener("click", function(e) {
+          if (window.innerWidth <= 992) {
+            e.preventDefault();
+            this.parentElement.classList.toggle("open");
+          }
+        });
+      });
+
+      let lastScrollTop = 0;
+      const header = document.getElementById("main-header");
+      const backToTopBtn = document.getElementById("backToTop");
+
+      window.addEventListener("scroll", function() {
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        if (header) {
+          if (scrollTop > lastScrollTop && scrollTop > 100) { header.style.transform = "translateY(-100%)"; } 
+          else { header.style.transform = "translateY(0)"; }
+        }
+        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        if (backToTopBtn) {
+          if (scrollTop > 300) { backToTopBtn.classList.add("show"); } 
+          else { backToTopBtn.classList.remove("show"); }
+        }
+      });
+
+      if (backToTopBtn) {
+        backToTopBtn.addEventListener("click", () => { window.scrollTo({ top: 0, behavior: "smooth" }); });
+      }
+
+      const footerToggleBtn = document.getElementById("footerToggleBtn");
+      const footerCollapsible = document.getElementById("footerCollapsible");
+      if (footerToggleBtn && footerCollapsible) {
+        footerToggleBtn.addEventListener("click", () => {
+          footerToggleBtn.classList.toggle("open");
+          footerCollapsible.classList.toggle("open");
+          const spanText = footerToggleBtn.querySelector("span");
+          if(spanText) {
+            if (footerToggleBtn.classList.contains("open")) { spanText.textContent = "Hide Footer"; } 
+            else { spanText.textContent = "Show Footer"; }
+          }
+        });
+      }
+    })();
+  </script>
+
+  <!-- FIREBASE DATA FETCH FOR DYNAMIC PAGE CONTENT -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+    import { getFirestore, doc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCmMeoeZFsUeRKg2B6GM1riE1DpkmCHllw",
+      authDomain: "movictel.firebaseapp.com",
+      projectId: "movictel",
+      storageBucket: "movictel.firebasestorage.app",
+      messagingSenderId: "614749394807",
+      appId: "1:614749394807:web:647f3d1ea27d38f7c83372"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const pageId = urlParams.get('id');
+
+    // Central function to update the entire UI based on provided data
+    window.renderPageUI = function(data) {
+        if(!data) return;
+
+        // 1. UPDATE CURRENT PAGE CONTENT
+        if(pageId && data.dynamicPages && Array.isArray(data.dynamicPages)) {
+            const pageData = data.dynamicPages.find(p => p.slug === pageId);
+            
+            if(pageData) {
+                document.title = (pageData.title || 'Page') + " - Movictel";
+                
+                // Update Hero Banner Elements
+                const banner = document.getElementById('dyn-hero-banner');
+                if(banner && pageData.image) banner.style.backgroundImage = `url('${pageData.image}')`;
+                
+                document.getElementById('dyn-heading').innerText = pageData.heading || pageData.title || "Loading...";
+                
+                const subtitleEl = document.getElementById('dyn-subtitle');
+                if(pageData.subTitle) {
+                    subtitleEl.innerText = pageData.subTitle;
+                    subtitleEl.style.display = "block";
+                } else {
+                    subtitleEl.style.display = "none";
+                }
+
+                // Update Main Content
+                document.getElementById('dyn-content').innerHTML = pageData.content || "<p>No content provided yet.</p>";
+            } else {
+                document.getElementById('dyn-heading').innerText = "404 - Page Not Found";
+                document.getElementById('dyn-subtitle').style.display = "none";
+                document.getElementById('dyn-content').innerHTML = "<p>The page you are looking for does not exist or has been removed.</p>";
+            }
+        }
+
+        // 2. UPDATE SERVICE LINKS IN NAV & FOOTER
+        if (data.detailedServices && Array.isArray(data.detailedServices)) {
+            const headM = document.getElementById("nav-marketing-list");
+            const headP = document.getElementById("nav-promote-list");
+            const headD = document.getElementById("nav-dev-list");
+            if(headM) headM.innerHTML = ''; if(headP) headP.innerHTML = ''; if(headD) headD.innerHTML = '';
+
+            const footM = document.getElementById("footer-marketing-list");
+            const footP = document.getElementById("footer-promote-list");
+            const footD = document.getElementById("footer-dev-list");
+            if(footM) footM.innerHTML = ''; if(footP) footP.innerHTML = ''; if(footD) footD.innerHTML = '';
+
+            data.detailedServices.forEach(s => {
+                if(s.category === 'Marketing') {
+                    if(headM) headM.innerHTML += `<li><a href="services.html#${s.id}"><i class="${s.navIcon}"></i>${s.title}</a></li>`;
+                    if(footM) footM.innerHTML += `<li><a href="services.html#${s.id}">${s.title}</a></li>`;
+                } else if(s.category === 'Promote') {
+                    if(headP) headP.innerHTML += `<li><a href="services.html#${s.id}"><i class="${s.navIcon}"></i>${s.title}</a></li>`;
+                    if(footP) footP.innerHTML += `<li><a href="services.html#${s.id}">${s.title}</a></li>`;
+                } else {
+                    if(headD) headD.innerHTML += `<li><a href="services.html#${s.id}"><i class="${s.navIcon}"></i>${s.title}</a></li>`;
+                    if(footD) footD.innerHTML += `<li><a href="services.html#${s.id}">${s.title}</a></li>`;
+                }
+            });
+        }
+
+        // 3. UPDATE QUICK LINKS IN FOOTER (DYNAMIC PAGES)
+        const quickLinksList = document.getElementById("quick-links-list");
+        if (quickLinksList && data.dynamicPages) {
+            // Re-render to prevent duplicate appending
+            quickLinksList.innerHTML = `
+              <li><a href="index.html">Home</a></li>
+              <li><a href="aboutus.html">About Us</a></li>
+              <li><a href="services.html">Services</a></li>
+              <li><a href="contact.html">Contact</a></li>
+            `;
+            data.dynamicPages.forEach(p => {
+                if (p.title && p.slug) {
+                    quickLinksList.innerHTML += `<li><a href="page.html?id=${p.slug}">${p.title}</a></li>`;
+                }
+            });
+        }
+    }
+
+    // Step 1: Render immediately from Local Storage for zero delay
+    try {
+        const storedData = localStorage.getItem('movictelCMSData');
+        if (storedData && storedData !== "undefined") {
+            window.renderPageUI(JSON.parse(storedData));
+        }
+    } catch(e) { console.error("Local storage read error", e); }
+
+    // Step 2: Listen for live updates from Firebase to override Local Storage
+    const configRef = doc(db, "artifacts", "movictel", "public", "data", "siteConfig", "global");
+    onSnapshot(configRef, (docSnap) => {
+        if (docSnap.exists()) {
+            const liveData = docSnap.data();
+            localStorage.setItem('movictelCMSData', JSON.stringify(liveData)); // update cache
+            window.renderPageUI(liveData);
+        }
+    });
+  </script>
+</body>
+</html>
