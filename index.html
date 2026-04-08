@@ -1317,21 +1317,16 @@
 
 <!-- CMS DATA BINDING SCRIPT -->
 <script>
-  (function() {
-    
-    const storedData = localStorage.getItem('movictelCMSData');
-    // Block the script if data is missing OR if it equals the word "undefined"
-    if (!storedData || storedData === "undefined") return; 
-    
-    try {
-      const data = JSON.parse(storedData);
-      
+  // We wrap everything in a function that receives LIVE data from Firebase
+  window.renderCMSUI = function(data) {
+      if(!data) return;
+
       // 1. VISIBILITY CONTROLS
       const toggleVis = (selector, isVisible) => {
         const els = document.querySelectorAll(selector);
         els.forEach(el => el.style.display = isVisible ? '' : 'none');
       };
-      toggleVis('.hero-slider', data.sections.hero);
+      toggleVis('.banner-section', data.sections.hero); // Changed from .hero-slider to match new swiper
       toggleVis('.who-we-are', data.sections.about);
       toggleVis('.festival-offers', data.sections.offers);
       toggleVis('.services-section', data.sections.services);
@@ -1341,8 +1336,7 @@
       toggleVis('.faq-section', data.sections.faq);
       toggleVis('.split-testimonial-wrap', data.sections.testimonials);
 
-      // 2. HERO BANNER SLIDER (Responsive Picture Layout)
-      // 2. HERO BANNER SLIDER (Responsive Picture Layout)
+      // 2. HERO BANNER SLIDER
       const bannerWrapper = document.getElementById('bannerWrapper');
       if (bannerWrapper && data.hero && Array.isArray(data.hero)) {
         bannerWrapper.innerHTML = ''; 
@@ -1350,11 +1344,8 @@
         data.hero.forEach((slide) => {
            const div = document.createElement('div');
            div.className = 'swiper-slide';
-           
-           // Fallback to desktop image if no mobile image is provided yet
            const mobileImgSrc = slide.imageMobile ? slide.imageMobile : slide.image;
            
-           // Added inline styles to <picture> and <img> to force full coverage
            div.innerHTML = `
              <picture style="display: block; width: 100%; height: 100%;">
                <source media="(max-width: 768px)" srcset="${mobileImgSrc}">
@@ -1420,27 +1411,11 @@
           if(footDev) footDev.innerHTML = '';
 
           data.detailedServices.forEach(s => {
-              // Target Headers
               let targetHead = s.category === 'Marketing' ? headMarketing : (s.category === 'Promote' ? headPromote : headDev);
-              if(targetHead) {
-                  targetHead.innerHTML += `<li><a href="services.html#${s.id}"><i class="${s.navIcon}"></i>${s.title}</a></li>`;
-              }
+              if(targetHead) targetHead.innerHTML += `<li><a href="services.html#${s.id}"><i class="${s.navIcon}"></i>${s.title}</a></li>`;
               
-              // Target Footers
               let targetFoot = s.category === 'Marketing' ? footMarketing : (s.category === 'Promote' ? footPromote : footDev);
-              if(targetFoot) {
-                  targetFoot.innerHTML += `<li><a href="services.html#${s.id}">${s.title}</a></li>`;
-              }
-          });
-      }
-
-      // 5b. UPDATE FOOTER QUICK LINKS WITH DYNAMIC PAGES
-      const quickLinksList = document.getElementById("quick-links-list");
-      if (quickLinksList && data.dynamicPages && Array.isArray(data.dynamicPages)) {
-          data.dynamicPages.forEach(p => {
-              if (p.title && p.slug) {
-                  quickLinksList.innerHTML += `<li><a href="page.html?id=${p.slug}">${p.title}</a></li>`;
-              }
+              if(targetFoot) targetFoot.innerHTML += `<li><a href="services.html#${s.id}">${s.title}</a></li>`;
           });
       }
 
@@ -1455,27 +1430,17 @@
         const classes = ['sc3', 'sc1', 'sc2'];
         data.services.forEach((s, i) => {
            const c = classes[i % classes.length];
-           
-           // Build dynamic list of sub-services from detailedServices
            let subServicesHtml = '';
            if (data.detailedServices) {
                const catServices = data.detailedServices.filter(ds => ds.category === s.title);
-               catServices.forEach(ds => {
-                   subServicesHtml += `<li><a href="services.html#${ds.id}">${ds.title}</a></li>`;
-               });
+               catServices.forEach(ds => { subServicesHtml += `<li><a href="services.html#${ds.id}">${ds.title}</a></li>`; });
            } else {
                subServicesHtml += `<li><a href="${s.link}">Learn More</a></li>`;
            }
            
            const div = document.createElement('div');
            div.className = `ser-card ${c}`;
-           div.innerHTML = `
-              <h3>${s.title}</h3>
-              <p>${s.desc}</p>
-              <ul class="sub-services">
-                  ${subServicesHtml}
-              </ul>
-           `;
+           div.innerHTML = `<h3>${s.title}</h3><p>${s.desc}</p><ul class="sub-services">${subServicesHtml}</ul>`;
            grid.appendChild(div);
         });
       }
@@ -1522,13 +1487,10 @@
                    if(intro) intro.innerText = d.popupIntro;
                    if(challenge) challenge.innerText = d.challenge;
                    if(solution) solution.innerText = d.solution;
-                   
                    if(benefits) {
                      benefits.innerHTML = "";
                      if(d.benefits) {
-                        d.benefits.split('\n').forEach(b => {
-                           if(b.trim()) benefits.innerHTML += `<li>${b}</li>`;
-                        });
+                        d.benefits.split('\n').forEach(b => { if(b.trim()) benefits.innerHTML += `<li>${b}</li>`; });
                      }
                    }
                    if(popup) popup.classList.add("active");
@@ -1543,17 +1505,13 @@
       if(homeAboutSec && data.homeAbout) {
          const badge = homeAboutSec.querySelector('.about-badge');
          if(badge) badge.innerHTML = data.homeAbout.badge;
-         
          const title = homeAboutSec.querySelector('h2');
          if(title) title.innerHTML = data.homeAbout.title;
-         
          const ps = homeAboutSec.querySelectorAll('p');
          if(ps[0]) ps[0].innerHTML = data.homeAbout.p1;
          if(ps[1]) ps[1].innerHTML = data.homeAbout.p2;
-         
          const btn = homeAboutSec.querySelector('.about-btn');
          if(btn) { btn.innerHTML = data.homeAbout.btnText; btn.href = data.homeAbout.btnLink; }
-         
          const img = homeAboutSec.querySelector('.illustration-card img');
          if(img) img.src = data.homeAbout.image;
       }
@@ -1563,7 +1521,6 @@
       if(clientSec && data.clients) {
           const h2 = clientSec.querySelector('h2');
           if(h2) h2.innerHTML = data.clientsHeading || 'Trusted by Leading Companies';
-          
           const track = clientSec.querySelector('.flow-track');
           if(track) {
               track.innerHTML = '';
@@ -1576,7 +1533,7 @@
                  });
               };
               appendClients();
-              appendClients(); // Duplicate for infinite scroll effect
+              appendClients();
           }
       }
 
@@ -1588,7 +1545,6 @@
         const faqCont = faqSec.querySelector('.faq-container');
         const existingFaqs = Array.from(faqCont.querySelectorAll('.faq-item'));
         faqCont.innerHTML = '';
-        
         data.faqs.forEach((f, i) => {
            if (existingFaqs[i]) {
               const btn = existingFaqs[i].querySelector('.faq-question');
@@ -1609,12 +1565,10 @@
       if (testiSec && data.testimonials) {
         testiSec.querySelector('.testi-left-content h2').innerHTML = data.testimonialsHeading || '';
         testiSec.querySelector('.testi-left-content p').innerHTML = data.testimonialsText || '';
-        
         const swiperWrap = testiSec.querySelector('.splitTestimonialSwiper .swiper-wrapper');
         if (swiperWrap) {
            const existingSlides = Array.from(swiperWrap.querySelectorAll('.swiper-slide'));
            swiperWrap.innerHTML = '';
-           
            data.testimonials.forEach((t, i) => {
              if(existingSlides[i]) {
                 existingSlides[i].querySelector('.testi-text').innerHTML = t.quote;
@@ -1638,12 +1592,13 @@
            });
         }
       }
-      
-    } catch (e) {
-      console.error("Error loading CMS data:", e);
-    }
-  })();
-  </script>
+  };
+
+  // Wait for Firebase to send the LIVE data, then render the UI
+  document.addEventListener('firebaseDataLoaded', (e) => {
+      window.renderCMSUI(e.detail);
+  });
+</script>
 
 </body>
 <!-- Swiper JS -->
