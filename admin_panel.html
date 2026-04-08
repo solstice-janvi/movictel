@@ -1161,8 +1161,8 @@
               }
           });
 
-          localStorage.setItem('movictelCMSData', JSON.stringify(siteData));
-          console.log("Global config loaded and merged successfully.");
+         
+          
           
           if (typeof window.renderAllForms === 'function') window.renderAllForms();
         } else {
@@ -1181,7 +1181,7 @@
       const toastText = toast.querySelector('span');
       try {
         await setDoc(doc(window.db, "artifacts", "movictel", "public", "data", "siteConfig", "global"), siteData);
-        localStorage.setItem('movictelCMSData', JSON.stringify(siteData));
+       
         toastText.innerText = "Changes Published Globally";
         toast.style.transform = window.innerWidth < 768 ? 'translateX(0)' : 'translateX(0)'; 
         toast.style.opacity = '1';
