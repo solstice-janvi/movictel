@@ -350,12 +350,7 @@
 
   <script>
     (function() {
-      const hidePreloader = () => {
-        const preloader = document.getElementById("preloader");
-        if (preloader) preloader.style.display = "none";
-      };
-      window.addEventListener('load', hidePreloader);
-      setTimeout(hidePreloader, 3000);
+      
 
       const dropdownLinks = document.querySelectorAll("header nav ul li.dropdown > a");
       dropdownLinks.forEach(link => {
@@ -503,7 +498,8 @@
             });
         }
     }
-
+const preloader = document.getElementById("preloader");
+    if (preloader) preloader.style.display = "none";
     // Listen for live updates directly from Firebase (No LocalStorage caching)
     signInAnonymously(auth).then(() => {
         const configRef = doc(db, "artifacts", "movictel", "public", "data", "siteConfig", "global");
