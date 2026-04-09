@@ -492,7 +492,7 @@
         <!-- Column 2: Quick Links -->
         <div class="footer-col">
           <h3>Quick Links</h3>
-          <ul>
+          <ul id="quick-links-list">
             <li><a href="index.html">Home</a></li>
             <li><a href="aboutus.html">About Us</a></li>
             <li><a href="services.html">Services</a></li>
@@ -554,13 +554,11 @@
 
   <!-- CMS DATA BINDING SCRIPT - RUNS BEFORE ANIMATIONS SO NEW ELEMENTS GET BOUND -->
   <script>
-    (function() {
-      const storedData = localStorage.getItem('movictelCMSData');
-    // Block the script if data is missing OR if it equals the word "undefined"
-    if (!storedData || storedData === "undefined") return; 
-    
-    try {
-      const data = JSON.parse(storedData);
+    document.addEventListener('firebaseDataLoaded', (e) => {
+      const data = e.detail;
+      if (!data) return; 
+      
+      try {
         
         // 0. SECTION VISIBILITY CONTROLS
         if(data.sections) {
@@ -652,7 +650,7 @@
       } catch(e) {
         console.error("CMS Load Error:", e);
       }
-    })();
+    });
   </script>
 
   <!-- ANIMATIONS AND INTERACTIVITY (Runs AFTER DOM replaces elements) -->
@@ -771,14 +769,12 @@
     });
   }
   </script>
-<!-- Update your module imports to include auth -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
   import { getFirestore, collection, addDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
-  
-  // 1. ADD THIS IMPORT
   import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
 
+  // 1. Initialize Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyCmMeoeZFsUeRKg2B6GM1riE1DpkmCHllw",
     authDomain: "movictel.firebaseapp.com",
@@ -789,24 +785,103 @@
   };
 
   const app = initializeApp(firebaseConfig);
-  // 2. INITIALIZE AUTH
-  const auth = getAuth(app); 
+  const auth = getAuth(app);
   const db = getFirestore(app);
 
-  // 3. WRAP YOUR onSnapshot IN signInAnonymously
+  // --- 2. GLOBAL CONTENT SYNC (PURE FIREBASE, NO LOCAL STORAGE) ---
   signInAnonymously(auth).then(() => {
-      const configRef = doc(db, "artifacts", "movictel", "public", "data", "siteConfig", "global");
+    const configRef = doc(db, "artifacts", "movictel", "public", "data", "siteConfig", "global");
 
-      onSnapshot(configRef, (docSnap) => {
-        if (docSnap.exists()) {
-          const globalData = docSnap.data();
-          window.firebaseSiteData = globalData;
-          document.dispatchEvent(new CustomEvent('firebaseDataLoaded', { detail: globalData }));
+    onSnapshot(configRef, (docSnap) => {
+      if (docSnap.exists()) {
+        const globalData = docSnap.data();
+        
+        // Store data in a global window variable for immediate access
+        window.firebaseSiteData = globalData;
+        
+        // ---> DYNAMIC FOOTER QUICK LINKS FIX <---
+        const quickLinksList = document.getElementById("quick-links-list");
+        if (quickLinksList && globalData.dynamicPages) {
+            quickLinksList.innerHTML = `
+              <li><a href="index.html">Home</a></li>
+              <li><a href="aboutus.html">About Us</a></li>
+              <li><a href="services.html">Services</a></li>
+              <li><a href="contact.html">Contact</a></li>
+            `;
+            globalData.dynamicPages.forEach(p => {
+                if (p.title && p.slug) {
+                    quickLinksList.innerHTML += `<li><a href="page.html?id=${p.slug}">${p.title}</a></li>`;
+                }
+            });
         }
-      }, (err) => console.error("CMS Sync Error:", err));
+        
+        // Dispatch a real-time event so your script.js knows data is ready to be drawn
+        document.dispatchEvent(new CustomEvent('firebaseDataLoaded', { detail: globalData }));
+      } else {
+        console.warn("No CMS data found in Firestore yet.");
+      }
+    }, (err) => console.error("CMS Sync Error:", err));
+  }).catch((error) => {
+    console.error("Firebase Anonymous Auth failed:", error);
   });
 
-  // ... (Keep the handleForm and Lead logic the exact same below) ...
+
+  // --- 3. LEAD SUBMISSION LOGIC ---
+  const handleForm = (selector, collectionName) => {
+    const form = document.querySelector(selector);
+    if (!form) return;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = form.querySelector('button[type="submit"]') || form.querySelector('button');
+      const ogText = btn ? btn.innerHTML : 'Submit';
+      
+      if (btn) {
+          btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+          btn.disabled = true;
+      }
+
+      const formData = {
+        name: form.querySelector('[name="Name"]')?.value || 'N/A',
+        email: form.querySelector('[name="Email"]')?.value || 'N/A',
+        phone: form.querySelector('[name="Phone"]')?.value || 'N/A',
+        timestamp: Date.now()
+      };
+
+      if (collectionName === 'service_leads') {
+        const activeService = window.location.hash 
+          ? window.location.hash.substring(1).replace(/-/g, ' ').toUpperCase() 
+          : (document.getElementById('form-service-type')?.value || 'GENERAL');
+          
+        formData.service_type = activeService;
+        formData.message = form.querySelector('textarea[name="Message"]')?.value || form.querySelector('textarea')?.value || '';
+      } else {
+        formData.subject = form.querySelector('input[name="Subject"]')?.value || 'N/A';
+        formData.message = form.querySelector('textarea[name="Message"]')?.value || form.querySelector('textarea')?.value || '';
+      }
+
+      try {
+        // Saving leads to the secure database paths mapped to your Admin Panel
+        await addDoc(collection(db, "artifacts", "movictel", "public", "data", collectionName), formData);
+        alert('Request sent successfully!');
+        form.reset();
+      } catch (error) {
+        console.error("Submission Error:", error);
+        alert('Failed to send. Please try again.');
+      } finally {
+        if (btn) {
+            btn.innerHTML = ogText;
+            btn.disabled = false;
+        }
+      }
+    });
+  };
+
+  // Attach form listeners once the DOM is fully loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    handleForm('.service-form', 'service_leads');
+    handleForm('.contact-form-fb', 'contact_leads');
+  });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script src="js/script.js"></script>
