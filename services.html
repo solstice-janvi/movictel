@@ -661,7 +661,7 @@
         <!-- Column 2: Quick Links -->
         <div class="footer-col">
           <h3>Quick Links</h3>
-          <ul>
+          <ul id="quick-links-list">
             <li><a href="index.html">Home</a></li>
             <li><a href="aboutus.html">About Us</a></li>
             <li><a href="services.html">Services</a></li>
@@ -726,127 +726,15 @@
     menuToggle.classList.toggle("active");
   });
 
-  // 1. ALL 12 SERVICES STORED HERE (Fallback Data)
-  let servicesData = {
-    "social-media-marketing": {
-      title: "Social Media Marketing",
-      description: "We manage and grow your brand presence across social platforms with content planning, engagement strategies, and performance tracking.",
-      features: [
-        { title: "Engaging Content", desc: "We craft visually appealing and highly engaging content tailored to your target audience." },
-        { title: "Community Management", desc: "We actively monitor, reply, and engage with your followers to build brand loyalty." },
-        { title: "Analytics & Reporting", desc: "Track your growth with comprehensive monthly performance reports and insights." }
-      ]
-    },
-    "google-meta-ads": {
-      title: "Google & Meta Ads",
-      description: "High-performing paid advertising campaigns optimized for reach, leads, and ROI across Google, Facebook, and Instagram.",
-      features: [
-        { title: "Targeted Reach", desc: "Laser-focused audience targeting to ensure your ads are seen by potential buyers." },
-        { title: "High ROI Optimization", desc: "Continuous monitoring and A/B testing to lower cost-per-click and boost conversions." },
-        { title: "Cross-Platform Strategy", desc: "Unified campaigns across Google Search, Facebook feeds, and Instagram stories." }
-      ]
-    },
-    "brand-awareness": {
-      title: "Brand Awareness Campaigns",
-      description: "Strategic campaigns focused on improving brand recall, credibility, and audience trust across digital channels.",
-      features: [
-        { title: "Strategic Positioning", desc: "Crafting a unique voice and visual identity that stands out in the market." },
-        { title: "Maximum Exposure", desc: "Utilizing multiple digital touchpoints to keep your brand top-of-mind." },
-        { title: "Trust Building", desc: "Establishing credibility through consistent, high-quality messaging and PR." }
-      ]
-    },
-    "seo-online-visibility": {
-      title: "SEO & Online Visibility",
-      description: "Improve organic rankings, website traffic, and long-term online presence through ethical white-hat SEO strategies.",
-      features: [
-        { title: "Keyword Research", desc: "Identifying the high-intent search terms your customers are actively using." },
-        { title: "On-Page Optimization", desc: "Optimizing website structure, meta tags, and content for search engines." },
-        { title: "Quality Link Building", desc: "Acquiring authoritative backlinks to boost your domain authority." }
-      ]
-    },
-    "content-writing": {
-      title: "Content Writing",
-      description: "High-quality content tailored for websites, ads, blogs, and social media to support brand messaging and conversions.",
-      features: [
-        { title: "SEO Blog Posts", desc: "Informative, keyword-rich articles that drive organic traffic to your site." },
-        { title: "Compelling Ad Copy", desc: "Persuasive writing designed specifically to maximize ad click-through rates." },
-        { title: "Website Copywriting", desc: "Clear, conversion-focused messaging for landing pages and corporate sites." }
-      ]
-    },
-    "bulk-sms": {
-      title: "Bulk SMS",
-      description: "Promotional and transactional SMS solutions with high delivery rates for alerts, offers, and notifications.",
-      features: [
-        { title: "High Delivery Rates", desc: "Direct carrier connections ensure your messages reach the inbox instantly." },
-        { title: "Cost Effective", desc: "Reach thousands of customers simultaneously without breaking your marketing budget." },
-        { title: "Automated Triggers", desc: "Schedule messages or trigger them via API based on customer actions." }
-      ]
-    },
-    "rcs-sms": {
-      title: "RCS Messaging",
-      description: "Rich Communication Services enable interactive messaging with images, buttons, and branding.",
-      features: [
-        { title: "Fast Delivery", desc: "Messages delivered instantly with high reliability and read receipts." },
-        { title: "Detailed Reports", desc: "Track campaign performance, delivery rates, and user interactions." },
-        { title: "Easy Integration", desc: "Robust API integration for your existing apps, websites, and CRMs." }
-      ]
-    },
-    "voice-sms": {
-      title: "Voice SMS",
-      description: "Automated voice messages for alerts, reminders, and campaigns, ideal for reaching users instantly.",
-      features: [
-        { title: "Instant Reach", desc: "Deliver pre-recorded voice messages to thousands of phones at once." },
-        { title: "Personalized Touch", desc: "Add a human element to your automated broadcasts and alerts." },
-        { title: "Easy Scheduling", desc: "Set up voice campaigns in advance for optimal delivery times." }
-      ]
-    },
-    "whatsapp-api": {
-      title: "WhatsApp Business API",
-      description: "Meta-verified WhatsApp messaging for customer support, notifications, and conversational commerce.",
-      features: [
-        { title: "Verified Badge", desc: "Build trust with a verified green tick next to your business name." },
-        { title: "Automated Chatbots", desc: "Provide 24/7 customer support with intelligent automated replies." },
-        { title: "Rich Media Broadcasts", desc: "Send documents, videos, and interactive buttons directly to WhatsApp." }
-      ]
-    },
-    "website-development": {
-      title: "Website Design & Development",
-      description: "Modern, responsive, and SEO-friendly websites designed to convert visitors into customers.",
-      features: [
-        { title: "Custom Design", desc: "Tailor-made visual layouts that perfectly match your brand identity." },
-        { title: "Mobile Responsive", desc: "Flawless performance and aesthetics on desktops, tablets, and smartphones." },
-        { title: "Fast Loading", desc: "Optimized code and assets for lightning-fast page load speeds." }
-      ]
-    },
-    "app-development": {
-      title: "Mobile App Development",
-      description: "Custom mobile applications built for performance, scalability, and seamless user experience.",
-      features: [
-        { title: "iOS & Android", desc: "Cross-platform or native development to reach users on any device." },
-        { title: "Scalable Architecture", desc: "Built with a robust backend to support thousands of concurrent users." },
-        { title: "Intuitive UI/UX", desc: "User-centric design focused on ease of use and high retention." }
-      ]
-    },
-    "landing-pages": {
-      title: "Landing Pages",
-      description: "Targeted landing pages optimized specifically for ad campaigns, lead generation, and quick sales.",
-      features: [
-        { title: "A/B Testing Ready", desc: "Built to easily test different headlines and layouts to maximize conversions." },
-        { title: "Lead Capture Forms", desc: "Seamless integration with your CRM or email marketing software." },
-        { title: "Laser-Focused Content", desc: "Stripped of distractions to guide the user straight to the call-to-action." }
-      ]
-    }
-  };
+  // 1. SERVICES OBJECT (Populated Dynamically by Firebase)
+  let servicesData = {};
 
   // 1.5 CMS DATA INJECTION
-  (function() {
-     
-      const storedData = localStorage.getItem('movictelCMSData');
-    // Block the script if data is missing OR if it equals the word "undefined"
-    if (!storedData || storedData === "undefined") return; 
-    
-    try {
-      const data = JSON.parse(storedData);
+  document.addEventListener('firebaseDataLoaded', (e) => {
+      const data = e.detail;
+      if (!data) return; 
+      
+      try {
           if(data.detailedServices && data.detailedServices.length > 0) {
               
               // Clear hardcoded data completely to prevent ghost entries
@@ -917,11 +805,15 @@
                       targetFoot.innerHTML += `<li><a href="javascript:void(0)" onclick="loadService('${s.id}')">${s.title}</a></li>`;
                   }
               });
-          }
+          const requestedService = window.location.hash.substring(1); 
+        if (requestedService && servicesData[requestedService]) {
+            loadService(requestedService);
+        }
+            }
       } catch(e) {
           console.error("CMS Load Error:", e);
       }
-  })();
+  });
 
 
   // 2. FUNCTION TO LOAD A SPECIFIC SERVICE DYNAMICALLY
@@ -975,14 +867,7 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  window.addEventListener('DOMContentLoaded', () => {
-      // Gets the name from the hash (e.g., removes the '#' from '#rcs-sms')
-      const requestedService = window.location.hash.substring(1); 
-      
-      if (requestedService && servicesData[requestedService]) {
-          loadService(requestedService);
-      }
-  });
+ 
 
   const footerToggleBtn = document.getElementById("footerToggleBtn");
   const footerCollapsible = document.getElementById("footerCollapsible");
@@ -1009,10 +894,9 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
   import { getFirestore, collection, addDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
-  
-  // 1. ADD THIS IMPORT
   import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
 
+  // 1. Initialize Firebase (No Auth Required for Reading!)
   const firebaseConfig = {
     apiKey: "AIzaSyCmMeoeZFsUeRKg2B6GM1riE1DpkmCHllw",
     authDomain: "movictel.firebaseapp.com",
@@ -1023,24 +907,101 @@
   };
 
   const app = initializeApp(firebaseConfig);
-  // 2. INITIALIZE AUTH
-  const auth = getAuth(app); 
+  const auth = getAuth(app);
   const db = getFirestore(app);
 
-  // 3. WRAP YOUR onSnapshot IN signInAnonymously
+  // 2. DIRECT DATABASE CONNECTION
   signInAnonymously(auth).then(() => {
-      const configRef = doc(db, "artifacts", "movictel", "public", "data", "siteConfig", "global");
+    const configRef = doc(db, "artifacts", "movictel", "public", "data", "siteConfig", "global");
 
-      onSnapshot(configRef, (docSnap) => {
-        if (docSnap.exists()) {
-          const globalData = docSnap.data();
-          window.firebaseSiteData = globalData;
-          document.dispatchEvent(new CustomEvent('firebaseDataLoaded', { detail: globalData }));
+    onSnapshot(configRef, (docSnap) => {
+      if (docSnap.exists()) {
+        const globalData = docSnap.data();
+        window.firebaseSiteData = globalData;
+        
+        // ---> DYNAMIC FOOTER QUICK LINKS FIX <---
+        const quickLinksList = document.getElementById("quick-links-list");
+        if (quickLinksList && globalData.dynamicPages) {
+            quickLinksList.innerHTML = `
+              <li><a href="index.html">Home</a></li>
+              <li><a href="aboutus.html">About Us</a></li>
+              <li><a href="services.html">Services</a></li>
+              <li><a href="contact.html">Contact</a></li>
+            `;
+            globalData.dynamicPages.forEach(p => {
+                if (p.title && p.slug) {
+                    quickLinksList.innerHTML += `<li><a href="page.html?id=${p.slug}">${p.title}</a></li>`;
+                }
+            });
         }
-      }, (err) => console.error("CMS Sync Error:", err));
+        // ------------------------------------------
+
+        // Tell the website to instantly draw the data
+        document.dispatchEvent(new CustomEvent('firebaseDataLoaded', { detail: globalData }));
+      } else {
+        console.warn("No CMS data found in Firestore yet.");
+      }
+    }, (err) => console.error("CMS Sync Error:", err));
+  }).catch((error) => {
+    console.error("Firebase Anonymous Auth failed:", error);
   });
 
-  // ... (Keep the handleForm and Lead logic the exact same below) ...
+
+  // --- 3. LEAD SUBMISSION LOGIC ---
+  const handleForm = (selector, collectionName) => {
+    const form = document.querySelector(selector);
+    if (!form) return;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = form.querySelector('button[type="submit"]') || form.querySelector('button');
+      const ogText = btn ? btn.innerHTML : 'Submit';
+      
+      if (btn) {
+          btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+          btn.disabled = true;
+      }
+
+      const formData = {
+        name: form.querySelector('[name="Name"]')?.value || 'N/A',
+        email: form.querySelector('[name="Email"]')?.value || 'N/A',
+        phone: form.querySelector('[name="Phone"]')?.value || 'N/A',
+        timestamp: Date.now()
+      };
+
+      if (collectionName === 'service_leads') {
+        const activeService = window.location.hash 
+          ? window.location.hash.substring(1).replace(/-/g, ' ').toUpperCase() 
+          : (document.getElementById('form-service-type')?.value || 'GENERAL');
+          
+        formData.service_type = activeService;
+        formData.message = form.querySelector('textarea[name="Message"]')?.value || form.querySelector('textarea')?.value || '';
+      } else {
+        formData.subject = form.querySelector('input[name="Subject"]')?.value || 'N/A';
+        formData.message = form.querySelector('textarea[name="Message"]')?.value || form.querySelector('textarea')?.value || '';
+      }
+
+      try {
+        await addDoc(collection(db, "artifacts", "movictel", "public", "data", collectionName), formData);
+        alert('Request sent successfully!');
+        form.reset();
+      } catch (error) {
+        console.error("Submission Error:", error);
+        alert('Failed to send. Please try again.');
+      } finally {
+        if (btn) {
+            btn.innerHTML = ogText;
+            btn.disabled = false;
+        }
+      }
+    });
+  };
+
+  // Attach form listeners once the DOM is fully loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    handleForm('.service-form', 'service_leads');
+    handleForm('.contact-form-fb', 'contact_leads');
+  });
 </script>
 <script src="js/script.js"></script>
 </body> 
