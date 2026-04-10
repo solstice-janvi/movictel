@@ -481,27 +481,68 @@
             });
         }
 
-        // 3. UPDATE QUICK LINKS IN FOOTER (DYNAMIC PAGES)
-        const quickLinksList = document.getElementById("quick-links-list");
-        if (quickLinksList && data.dynamicPages) {
-            // Re-render to prevent duplicate appending
-            quickLinksList.innerHTML = `
-              <li><a href="index.html">Home</a></li>
-              <li><a href="aboutus.html">About Us</a></li>
-              <li><a href="services.html">Services</a></li>
-              <li><a href="contact.html">Contact</a></li>
-            `;
-            data.dynamicPages.forEach(p => {
-                if (p.title && p.slug) {
-                    quickLinksList.innerHTML += `<li><a href="page.html?id=${p.slug}">${p.title}</a></li>`;
-                }
-            });
+        // 3. UPDATE QUICK LINKS IN FOOTER & HEADER (DYNAMIC PAGES)
+        try {
+            console.log("DEBUG: Loading Dynamic Pages Data:", data.dynamicPages);
+
+            // A) Footer Links
+            const quickLinksList = document.getElementById("quick-links-list");
+            if (quickLinksList && data.dynamicPages && Array.isArray(data.dynamicPages)) {
+                // Re-render securely
+                quickLinksList.innerHTML = `
+                  <li><a href="index.html">Home</a></li>
+                  <li><a href="aboutus.html">About Us</a></li>
+                  <li><a href="services.html">Services</a></li>
+                  <li><a href="contact.html">Contact</a></li>
+                `;
+                
+                data.dynamicPages.forEach(p => {
+                    // Defensive check: ensure data is valid before injecting
+                    if (p && typeof p.title === 'string' && p.title.trim() !== '' && 
+                        typeof p.slug === 'string' && p.slug.trim() !== '') {
+                        const li = document.createElement('li');
+                        const a = document.createElement('a');
+                        a.href = `page.html?id=${encodeURIComponent(p.slug.trim())}`;
+                        a.textContent = p.title.trim();
+                        li.appendChild(a);
+                        quickLinksList.appendChild(li);
+                    }
+                });
+            }
+
+            // B) Header Links
+            const headerMenu = document.querySelector('header nav ul.menu');
+            if (headerMenu && data.dynamicPages && Array.isArray(data.dynamicPages)) {
+                headerMenu.querySelectorAll('.dyn-header-link').forEach(el => el.remove());
+                const contactLi = Array.from(headerMenu.children).find(li => li.textContent.includes('Contact'));
+                
+                data.dynamicPages.forEach(p => {
+                    if (p && typeof p.title === 'string' && p.title.trim() !== '' && 
+                        typeof p.slug === 'string' && p.slug.trim() !== '') {
+                        const li = document.createElement('li');
+                        li.className = 'dyn-header-link';
+                        const a = document.createElement('a');
+                        a.href = `page.html?id=${encodeURIComponent(p.slug.trim())}`;
+                        a.textContent = p.title.trim();
+                        li.appendChild(a);
+                        
+                        if (contactLi) {
+                            headerMenu.insertBefore(li, contactLi);
+                        } else {
+                            headerMenu.appendChild(li);
+                        }
+                    }
+                });
+            }
+        } catch (error) {
+            console.error("Error rendering dynamic pages:", error);
         }
     }
 const preloader = document.getElementById("preloader");
     if (preloader) preloader.style.display = "none";
-    // Listen for live updates directly from Firebase (No LocalStorage caching)
-    signInAnonymously(auth).then(() => {
+    
+    // 3. FETCH DATA (Handling Auth Failure gracefully)
+    const fetchPageData = () => {
         const configRef = doc(db, "artifacts", "movictel", "public", "data", "siteConfig", "global");
         onSnapshot(configRef, (docSnap) => {
             if (docSnap.exists()) {
@@ -511,9 +552,14 @@ const preloader = document.getElementById("preloader");
         }, (error) => {
             console.error("Firebase sync error:", error);
         });
+    };
+
+    signInAnonymously(auth).then(() => {
+        fetchPageData();
     }).catch((error) => {
-        console.error("Anonymous authentication failed:", error);
+        console.warn("Anonymous authentication failed:", error.message, "- Attempting unauthenticated read.");
+        fetchPageData(); // Fallback to read without Auth
     });
   </script>
 </body>
-</html>
+</html> 
