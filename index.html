@@ -370,6 +370,31 @@
         background-color: #018eec;
       }
     }
+
+    /* ==========================================
+       CASE STUDY CAROUSEL FIXES
+       ========================================== */
+    .carousel-track {
+      display: flex !important;
+      flex-wrap: nowrap !important;
+      overflow-x: visible !important;
+      scroll-behavior: smooth !important;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none; /* Firefox */
+      -ms-overflow-style: none;  /* IE and Edge */
+      width: 100%;
+    }
+    .carousel-track::-webkit-scrollbar {
+      display: none; /* Chrome, Safari and Opera */
+    }
+    .carousel-track .case-item {
+      flex: 0 0 auto !important;
+      scroll-snap-align: start;
+    }
+    .nav-arrow {
+      z-index: 10 !important;
+    }
   </style>
 
 </head>
@@ -380,7 +405,6 @@
   </div>
 
 
-  <!-- ... existing code ... -->
   <header id="main-header">
     <div class="container">
 
@@ -407,48 +431,38 @@
               <!-- MARKETING -->
               <li class="has-submenu">
                 <a href="#"><i class="fa-solid fa-bullhorn"></i>Marketing</a>
-                <ul class="submenu">
-                  <li><a href="services.html#social-media-marketing"><i class="fa-solid fa-hashtag"></i>Social Media
-                      Marketing</a></li>
-                  <li><a href="services.html#google-meta-ads"><i class="fa-solid fa-chart-line"></i>Google & Meta
-                      Ads</a></li>
-                  <li><a href="services.html#brand-awareness"><i class="fa-solid fa-eye"></i>Brand Awareness
-                      Campaigns</a></li>
-                  <li><a href="services.html#seo-online-visibility"><i class="fa-solid fa-magnifying-glass"></i>SEO &
-                      Online Visibility</a></li>
-                  <li><a href="services.html#content-writing"><i class="fa-solid fa-pen-nib"></i> Content Writing</a>
-                  </li>
+                <ul class="submenu" id="nav-marketing-list">
+                  <li><a href="services.html#social-media-marketing"><i class="fa-solid fa-hashtag"></i>Social Media Marketing</a></li>
+                  <li><a href="services.html#google-meta-ads"><i class="fa-solid fa-chart-line"></i>Google & Meta Ads</a></li>
+                  <li><a href="services.html#brand-awareness"><i class="fa-solid fa-eye"></i>Brand Awareness Campaigns</a></li>
+                  <li><a href="services.html#seo-online-visibility"><i class="fa-solid fa-magnifying-glass"></i>SEO & Online Visibility</a></li>
+                  <li><a href="services.html#content-writing"><i class="fa-solid fa-pen-nib"></i> Content Writing</a></li>
                 </ul>
               </li>
 
               <!-- PROMOTE -->
               <li class="has-submenu">
                 <a href="#"><i class="fa-solid fa-paper-plane"></i>Promote</a>
-                <ul class="submenu">
+                <ul class="submenu" id="nav-promote-list">
                   <li><a href="services.html#bulk-sms"><i class="fa-solid fa-message"></i>Bulk SMS</a></li>
                   <li><a href="services.html#rcs-sms"><i class="fa-solid fa-comments"></i>RCS SMS</a></li>
                   <li><a href="services.html#voice-sms"><i class="fa-solid fa-microphone"></i>Voice SMS</a></li>
-                  <li><a href="services.html#whatsapp-api"><i class="fa-brands fa-whatsapp"></i>WhatsApp Business
-                      API</a></li>
+                  <li><a href="services.html#whatsapp-api"><i class="fa-brands fa-whatsapp"></i>WhatsApp Business API</a></li>
                 </ul>
               </li>
 
               <!-- DEVELOPMENT -->
               <li class="has-submenu">
                 <a href="#"><i class="fa-solid fa-code"></i> Development</a>
-                <ul class="submenu">
-                  <li><a href="services.html#website-development"><i class="fa-solid fa-globe"></i> Website
-                      Development</a></li>
-                  <li><a href="services.html#app-development"><i class="fa-solid fa-mobile-screen"></i>App
-                      Development</a></li>
-                  <li><a href="services.html#landing-pages"><i class="fa-solid fa-layer-group"></i> Landing Pages</a>
-                  </li>
+                <ul class="submenu" id="nav-dev-list">
+                  <li><a href="services.html#website-development"><i class="fa-solid fa-globe"></i> Website Development</a></li>
+                  <li><a href="services.html#app-development"><i class="fa-solid fa-mobile-screen"></i>App Development</a></li>
+                  <li><a href="services.html#landing-pages"><i class="fa-solid fa-layer-group"></i> Landing Pages</a></li>
                 </ul>
               </li>
 
             </ul>
           </li>
-
 
           <li><a href="blog.html">Blog</a></li>
           <li><a href="aboutus.html">About Us</a></li>
@@ -510,38 +524,6 @@
       </div>
     </div>
   </section>
-
-
-
-
-
-
-
-
-
-
-
-  <!-- Home Slider -->
-  <!-- Home Hero Slider -->
-
-  <!-- Hero Slider -->
-  <!-- <div class="slider">
-    
-    <img class="slide active" src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d" alt="Digital Marketing Team">
-  <img class="slide" src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d" alt="Social Media Marketing">
-  <img class="slide" src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d" alt="Creative Strategy">
-  
-   
-    <a class="prev" onclick="changeSlide(-1)">&#10094;</a>
-    <a class="next" onclick="changeSlide(1)">&#10095;</a>
-  
-   
-    <div class="dots">
-      <span class="dot active" onclick="currentSlide(0)"></span>
-      <span class="dot" onclick="currentSlide(1)"></span>
-      <span class="dot" onclick="currentSlide(2)"></span>
-    </div>
-  </div> -->
 
   <!-- Middle Content -->
   <section class="who-we-are">
@@ -723,54 +705,6 @@
 
   </section>
 
-  <!-- ivr top service section -->
-  <!-- <section class="ivr-section">
-  <div class="ivr-container">
-
-    //Left Side: IVR Info
-    <div class="ivr-content">
-      <h2>IVR Solutions – <span>Smart Communication for Your Business</span></h2>
-      <p>
-        Movictel provides advanced IVR (Interactive Voice Response) solutions 
-        that help businesses automate calls, improve customer experience, and 
-        boost efficiency. Perfect for startups, enterprises & service-based 
-        industries.
-      </p>
-
-      //Features in Cards
-      <div class="ivr-features">
-        <div class="ivr-card">
-          <i class="fas fa-headset"></i>
-          <h3>24/7 Customer Support</h3>
-          <p>Automated system ensures customers are assisted anytime.</p>
-        </div>
-        <div class="ivr-card">
-          <i class="fas fa-random"></i>
-          <h3>Call Routing</h3>
-          <p>Direct calls to the right department without delays.</p>
-        </div>
-        <div class="ivr-card">
-          <i class="fas fa-chart-line"></i>
-          <h3>Analytics & Reports</h3>
-          <p>Track call performance & customer behavior easily.</p>
-        </div>
-      </div>
-    </div>
-
-    //Right Side: Enquiry Form
-    <div class="ivr-form-box">
-      <h3>Enquire for IVR Solutions</h3>
-      <form class="ivr-form">
-        <input type="text" placeholder="Your Name" required>
-        <input type="email" placeholder="Email Address" required>
-        <input type="text" placeholder="Phone Number" required>
-        <textarea placeholder="Your Requirement" rows="4"></textarea>
-        <button type="submit">Submit Enquiry</button>
-      </form>
-    </div>
-
-  </div>
-</section> -->
 
   <!-- fiture instury -->
   <section class="case-elegant">
@@ -862,41 +796,6 @@
     </div>
   </div>
 
-
-
-
-
-  <!-- ivr service  -->
-  <!-- <section class="about-ivr">
-  <div class="container">
-    <div class="about-content">
-     
-      <div class="about-text">
-        <h1>Hire The Best IVR Service Provider in Lucknow</h1>
-        <h2>Why Movictel is a trusted name for IVR service provider</h2>
-        <p>
-          Movictel offers cutting-edge cloud IVR solutions that simplify 
-          customer interactions, enhance call management, and improve 
-          overall business communication. With 24/7 support and customized 
-          solutions, we ensure your business stays ahead in delivering 
-          excellent customer service.
-        </p>
-        <p>
-          From small businesses to enterprises, our IVR services are 
-          scalable and designed to handle thousands of concurrent calls 
-          seamlessly. This ensures your customers never face delays and 
-          your brand image stays strong.
-        </p>
-        
-      </div>
-
-      
-      <div class="about-image">
-        <img src="images/7712594.jpg" alt="IVR Solutions">
-      </div>
-    </div>
-  </div>
-</section> -->
 
   <!-- About us swction -->
   <section class="about-section">
@@ -1195,7 +1094,7 @@
           </div>
 
           <!-- Column 2: Quick Links -->
-          <div class="footer-col">
+         <div class="footer-col">
             <h3>Quick Links</h3>
             <ul id="quick-links-list">
               <li><a href="index.html">Home</a></li>
@@ -1213,7 +1112,7 @@
 
               <div class="footer-service-group">
                 <span class="service-heading">Marketing</span>
-                <ul>
+                <ul id="footer-marketing-list">
                   <li><a href="services.html#social-media-marketing">Social Media Marketing</a></li>
                   <li><a href="services.html#google-meta-ads">Google & Meta Ads</a></li>
                   <li><a href="services.html#brand-awareness">Brand Awareness Campaigns</a></li>
@@ -1224,7 +1123,7 @@
 
               <div class="footer-service-group">
                 <span class="service-heading">Promote</span>
-                <ul>
+                <ul id="footer-promote-list">
                   <li><a href="services.html#bulk-sms">Bulk SMS</a></li>
                   <li><a href="services.html#rcs-sms">RCS SMS</a></li>
                   <li><a href="services.html#voice-sms">Voice SMS</a></li>
@@ -1234,7 +1133,7 @@
 
               <div class="footer-service-group">
                 <span class="service-heading">Development</span>
-                <ul>
+                <ul id="footer-dev-list">
                   <li><a href="services.html#website-development">Website Development</a></li>
                   <li><a href="services.html#app-development">App Development</a></li>
                   <li><a href="services.html#landing-pages">Landing Pages</a></li>
@@ -1321,14 +1220,29 @@
       const navRight = document.querySelector('.nav-arrow.right');
 
       if (caseTrack && navLeft && navRight) {
-        navLeft.addEventListener('click', () => {
-          const itemWidth = caseTrack.querySelector('.case-item')?.offsetWidth || 300;
-          caseTrack.scrollBy({ left: -(itemWidth + 20), behavior: 'smooth' }); // Added 20px gap offset
+        navLeft.addEventListener('click', (e) => {
+          e.preventDefault();
+          const item = caseTrack.querySelector('.case-item');
+          // Calculate dynamic width + gap
+          const style = item ? window.getComputedStyle(item) : null;
+          const marginRight = style ? parseFloat(style.marginRight) || 0 : 0;
+          const marginLeft = style ? parseFloat(style.marginLeft) || 0 : 0;
+          const itemWidth = item ? item.offsetWidth + marginRight + marginLeft : 300;
+          
+          const scrollAmount = itemWidth > 0 ? itemWidth + 20 : 320;
+          caseTrack.scrollBy({ left: -scrollAmount, behavior: 'smooth' }); 
         });
 
-        navRight.addEventListener('click', () => {
-          const itemWidth = caseTrack.querySelector('.case-item')?.offsetWidth || 300;
-          caseTrack.scrollBy({ left: (itemWidth + 20), behavior: 'smooth' }); // Added 20px gap offset
+        navRight.addEventListener('click', (e) => {
+          e.preventDefault();
+          const item = caseTrack.querySelector('.case-item');
+          const style = item ? window.getComputedStyle(item) : null;
+          const marginRight = style ? parseFloat(style.marginRight) || 0 : 0;
+          const marginLeft = style ? parseFloat(style.marginLeft) || 0 : 0;
+          const itemWidth = item ? item.offsetWidth + marginRight + marginLeft : 300;
+          
+          const scrollAmount = itemWidth > 0 ? itemWidth + 20 : 320;
+          caseTrack.scrollBy({ left: scrollAmount, behavior: 'smooth' }); 
         });
       }
 
@@ -1444,313 +1358,390 @@
     })();
   </script>
 
-  <!-- CMS DATA BINDING SCRIPT -->
+  <!-- CMS DATA BINDING SCRIPT - BULLETPROOFED VERSION -->
   <script>
     // We wrap everything in a function that receives LIVE data from Firebase
     window.renderCMSUI = function (data) {
       if (!data) return;
+      console.log("✅ CMS Data Received:", data);
 
       // 1. VISIBILITY CONTROLS
-      const toggleVis = (selector, isVisible) => {
-        const els = document.querySelectorAll(selector);
-        els.forEach(el => el.style.display = isVisible ? '' : 'none');
-      };
-      toggleVis('.banner-section', data.sections.hero); // Changed from .hero-slider to match new swiper
-      toggleVis('.who-we-are', data.sections.about);
-      toggleVis('.festival-offers', data.sections.offers);
-      toggleVis('.services-section', data.sections.services);
-      toggleVis('.case-elegant', data.sections.cases);
-      toggleVis('.about-section', data.sections.aboutUs);
-      toggleVis('.client-flow', data.sections.clients);
-      toggleVis('.faq-section', data.sections.faq);
-      toggleVis('.split-testimonial-wrap', data.sections.testimonials);
+      try {
+          const toggleVis = (selector, isVisible) => {
+            const els = document.querySelectorAll(selector);
+            els.forEach(el => el.style.display = (isVisible === false) ? 'none' : '');
+          };
+          if (data.sections) {
+              toggleVis('.banner-section', data.sections.hero);
+              toggleVis('.who-we-are', data.sections.about);
+              toggleVis('.festival-offers', data.sections.offers);
+              toggleVis('.services-section', data.sections.services);
+              toggleVis('.case-elegant', data.sections.cases);
+              toggleVis('.about-section', data.sections.aboutUs);
+              toggleVis('.client-flow', data.sections.clients);
+              toggleVis('.faq-section', data.sections.faq);
+              toggleVis('.split-testimonial-wrap', data.sections.testimonials);
+          }
+      } catch (err) { console.error("CMS Error (Visibility):", err); }
 
       // 2. HERO BANNER SLIDER
-      const bannerWrapper = document.getElementById('bannerWrapper');
-      if (bannerWrapper && data.hero && Array.isArray(data.hero)) {
-
-        // Swiper loop breaks if innerHTML changes rapidly while initialized.
-        // Destroy the existing Swiper before modifying DOM
-        const swiperEl = document.querySelector('.bannerSwiper');
-        if (swiperEl && swiperEl.swiper) {
-          swiperEl.swiper.destroy(true, true);
-        }
-
-        bannerWrapper.innerHTML = '';
-
-        data.hero.forEach((slide) => {
-          const div = document.createElement('div');
-          div.className = 'swiper-slide';
-          const mobileImgSrc = slide.imageMobile ? slide.imageMobile : slide.image;
-
-          div.innerHTML = `
-             <picture style="display: block; width: 100%; height: 100%;">
-               <source media="(max-width: 768px)" srcset="${mobileImgSrc}">
-               <img src="${slide.image}" alt="Banner Image" style="width: 100%; height: 100%; object-fit: cover; display: block; object-position: center;">
-             </picture>
-           `;
-          bannerWrapper.appendChild(div);
-        });
-
-        // Re-initialize Swiper safely after modifying DOM
-        if (swiperEl) {
-          new Swiper('.bannerSwiper', {
-            slidesPerView: 1,
-            loop: true,
-            speed: 1000,
-            observer: true,
-            observeParents: true,
-            autoplay: {
-              delay: 4000,
-              disableOnInteraction: false,
-            },
-            navigation: { nextEl: '.banner-next', prevEl: '.banner-prev' },
-            pagination: { el: '.banner-pagination', clickable: true },
-            effect: 'creative',
-            creativeEffect: {
-              prev: { shadow: true, translate: ["-20%", 0, -1], scale: 0.8 },
-              next: { translate: ["100%", 0, 0] },
+      try {
+          const bannerWrapper = document.getElementById('bannerWrapper');
+          if (bannerWrapper && data.hero && Array.isArray(data.hero)) {
+            const swiperEl = document.querySelector('.bannerSwiper');
+            if (swiperEl && swiperEl.swiper) {
+              swiperEl.swiper.destroy(true, true);
             }
-          });
-        }
-      }
-
-      // 3. ABOUT SECTION (Who We Are)
-      const aboutEl = document.querySelector('.who-we-are');
-      if (aboutEl && data.about) {
-        aboutEl.querySelector('.text-content h2').innerHTML = data.about.title;
-        aboutEl.querySelector('.text-content p').innerHTML = data.about.text;
-        aboutEl.querySelector('.image-content img').src = data.about.image;
-      }
-
-      // 4. FESTIVAL OFFERS
-      const offersSec = document.querySelector('.festival-offers');
-      if (offersSec && data.offers) {
-        const h2 = offersSec.querySelector('h2');
-        if (h2) h2.innerHTML = data.offersHeading || '🎊 Festival Special Offers';
-        const subtext = offersSec.querySelector('.sub-text');
-        if (subtext) subtext.innerHTML = data.offersSubtext || '';
-
-        const wrapper = offersSec.querySelector('.swiper-wrapper');
-        if (wrapper) {
-          wrapper.innerHTML = '';
-          data.offers.forEach(o => {
-            const slide = document.createElement('div');
-            slide.className = 'swiper-slide';
-            slide.innerHTML = `
-                <div class="offer-card festival-bg" style="background-image: url('${o.bgImage}');">
-                  <div class="offer-overlay"></div>
-                  <div class="offer-content">
-                    <h3>${o.title}</h3>
-                    <p>${o.text}</p>
-                    <a href="${o.link}" class="btn">Grab Offer</a>
-                  </div>
-                </div>`;
-            wrapper.appendChild(slide);
-          });
-        }
-      }
-
-      // 5. UPDATE HEADER AND FOOTER SERVICE LINKS DYNAMICALLY
-      if (data.detailedServices && Array.isArray(data.detailedServices)) {
-        // Headers
-        const headMarketing = document.querySelector("nav .dropdown-menu > li:nth-child(1) .submenu");
-        const headPromote = document.querySelector("nav .dropdown-menu > li:nth-child(2) .submenu");
-        const headDev = document.querySelector("nav .dropdown-menu > li:nth-child(3) .submenu");
-        if (headMarketing) headMarketing.innerHTML = '';
-        if (headPromote) headPromote.innerHTML = '';
-        if (headDev) headDev.innerHTML = '';
-
-        // Footers
-        const footMarketing = document.querySelector(".footer-service-group:nth-child(1) ul");
-        const footPromote = document.querySelector(".footer-service-group:nth-child(2) ul");
-        const footDev = document.querySelector(".footer-service-group:nth-child(3) ul");
-        if (footMarketing) footMarketing.innerHTML = '';
-        if (footPromote) footPromote.innerHTML = '';
-        if (footDev) footDev.innerHTML = '';
-
-        data.detailedServices.forEach(s => {
-          let targetHead = s.category === 'Marketing' ? headMarketing : (s.category === 'Promote' ? headPromote : headDev);
-          if (targetHead) targetHead.innerHTML += `<li><a href="services.html#${s.id}"><i class="${s.navIcon}"></i>${s.title}</a></li>`;
-
-          let targetFoot = s.category === 'Marketing' ? footMarketing : (s.category === 'Promote' ? footPromote : footDev);
-          if (targetFoot) targetFoot.innerHTML += `<li><a href="services.html#${s.id}">${s.title}</a></li>`;
-        });
-      }
-
-      // 6. MAIN SERVICES SECTION ON HOME PAGE
-      const srvSec = document.querySelector('.services-section');
-      if (srvSec && data.services) {
-        const h2 = srvSec.querySelector('.section-heading h2');
-        if (h2) h2.innerHTML = data.servicesHeading || 'Our Services';
-        const grid = srvSec.querySelector('.services-grid');
-        grid.innerHTML = '';
-
-        const classes = ['sc3', 'sc1', 'sc2'];
-        data.services.forEach((s, i) => {
-          const c = classes[i % classes.length];
-          let subServicesHtml = '';
-          if (data.detailedServices) {
-            const catServices = data.detailedServices.filter(ds => ds.category === s.title);
-            catServices.forEach(ds => { subServicesHtml += `<li><a href="services.html#${ds.id}">${ds.title}</a></li>`; });
-          } else {
-            subServicesHtml += `<li><a href="${s.link}">Learn More</a></li>`;
-          }
-
-          const div = document.createElement('div');
-          div.className = `ser-card ${c}`;
-          div.innerHTML = `<h3>${s.title}</h3><p>${s.desc}</p><ul class="sub-services">${subServicesHtml}</ul>`;
-          grid.appendChild(div);
-        });
-      }
-
-      // 7. CASE STUDIES
-      const caseSec = document.querySelector('.case-elegant');
-      if (caseSec && data.cases) {
-        caseSec.querySelector('.case-header h2').innerHTML = data.casesHeading || 'FEATURED CASE STUDIES';
-        caseSec.querySelector('.case-header .highlight').innerHTML = data.casesHighlight || 'Customizable For All Industries';
-        caseSec.querySelector('.case-header .subtext').innerHTML = data.casesSubtext || 'We Work On These Industries.';
-
-        const track = caseSec.querySelector('.carousel-track');
-        if (track) {
-          track.innerHTML = '';
-          data.cases.forEach((c, i) => {
-            const div = document.createElement('div');
-            div.className = 'case-item';
-            div.dataset.index = i;
-            div.innerHTML = `
-                <div class="img"><img src="${c.image}" alt="${c.title}"></div>
-                <h3>${c.title}</h3>
-                <p>${c.cardDesc}</p>
-                <a href="javascript:void(0)" class="know-more-btn cms-case-btn" data-index="${i}">Know More</a>
-              `;
-            track.appendChild(div);
-          });
-
-          // Dynamic Popup Binding
-          track.querySelectorAll('.cms-case-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-              const idx = e.currentTarget.getAttribute('data-index');
-              const d = data.cases[idx];
-              if (d) {
-                const tag = document.getElementById("popupTag");
-                const title = document.getElementById("popupTitle");
-                const intro = document.getElementById("popupIntro");
-                const challenge = document.getElementById("popupChallenge");
-                const solution = document.getElementById("popupSolution");
-                const benefits = document.getElementById("popupBenefits");
-                const popup = document.getElementById("casePopup");
-
-                if (tag) tag.innerText = d.tag;
-                if (title) title.innerText = d.title;
-                if (intro) intro.innerText = d.popupIntro;
-                if (challenge) challenge.innerText = d.challenge;
-                if (solution) solution.innerText = d.solution;
-                if (benefits) {
-                  benefits.innerHTML = "";
-                  if (d.benefits) {
-                    d.benefits.split('\n').forEach(b => { if (b.trim()) benefits.innerHTML += `<li>${b}</li>`; });
-                  }
-                }
-                if (popup) popup.classList.add("active");
-              }
-            });
-          });
-        }
-      }
-
-      // 8. HOME ABOUT US (Lower Section)
-      const homeAboutSec = document.querySelector('.about-section');
-      if (homeAboutSec && data.homeAbout) {
-        const badge = homeAboutSec.querySelector('.about-badge');
-        if (badge) badge.innerHTML = data.homeAbout.badge;
-        const title = homeAboutSec.querySelector('h2');
-        if (title) title.innerHTML = data.homeAbout.title;
-        const ps = homeAboutSec.querySelectorAll('p');
-        if (ps[0]) ps[0].innerHTML = data.homeAbout.p1;
-        if (ps[1]) ps[1].innerHTML = data.homeAbout.p2;
-        const btn = homeAboutSec.querySelector('.about-btn');
-        if (btn) { btn.innerHTML = data.homeAbout.btnText; btn.href = data.homeAbout.btnLink; }
-        const img = homeAboutSec.querySelector('.illustration-card img');
-        if (img) img.src = data.homeAbout.image;
-      }
-
-      // 9. CLIENTS STRIP
-      const clientSec = document.querySelector('.client-flow');
-      if (clientSec && data.clients) {
-        const h2 = clientSec.querySelector('h2');
-        if (h2) h2.innerHTML = data.clientsHeading || 'Trusted by Leading Companies';
-        const track = clientSec.querySelector('.flow-track');
-        if (track) {
-          track.innerHTML = '';
-          const appendClients = () => {
-            data.clients.forEach(c => {
-              const div = document.createElement('div');
-              div.className = 'flow-card';
-              div.innerHTML = `<img src="${c.image}"><span>${c.name}</span>`;
-              track.appendChild(div);
-            });
-          };
-          appendClients();
-          appendClients();
-        }
-      }
-
-      // 10. FAQS
-      const faqSec = document.querySelector('.faq-section');
-      if (faqSec && data.faqs) {
-        faqSec.querySelector('h2').innerHTML = data.faqsHeading || 'Frequently Asked Questions';
-        faqSec.querySelector('h3').innerHTML = data.faqsSubHeading || '';
-        const faqCont = faqSec.querySelector('.faq-container');
-        const existingFaqs = Array.from(faqCont.querySelectorAll('.faq-item'));
-        faqCont.innerHTML = '';
-        data.faqs.forEach((f, i) => {
-          if (existingFaqs[i]) {
-            const btn = existingFaqs[i].querySelector('.faq-question');
-            btn.innerHTML = `${f.q} <span class="icon">+</span>`;
-            existingFaqs[i].querySelector('.faq-answer p').innerHTML = f.a;
-            faqCont.appendChild(existingFaqs[i]);
-          } else {
-            const div = document.createElement('div');
-            div.className = 'faq-item';
-            div.innerHTML = `<button class="faq-question">${f.q} <span class="icon">+</span></button><div class="faq-answer"><p>${f.a}</p></div>`;
-            faqCont.appendChild(div);
-          }
-        });
-      }
-
-      // 11. TESTIMONIALS
-      const testiSec = document.querySelector('.split-testimonial-wrap');
-      if (testiSec && data.testimonials) {
-        testiSec.querySelector('.testi-left-content h2').innerHTML = data.testimonialsHeading || '';
-        testiSec.querySelector('.testi-left-content p').innerHTML = data.testimonialsText || '';
-        const swiperWrap = testiSec.querySelector('.splitTestimonialSwiper .swiper-wrapper');
-        if (swiperWrap) {
-          const existingSlides = Array.from(swiperWrap.querySelectorAll('.swiper-slide'));
-          swiperWrap.innerHTML = '';
-          data.testimonials.forEach((t, i) => {
-            if (existingSlides[i]) {
-              existingSlides[i].querySelector('.testi-text').innerHTML = t.quote;
-              existingSlides[i].querySelector('.testi-author-name').innerHTML = t.name;
-              existingSlides[i].querySelector('.testi-author-role').innerHTML = t.role;
-              swiperWrap.appendChild(existingSlides[i]);
-            } else {
+            bannerWrapper.innerHTML = '';
+            data.hero.forEach((slide) => {
               const div = document.createElement('div');
               div.className = 'swiper-slide';
+              const mobileImgSrc = slide.imageMobile ? slide.imageMobile : slide.image;
               div.innerHTML = `
-                  <div class="split-testi-card">
-                    <p class="testi-text">${t.quote}</p>
-                    <div class="testi-author-info">
-                      <h4 class="testi-author-name">${t.name}</h4>
-                      <span class="testi-author-role">${t.role}</span>
-                    </div>
-                  </div>
-                `;
-              swiperWrap.appendChild(div);
+                 <picture style="display: block; width: 100%; height: 100%;">
+                   <source media="(max-width: 768px)" srcset="${mobileImgSrc}">
+                   <img src="${slide.image}" alt="Banner Image" style="width: 100%; height: 100%; object-fit: cover; display: block; object-position: center;">
+                 </picture>
+               `;
+              bannerWrapper.appendChild(div);
+            });
+            if (swiperEl) {
+              new Swiper('.bannerSwiper', {
+                slidesPerView: 1, loop: true, speed: 1000, observer: true, observeParents: true,
+                autoplay: { delay: 4000, disableOnInteraction: false },
+                navigation: { nextEl: '.banner-next', prevEl: '.banner-prev' },
+                pagination: { el: '.banner-pagination', clickable: true },
+                effect: 'creative',
+                creativeEffect: {
+                  prev: { shadow: true, translate: ["-20%", 0, -1], scale: 0.8 },
+                  next: { translate: ["100%", 0, 0] },
+                }
+              });
             }
-          });
-        }
-      }
+          }
+      } catch (err) { console.error("CMS Error (Hero):", err); }
+
+      // 3. ABOUT SECTION (Who We Are)
+      try {
+          const aboutEl = document.querySelector('.who-we-are');
+          if (aboutEl && data.about) {
+            const h2 = aboutEl.querySelector('.text-content h2');
+            const p = aboutEl.querySelector('.text-content p');
+            const img = aboutEl.querySelector('.image-content img');
+            if(h2) h2.innerHTML = data.about.title || '';
+            if(p) p.innerHTML = data.about.text || '';
+            if(img && data.about.image) img.src = data.about.image;
+          }
+      } catch (err) { console.error("CMS Error (About):", err); }
+
+      // 4. FESTIVAL OFFERS
+      try {
+          const offersSec = document.querySelector('.festival-offers');
+          if (offersSec && data.offers) {
+            const h2 = offersSec.querySelector('h2');
+            if (h2) h2.innerHTML = data.offersHeading || '🎊 Festival Special Offers';
+            const subtext = offersSec.querySelector('.sub-text');
+            if (subtext) subtext.innerHTML = data.offersSubtext || '';
+            const wrapper = offersSec.querySelector('.swiper-wrapper');
+            if (wrapper) {
+              wrapper.innerHTML = '';
+              data.offers.forEach(o => {
+                const slide = document.createElement('div');
+                slide.className = 'swiper-slide';
+                slide.innerHTML = `
+                    <div class="offer-card festival-bg" style="background-image: url('${o.bgImage}');">
+                      <div class="offer-overlay"></div>
+                      <div class="offer-content">
+                        <h3>${o.title}</h3>
+                        <p>${o.text}</p>
+                        <a href="${o.link}" class="btn">Grab Offer</a>
+                      </div>
+                    </div>`;
+                wrapper.appendChild(slide);
+              });
+            }
+          }
+      } catch (err) { console.error("CMS Error (Offers):", err); }
+
+      // 5. UPDATE FOOTER SERVICE LINKS DYNAMICALLY
+      try {
+          if (data.detailedServices && Array.isArray(data.detailedServices)) {
+            const footMarketing = document.getElementById("footer-marketing-list");
+            const footPromote = document.getElementById("footer-promote-list");
+            const footDev = document.getElementById("footer-dev-list");
+            if (footMarketing) footMarketing.innerHTML = '';
+            if (footPromote) footPromote.innerHTML = '';
+            if (footDev) footDev.innerHTML = '';
+
+            data.detailedServices.forEach(s => {
+              let targetFoot = s.category === 'Marketing' ? footMarketing : (s.category === 'Promote' ? footPromote : footDev);
+              if (targetFoot) {
+                  const li = document.createElement('li');
+                  const a = document.createElement('a');
+                  a.href = `services.html#${s.id}`;
+                  a.textContent = s.title;
+                  li.appendChild(a);
+                  targetFoot.appendChild(li);
+              }
+            });
+          }
+      } catch (err) { console.error("CMS Error (Service Links):", err); }
+
+      // 6. MAIN SERVICES SECTION ON HOME PAGE
+      try {
+          const srvSec = document.querySelector('.services-section');
+          if (srvSec && data.services) {
+            const h2 = srvSec.querySelector('.section-heading h2');
+            if (h2) h2.innerHTML = data.servicesHeading || 'Our Services';
+            const grid = srvSec.querySelector('.services-grid');
+            if(grid) {
+                grid.innerHTML = '';
+                const classes = ['sc3', 'sc1', 'sc2'];
+                data.services.forEach((s, i) => {
+                  const c = classes[i % classes.length];
+                  let subServicesHtml = '';
+                  if (data.detailedServices) {
+                    const catServices = data.detailedServices.filter(ds => ds.category === s.title);
+                    catServices.forEach(ds => { subServicesHtml += `<li><a href="services.html#${ds.id}">${ds.title}</a></li>`; });
+                  } else {
+                    subServicesHtml += `<li><a href="${s.link}">Learn More</a></li>`;
+                  }
+                  const div = document.createElement('div');
+                  div.className = `ser-card ${c}`;
+                  div.innerHTML = `<h3>${s.title}</h3><p>${s.desc}</p><ul class="sub-services">${subServicesHtml}</ul>`;
+                  grid.appendChild(div);
+                });
+            }
+          }
+      } catch (err) { console.error("CMS Error (Main Services):", err); }
+
+      // 7. CASE STUDIES (FIXED TO PRESERVE EXTERNAL DOM BINDINGS)
+      try {
+          const caseSec = document.querySelector('.case-elegant');
+          if (caseSec && data.cases) {
+            const h2 = caseSec.querySelector('.case-header h2');
+            const hlt = caseSec.querySelector('.case-header .highlight');
+            const subt = caseSec.querySelector('.case-header .subtext');
+            if(h2) h2.innerHTML = data.casesHeading || 'FEATURED CASE STUDIES';
+            if(hlt) hlt.innerHTML = data.casesHighlight || 'Customizable For All Industries';
+            if(subt) subt.innerHTML = data.casesSubtext || 'We Work On These Industries.';
+
+            const track = caseSec.querySelector('.carousel-track');
+            if (track) {
+              // INSTEAD OF clearing track.innerHTML completely and wiping out GSAP/Coverflow
+              // initializations, we safely update existing DOM structures.
+              const existingItems = Array.from(track.querySelectorAll('.case-item'));
+
+              data.cases.forEach((c, i) => {
+                let div = existingItems[i];
+                
+                // If there are more CMS cases than existing items, append carefully
+                if (!div) {
+                  div = document.createElement('div');
+                  div.className = 'case-item';
+                  div.dataset.index = i;
+                  div.innerHTML = `
+                    <div class="img"><img src="" alt=""></div>
+                    <h3></h3>
+                    <p></p>
+                    <a href="javascript:void(0)" class="know-more-btn cms-case-btn" data-index="${i}">Know More</a>
+                  `;
+                  track.appendChild(div);
+                }
+
+                // Update the fields inside the safely-preserved parent <div>
+                const img = div.querySelector('.img img');
+                const title = div.querySelector('h3');
+                const desc = div.querySelector('p');
+                const btn = div.querySelector('.know-more-btn');
+
+                if (img) { img.src = c.image; img.alt = c.title; }
+                if (title) title.innerHTML = c.title;
+                if (desc) desc.innerHTML = c.cardDesc;
+                if (btn) {
+                  btn.classList.add('cms-case-btn');
+                  btn.setAttribute('data-index', i);
+                  btn.innerHTML = 'Know More';
+                }
+              });
+
+              // Hide extra static cards if the CMS returns fewer cards than existed initially
+              for (let i = data.cases.length; i < existingItems.length; i++) {
+                 existingItems[i].style.display = 'none';
+              }
+
+              // Re-bind popup clicks independently of external GSAP click handlers
+              track.querySelectorAll('.cms-case-btn').forEach(btn => {
+                btn.onclick = (e) => {
+                  e.preventDefault();
+                  const idx = e.currentTarget.getAttribute('data-index');
+                  const d = data.cases[idx];
+                  if (d) {
+                    const tag = document.getElementById("popupTag");
+                    const title = document.getElementById("popupTitle");
+                    const intro = document.getElementById("popupIntro");
+                    const challenge = document.getElementById("popupChallenge");
+                    const solution = document.getElementById("popupSolution");
+                    const benefits = document.getElementById("popupBenefits");
+                    const popup = document.getElementById("casePopup");
+                    
+                    if (tag) tag.innerText = d.tag || 'Industry';
+                    if (title) title.innerText = d.title;
+                    if (intro) intro.innerText = d.popupIntro || d.cardDesc;
+                    if (challenge) challenge.innerText = d.challenge;
+                    if (solution) solution.innerText = d.solution;
+                    if (benefits) {
+                      benefits.innerHTML = "";
+                      if (d.benefits) {
+                         d.benefits.split('\n').forEach(b => { 
+                            if (b.trim()) benefits.innerHTML += `<li>${b}</li>`; 
+                         });
+                      }
+                    }
+                    if (popup) popup.classList.add("active");
+                  }
+                };
+              });
+            }
+          }
+      } catch (err) { console.error("CMS Error (Case Studies):", err); }
+
+      // 8. HOME ABOUT US (Lower Section)
+      try {
+          const homeAboutSec = document.querySelector('.about-section');
+          if (homeAboutSec && data.homeAbout) {
+            const badge = homeAboutSec.querySelector('.about-badge');
+            if (badge) badge.innerHTML = data.homeAbout.badge || '';
+            const title = homeAboutSec.querySelector('h2');
+            if (title) title.innerHTML = data.homeAbout.title || '';
+            const ps = homeAboutSec.querySelectorAll('p');
+            if (ps[0]) ps[0].innerHTML = data.homeAbout.p1 || '';
+            if (ps[1]) ps[1].innerHTML = data.homeAbout.p2 || '';
+            const btn = homeAboutSec.querySelector('.about-btn');
+            if (btn) { btn.innerHTML = data.homeAbout.btnText || 'Discover More'; btn.href = data.homeAbout.btnLink || '#'; }
+            const img = homeAboutSec.querySelector('.illustration-card img');
+            if (img && data.homeAbout.image) img.src = data.homeAbout.image;
+          }
+      } catch (err) { console.error("CMS Error (Home About):", err); }
+
+      // 9. CLIENTS STRIP
+      try {
+          const clientSec = document.querySelector('.client-flow');
+          if (clientSec && data.clients) {
+            const h2 = clientSec.querySelector('h2');
+            if (h2) h2.innerHTML = data.clientsHeading || 'Trusted by Leading Companies';
+            const track = clientSec.querySelector('.flow-track');
+            if (track) {
+              track.innerHTML = '';
+              const appendClients = () => {
+                data.clients.forEach(c => {
+                  const div = document.createElement('div');
+                  div.className = 'flow-card';
+                  div.innerHTML = `<img src="${c.image}"><span>${c.name}</span>`;
+                  track.appendChild(div);
+                });
+              };
+              appendClients();
+              appendClients();
+            }
+          }
+      } catch (err) { console.error("CMS Error (Clients):", err); }
+
+      // 10. FAQS
+      try {
+          const faqSec = document.querySelector('.faq-section');
+          if (faqSec && data.faqs) {
+            const h2 = faqSec.querySelector('h2');
+            const h3 = faqSec.querySelector('h3');
+            if(h2) h2.innerHTML = data.faqsHeading || 'Frequently Asked Questions';
+            if(h3) h3.innerHTML = data.faqsSubHeading || '';
+            const faqCont = faqSec.querySelector('.faq-container');
+            if(faqCont) {
+                const existingFaqs = Array.from(faqCont.querySelectorAll('.faq-item'));
+                faqCont.innerHTML = '';
+                data.faqs.forEach((f, i) => {
+                  if (existingFaqs[i]) {
+                    const btn = existingFaqs[i].querySelector('.faq-question');
+                    if(btn) btn.innerHTML = `${f.q} <span class="icon">+</span>`;
+                    const p = existingFaqs[i].querySelector('.faq-answer p');
+                    if(p) p.innerHTML = f.a;
+                    faqCont.appendChild(existingFaqs[i]);
+                  } else {
+                    const div = document.createElement('div');
+                    div.className = 'faq-item';
+                    div.innerHTML = `<button class="faq-question">${f.q} <span class="icon">+</span></button><div class="faq-answer"><p>${f.a}</p></div>`;
+                    faqCont.appendChild(div);
+                  }
+                });
+            }
+          }
+      } catch (err) { console.error("CMS Error (FAQs):", err); }
+
+      // 11. TESTIMONIALS
+      try {
+          const testiSec = document.querySelector('.split-testimonial-wrap');
+          if (testiSec && data.testimonials) {
+            const h2 = testiSec.querySelector('.testi-left-content h2');
+            const p = testiSec.querySelector('.testi-left-content p');
+            if(h2) h2.innerHTML = data.testimonialsHeading || '';
+            if(p) p.innerHTML = data.testimonialsText || '';
+            const swiperWrap = testiSec.querySelector('.splitTestimonialSwiper .swiper-wrapper');
+            if (swiperWrap) {
+              const existingSlides = Array.from(swiperWrap.querySelectorAll('.swiper-slide'));
+              swiperWrap.innerHTML = '';
+              data.testimonials.forEach((t, i) => {
+                if (existingSlides[i]) {
+                  const q = existingSlides[i].querySelector('.testi-text');
+                  const n = existingSlides[i].querySelector('.testi-author-name');
+                  const r = existingSlides[i].querySelector('.testi-author-role');
+                  if(q) q.innerHTML = t.quote;
+                  if(n) n.innerHTML = t.name;
+                  if(r) r.innerHTML = t.role;
+                  swiperWrap.appendChild(existingSlides[i]);
+                } else {
+                  const div = document.createElement('div');
+                  div.className = 'swiper-slide';
+                  div.innerHTML = `
+                      <div class="split-testi-card">
+                        <p class="testi-text">${t.quote}</p>
+                        <div class="testi-author-info">
+                          <h4 class="testi-author-name">${t.name}</h4>
+                          <span class="testi-author-role">${t.role}</span>
+                        </div>
+                      </div>
+                    `;
+                  swiperWrap.appendChild(div);
+                }
+              });
+            }
+          }
+      } catch (err) { console.error("CMS Error (Testimonials):", err); }
+
+      // 12. DYNAMIC PAGES (FOOTER QUICK LINKS ONLY - HEADER IS UNTOUCHED)
+      try {
+          const quickLinksList = document.getElementById('quick-links-list');
+          if (quickLinksList && data.dynamicPages && Array.isArray(data.dynamicPages)) {
+            // Reset securely by assigning pure HTML
+            quickLinksList.innerHTML = `
+              <li><a href="index.html">Home</a></li>
+              <li><a href="aboutus.html">About Us</a></li>
+              <li><a href="services.html">Services</a></li>
+              <li><a href="contact.html">Contact</a></li>
+            `;
+            
+            data.dynamicPages.forEach(p => {
+              if (p && typeof p.title === 'string' && p.title.trim() !== '' && typeof p.slug === 'string' && p.slug.trim() !== '') {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = `page.html?id=${encodeURIComponent(p.slug.trim())}`;
+                a.textContent = p.title.trim();
+                li.appendChild(a);
+                quickLinksList.appendChild(li);
+              }
+            });
+          }
+      } catch (err) { console.error("CMS Error (Dynamic Pages):", err); }
+
     };
 
     // Wait for Firebase to send the LIVE data, then render the UI
@@ -1845,7 +1836,6 @@
       });
     }
 
-    // ... (Your other Swiper initializations like .splitTestimonialSwiper are here) ...
   });
 </script>
 
@@ -1853,8 +1843,6 @@
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
   import { getFirestore, collection, addDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
-
-  // 1. ADD THIS IMPORT
   import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
 
   const firebaseConfig = {
@@ -1867,16 +1855,15 @@
   };
 
   const app = initializeApp(firebaseConfig);
-  // 2. INITIALIZE AUTH
   const auth = getAuth(app);
   const db = getFirestore(app);
 
   const preloader = document.getElementById("preloader");
-    if (preloader) preloader.style.display = "none";
-  // 3. WRAP YOUR onSnapshot IN signInAnonymously
-  signInAnonymously(auth).then(() => {
+  if (preloader) preloader.style.display = "none";
+  
+  // 3. FETCH DATA (Handling Auth Failure gracefully)
+  const fetchCMSData = () => {
     const configRef = doc(db, "artifacts", "movictel", "public", "data", "siteConfig", "global");
-
     onSnapshot(configRef, (docSnap) => {
       if (docSnap.exists()) {
         const globalData = docSnap.data();
@@ -1884,9 +1871,15 @@
         document.dispatchEvent(new CustomEvent('firebaseDataLoaded', { detail: globalData }));
       }
     }, (err) => console.error("CMS Sync Error:", err));
+  };
+
+  signInAnonymously(auth).then(() => {
+    fetchCMSData();
+  }).catch((err) => {
+    console.warn("Anonymous auth restricted/failed. Proceeding with unauthenticated read...", err.message);
+    fetchCMSData(); // Fallback to read without Auth
   });
 
-  // ... (Keep the handleForm and Lead logic the exact same below) ...
 </script>
 <script src="js/script.js"></script>
 <!-- Your animation file (AFTER GSAP) -->
