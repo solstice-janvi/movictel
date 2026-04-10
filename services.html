@@ -20,26 +20,26 @@
 
   <style>
    :root {
-  /* Instagram-Inspired Palette */
-  --ig-blue: #018eec;
-  --ig-purple: #015fa8;
-  --ig-pink: #c13584;
-  --ig-red: #fd1d1d;
-  --ig-orange: #f77737;
-  --ig-yellow: #fcaf45;
-  --ig-light: #ffdc80;
+      /* Instagram-Inspired Palette */
+      --ig-blue: #018eec;
+      --ig-purple: #015fa8;
+      --ig-pink: #c13584;
+      --ig-red: #fd1d1d;
+      --ig-orange: #f77737;
+      --ig-yellow: #fcaf45;
+      --ig-light: #ffdc80;
 
-  /* Grayscale */
-  --ig-dark: #242d3f;
-  --ig-gray: #dcf0ff;
-  --ig-lightGray: #c8c9ce;
-  --white: #ffffff;
-  --black: #000000;
-}
+      /* Grayscale */
+      --ig-dark: #242d3f;
+      --ig-gray: #dcf0ff;
+      --ig-lightGray: #c8c9ce;
+      --white: #ffffff;
+      --black: #000000;
+    }
 
     body {
       margin: 0;
-      font-family: 'Poppins', sans-serif; /* Upgraded Font */
+      font-family: 'Poppins', sans-serif;
       background: var(--ig-gray);
       color: var(--ig-dark);
       scroll-behavior: smooth;
@@ -50,6 +50,16 @@
       margin: auto;
       padding: 0 20px;
     }
+
+    /* ===== HEADER STYLES ===== */
+    #main-header {
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+      transition: transform 0.3s ease-in-out; background-color: #fff;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    body { padding-top: 80px; }
+    @media (max-width: 1023px) { body { padding-top: 115px; } }
+    @media (max-width: 768px) { body { padding-top: 105px; } }
 
     /* ===== HERO SECTION ===== */
     .blog-hero {
@@ -82,296 +92,83 @@
     }
 
     /* ===== CATALOG GRID VIEW ===== */
-    #catalog-view {
-      display: block; 
-      animation: fadeIn 0.6s ease;
-    }
-
-    .service-section {
-      padding: 80px 0;
-      border-bottom: 1px solid var(--ig-lightGray);
-    }
-
-    .service-header {
-      margin-bottom: 60px;
-      text-align: center;
-    }
-
-    .service-header h2 {
-      font-size: 2.8rem;
-      color: var(--ig-blue);
-      margin-bottom: 16px;
-      font-weight: 700;
-    }
-
-    .service-header p {
-      font-size: 1.15rem;
-      color: #64748b;
-      max-width: 700px;
-      margin: 0 auto;
-      line-height: 1.8;
-    }
-
-    .subservice-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 30px;
-    }
+    #catalog-view { display: block; animation: fadeIn 0.6s ease; }
+    .service-section { padding: 80px 0; border-bottom: 1px solid var(--ig-lightGray); }
+    .service-header { margin-bottom: 60px; text-align: center; }
+    .service-header h2 { font-size: 2.8rem; color: var(--ig-blue); margin-bottom: 16px; font-weight: 700; }
+    .service-header p { font-size: 1.15rem; color: #64748b; max-width: 700px; margin: 0 auto; line-height: 1.8; }
+    .subservice-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
 
     .subservice-card {
-      background: #fff;
-      border-radius: 20px;
-      padding: 35px 30px;
+      background: #fff; border-radius: 20px; padding: 35px 30px;
       box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
-      border: 1px solid var(--ig-lightGray);
-      border-top: 5px solid var(--ig-blue);
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
+      border: 1px solid var(--ig-lightGray); border-top: 5px solid var(--ig-blue);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; display: flex; flex-direction: column;
     }
-
-    .subservice-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 20px 40px -5px rgba(1, 142, 236, 0.15), 0 10px 20px -5px rgba(0,0,0,0.04);
-      border-top-color: var(--ig-purple);
-    }
-
-    .subservice-card h4 {
-      font-size: 1.4rem;
-      color: var(--black);
-      margin-bottom: 15px;
-      font-weight: 600;
-    }
-
-    .subservice-card p {
-      font-size: 0.95rem;
-      line-height: 1.7;
-      color: #475569;
-      margin-bottom: 25px;
-      flex-grow: 1;
-    }
-
-    .subservice-card span {
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: var(--ig-blue);
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      transition: gap 0.3s;
-    }
-
-    .subservice-card:hover span {
-      gap: 10px;
-      color: var(--ig-purple);
-    }
+    .subservice-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px -5px rgba(1, 142, 236, 0.15), 0 10px 20px -5px rgba(0,0,0,0.04); border-top-color: var(--ig-purple); }
+    .subservice-card h4 { font-size: 1.4rem; color: var(--black); margin-bottom: 15px; font-weight: 600; }
+    .subservice-card p { font-size: 0.95rem; line-height: 1.7; color: #475569; margin-bottom: 25px; flex-grow: 1; }
+    .subservice-card span { font-size: 0.95rem; font-weight: 600; color: var(--ig-blue); display: inline-flex; align-items: center; gap: 5px; transition: gap 0.3s; }
+    .subservice-card:hover span { gap: 10px; color: var(--ig-purple); }
 
     /* ===== DYNAMIC INDIVIDUAL SERVICE VIEW ===== */
-    #detail-view {
-      display: none; 
-      animation: fadeIn 0.6s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
+    #detail-view { display: none; animation: fadeIn 0.6s ease; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
     .service-hero {
       background: linear-gradient(to bottom, rgba(1, 142, 236, 0.8), rgba(1, 95, 168, 0.9)), url("images/3048207.jpg") center/cover no-repeat;
-      border-radius: 0 0 40px 40px;
-      color: white;
-      text-align: center;
-      padding: 120px 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      border-radius: 0 0 40px 40px; color: white; text-align: center; padding: 120px 20px;
+      display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     }
+    .service-hero h1 { font-size: 3.5rem; margin-bottom: 15px; color: white; font-weight: 700; }
+    .service-hero p { max-width: 700px; margin: auto; font-size: 1.2rem; line-height: 1.7; opacity: 0.9; }
 
-    .service-hero h1 {
-      font-size: 3.5rem;
-      margin-bottom: 15px;
-      color: white;
-      font-weight: 700;
-    }
-
-    .service-hero p {
-      max-width: 700px;
-      margin: auto;
-      font-size: 1.2rem;
-      line-height: 1.7;
-      opacity: 0.9;
-    }
-
-    .service-content {
-      max-width: 1200px;
-      margin: auto;
-      padding: 60px 20px;
-    }
-
+    .service-content { max-width: 1200px; margin: auto; padding: 60px 20px; }
     .back-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 40px;
-      padding: 12px 24px;
-      background: #fff;
-      border: 1px solid var(--ig-lightGray);
-      border-radius: 30px;
-      color: var(--ig-dark);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.95rem;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-      transition: all 0.3s ease;
-      cursor: pointer;
+      display: inline-flex; align-items: center; gap: 10px; margin-bottom: 40px; padding: 12px 24px;
+      background: #fff; border: 1px solid var(--ig-lightGray); border-radius: 30px; color: var(--ig-dark);
+      text-decoration: none; font-weight: 600; font-size: 0.95rem; box-shadow: 0 2px 10px rgba(0,0,0,0.05); transition: all 0.3s ease; cursor: pointer;
     }
+    .back-btn:hover { background: var(--ig-blue); color: white; border-color: var(--ig-blue); transform: translateX(-5px); box-shadow: 0 5px 15px rgba(1, 142, 236, 0.3); }
 
-    .back-btn:hover {
-      background: var(--ig-blue);
-      color: white;
-      border-color: var(--ig-blue);
-      transform: translateX(-5px);
-      box-shadow: 0 5px 15px rgba(1, 142, 236, 0.3);
-    }
-
-    .service-content h2 {
-      font-size: 2.2rem;
-      color: var(--black);
-      text-align: center;
-      margin-bottom: 40px;
-    }
-
-    .features {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 30px;
-    }
-
-    .feature-card {
-      background: #fff;
-      padding: 40px 30px;
-      border-radius: 20px;
-      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-      border: 1px solid var(--ig-lightGray);
-      transition: all 0.3s ease;
-      text-align: center;
-    }
-
-    .feature-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 20px 30px -10px rgba(0,0,0,0.1);
-    }
-
-    .feature-card h3 {
-      color: var(--ig-blue);
-      margin-bottom: 15px;
-      font-size: 1.3rem;
-    }
-    
-    .feature-card p {
-        color: #475569;
-        line-height: 1.6;
-    }
+    .service-content h2 { font-size: 2.2rem; color: var(--black); text-align: center; margin-bottom: 40px; }
+    .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+    .feature-card { background: #fff; padding: 40px 30px; border-radius: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: 1px solid var(--ig-lightGray); transition: all 0.3s ease; text-align: center; }
+    .feature-card:hover { transform: translateY(-8px); box-shadow: 0 20px 30px -10px rgba(0,0,0,0.1); }
+    .feature-card h3 { color: var(--ig-blue); margin-bottom: 15px; font-size: 1.3rem; }
+    .feature-card p { color: #475569; line-height: 1.6; }
 
     .cta-banner {
-      background: linear-gradient(135deg, var(--ig-blue), var(--ig-purple));
-      color: white;
-      text-align: center;
-      padding: 70px 20px;
-      border-radius: 30px;
-      max-width: 1100px;
-      margin: 40px auto;
-      box-shadow: 0 15px 35px rgba(1, 142, 236, 0.3);
+      background: linear-gradient(135deg, var(--ig-blue), var(--ig-purple)); color: white; text-align: center;
+      padding: 70px 20px; border-radius: 30px; max-width: 1100px; margin: 40px auto; box-shadow: 0 15px 35px rgba(1, 142, 236, 0.3);
     }
-
-    .cta-banner h2 {
-      margin-bottom: 15px;
-      font-size: 2.5rem;
-      font-weight: 700;
-    }
-    
-    .cta-banner p {
-        font-size: 1.1rem;
-        opacity: 0.9;
-    }
+    .cta-banner h2 { margin-bottom: 15px; font-size: 2.5rem; font-weight: 700; }
+    .cta-banner p { font-size: 1.1rem; opacity: 0.9; }
 
     /* ===== FORM STYLING ===== */
-    .form-box {
-      max-width: 600px;
-      margin: 60px auto 100px auto;
-      background: #fff;
-      padding: 50px 40px;
-      border-radius: 20px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-      border: 1px solid var(--ig-lightGray);
-    }
-    
-    .form-box h2 {
-        text-align: center;
-        color: var(--black);
-        margin-bottom: 30px;
-        font-weight: 700;
-    }
+    .form-box { max-width: 600px; margin: 60px auto 100px auto; background: #fff; padding: 50px 40px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.08); border: 1px solid var(--ig-lightGray); }
+    .form-box h2 { text-align: center; color: var(--black); margin-bottom: 30px; font-weight: 700; }
+    .form-group { margin-bottom: 20px; }
+    .form-box input, .form-box textarea { width: 100%; padding: 16px; border-radius: 12px; border: 2px solid #e2e8f0; background-color: #f8fafc; box-sizing: border-box; font-family: inherit; font-size: 1rem; color: var(--ig-dark); transition: all 0.3s ease; }
+    .form-box input:focus, .form-box textarea:focus { outline: none; border-color: var(--ig-blue); background-color: #fff; box-shadow: 0 0 0 4px rgba(1, 142, 236, 0.1); }
+    .form-box textarea { resize: vertical; }
+    .form-box button { width: 100%; padding: 18px; background: var(--ig-blue); color: #fff; border: none; border-radius: 12px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(1, 142, 236, 0.4); }
+    .form-box button:hover { background: var(--ig-purple); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(1, 142, 236, 0.5); }
 
-    .form-group {
-        margin-bottom: 20px;
+    /* Footer Styles */
+    .footer-collapsible-wrapper { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.6s ease; width: 100%; }
+    .footer-collapsible-wrapper.open { grid-template-rows: 1fr; }
+    .footer-collapsible-inner { overflow: hidden; opacity: 0; visibility: hidden; transition: opacity 0.4s; }
+    .footer-collapsible-wrapper.open .footer-collapsible-inner { opacity: 1; visibility: visible; }
+    .footer-toggle-btn {
+      display: inline-flex; align-items: center; gap: 10px; background: linear-gradient(135deg, #018eec, #0166b3);
+      color: white; padding: 12px 28px; border-radius: 30px; border: none; cursor: pointer;
     }
+    .footer-toggle-btn.open i { transform: rotate(180deg); }
+    #backToTop { display: none; position: fixed; bottom: 30px; right: 30px; z-index: 999; background-color: #018eec; color: white; cursor: pointer; padding: 15px; border-radius: 50%; width: 50px; height: 50px; align-items: center; justify-content: center; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); border: none; }
+    #backToTop.show { display: flex; }
 
-    .form-box input,
-    .form-box textarea {
-      width: 100%;
-      padding: 16px;
-      border-radius: 12px;
-      border: 2px solid #e2e8f0;
-      background-color: #f8fafc;
-      box-sizing: border-box;
-      font-family: inherit;
-      font-size: 1rem;
-      color: var(--ig-dark);
-      transition: all 0.3s ease;
-    }
-
-    .form-box input:focus,
-    .form-box textarea:focus {
-        outline: none;
-        border-color: var(--ig-blue);
-        background-color: #fff;
-        box-shadow: 0 0 0 4px rgba(1, 142, 236, 0.1);
-    }
-
-    .form-box button {
-      width: 100%;
-      padding: 18px;
-      background: var(--ig-blue);
-      color: #fff;
-      border: none;
-      border-radius: 12px;
-      font-size: 1.1rem;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(1, 142, 236, 0.4);
-    }
-    
-    .form-box button:hover {
-        background: var(--ig-purple);
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(1, 142, 236, 0.5);
-    }
-
-    
-
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 900px) {
-      .subservice-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-
+    @media (max-width: 900px) { .subservice-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 600px) {
       .service-header h2 { font-size: 2.2rem; }
       .blog-hero h1 { font-size: 2.5rem; }
@@ -398,44 +195,23 @@
       <i class="fas fa-bars"></i>
     </div>
 
-    <!-- ===== NAVBAR ===== -->
     <nav>
       <ul class="menu">
         <li><a href="index.html">Home</a></li>
         <li class="dropdown">
           <a href="javascript:void(0)" onclick="showCatalog()">Services</a>
           <ul class="dropdown-menu">
-            <!-- MARKETING -->
             <li class="has-submenu">
               <a href="#"><i class="fa-solid fa-bullhorn"></i>Marketing</a>
-              <ul class="submenu">
-                <li><a href="javascript:void(0)" onclick="loadService('social-media-marketing')"><i class="fa-solid fa-hashtag"></i>Social Media Marketing</a></li>
-                <li><a href="javascript:void(0)" onclick="loadService('google-meta-ads')"><i class="fa-solid fa-chart-line"></i>Google & Meta Ads</a></li>
-                <li><a href="javascript:void(0)" onclick="loadService('brand-awareness')"><i class="fa-solid fa-eye"></i>Brand Awareness Campaigns</a></li>
-                <li><a href="javascript:void(0)" onclick="loadService('seo-online-visibility')"><i class="fa-solid fa-magnifying-glass"></i>SEO & Online Visibility</a></li>
-                <li><a href="javascript:void(0)" onclick="loadService('content-writing')"><i class="fa-solid fa-pen-nib"></i> Content Writing</a></li>
-              </ul>
+              <ul class="submenu" id="nav-marketing-list"></ul>
             </li>
-
-            <!-- PROMOTE -->
             <li class="has-submenu">
               <a href="#"><i class="fa-solid fa-paper-plane"></i>Promote</a>
-              <ul class="submenu">
-                <li><a href="javascript:void(0)" onclick="loadService('bulk-sms')"><i class="fa-solid fa-message"></i>Bulk SMS</a></li>
-                <li><a href="javascript:void(0)" onclick="loadService('rcs-sms')"><i class="fa-solid fa-comments"></i>RCS SMS</a></li>
-                <li><a href="javascript:void(0)" onclick="loadService('voice-sms')"><i class="fa-solid fa-microphone"></i>Voice SMS</a></li>
-                <li><a href="javascript:void(0)" onclick="loadService('whatsapp-api')"><i class="fa-brands fa-whatsapp"></i>WhatsApp Business API</a></li>
-              </ul>
+              <ul class="submenu" id="nav-promote-list"></ul>
             </li>
-
-            <!-- DEVELOPMENT -->
             <li class="has-submenu">
               <a href="#"><i class="fa-solid fa-code"></i> Development</a>
-              <ul class="submenu">
-                <li><a href="javascript:void(0)" onclick="loadService('website-development')"><i class="fa-solid fa-globe"></i> Website Development</a></li>
-                <li><a href="javascript:void(0)" onclick="loadService('app-development')"><i class="fa-solid fa-mobile-screen"></i>App Development</a></li>
-                <li><a href="javascript:void(0)" onclick="loadService('landing-pages')"><i class="fa-solid fa-layer-group"></i> Landing Pages</a></li>
-              </ul>
+              <ul class="submenu" id="nav-dev-list"></ul>
             </li>
           </ul>
         </li>
@@ -469,32 +245,8 @@
           <h2>Marketing Services</h2>
           <p>Our marketing solutions are designed to help businesses build visibility, establish trust, and convert audiences through consistent and data-driven strategies.</p>
         </div>
-        <div class="subservice-grid">
-          <div class="subservice-card" onclick="loadService('social-media-marketing')">
-            <h4>Social Media Marketing</h4>
-            <p>We manage and grow your brand presence across social platforms with content planning, engagement strategies, and performance tracking.</p>
-            <span>Learn More <i class="fa-solid fa-arrow-right"></i></span>
-          </div>
-          <div class="subservice-card" onclick="loadService('google-meta-ads')">
-            <h4>Google & Meta Ads</h4>
-            <p>High-performing paid advertising campaigns optimized for reach, leads, and ROI across Google, Facebook, and Instagram.</p>
-            <span>Learn More <i class="fa-solid fa-arrow-right"></i></span>
-          </div>
-          <div class="subservice-card" onclick="loadService('brand-awareness')">
-            <h4>Brand Awareness Campaigns</h4>
-            <p>Strategic campaigns focused on improving brand recall, credibility, and audience trust across digital channels.</p>
-            <span>Learn More <i class="fa-solid fa-arrow-right"></i></span>
-          </div>
-          <div class="subservice-card" onclick="loadService('seo-online-visibility')">
-            <h4>SEO & Online Visibility</h4>
-            <p>Improve organic rankings, website traffic, and long-term online presence through ethical SEO strategies.</p>
-            <span>Learn More <i class="fa-solid fa-arrow-right"></i></span>
-          </div>
-          <div class="subservice-card" onclick="loadService('content-writing')">
-            <h4>Content Writing</h4>
-            <p>High-quality content tailored for websites, ads, blogs, and social media to support brand messaging and conversions.</p>
-            <span>Learn More <i class="fa-solid fa-arrow-right"></i></span>
-          </div>
+        <div class="subservice-grid" id="grid-marketing">
+           <!-- Handled by Firebase JS -->
         </div>
       </div>
     </section>
@@ -506,27 +258,8 @@
           <h2>Promotional Communication</h2>
           <p>Engage customers instantly using secure, scalable, and high-delivery communication solutions built for modern businesses.</p>
         </div>
-        <div class="subservice-grid">
-          <div class="subservice-card" onclick="loadService('bulk-sms')">
-            <h4>Bulk SMS</h4>
-            <p>Promotional and transactional SMS solutions with high delivery rates for alerts, offers, and notifications.</p>
-            <span>Learn More <i class="fa-solid fa-arrow-right"></i></span>
-          </div>
-          <div class="subservice-card" onclick="loadService('rcs-sms')">
-            <h4>RCS Messaging</h4>
-            <p>Rich Communication Services with branded messages, images, buttons, and interactive customer engagement.</p>
-            <span>Learn More <i class="fa-solid fa-arrow-right"></i></span>
-          </div>
-          <div class="subservice-card" onclick="loadService('voice-sms')">
-            <h4>Voice SMS</h4>
-            <p>Automated voice messages for alerts, reminders, and campaigns, ideal for reaching users instantly.</p>
-            <span>Learn More <i class="fa-solid fa-arrow-right"></i></span>
-          </div>
-          <div class="subservice-card" onclick="loadService('whatsapp-api')">
-            <h4>WhatsApp Business API</h4>
-            <p>Meta-verified WhatsApp messaging for customer support, notifications, and conversational commerce.</p>
-            <span>Learn More <i class="fa-solid fa-arrow-right"></i></span>
-          </div>
+        <div class="subservice-grid" id="grid-promote">
+          <!-- Handled by Firebase JS -->
         </div>
       </div>
     </section>
@@ -538,22 +271,8 @@
           <h2>Design & Development</h2>
           <p>We build fast, secure, and scalable digital platforms focused on user experience and business growth.</p>
         </div>
-        <div class="subservice-grid">
-          <div class="subservice-card" onclick="loadService('website-development')">
-            <h4>Website Design & Development</h4>
-            <p>Modern, responsive, and SEO-friendly websites designed to convert visitors into customers.</p>
-            <span>Learn More <i class="fa-solid fa-arrow-right"></i></span>
-          </div>
-          <div class="subservice-card" onclick="loadService('app-development')">
-            <h4>Mobile App Development</h4>
-            <p>Custom mobile applications built for performance, scalability, and seamless user experience.</p>
-            <span>Learn More <i class="fa-solid fa-arrow-right"></i></span>
-          </div>
-          <div class="subservice-card" onclick="loadService('landing-pages')">
-            <h4>Landing Pages</h4>
-            <p>High-converting landing pages optimized for ads, campaigns, and lead generation.</p>
-            <span>Learn More <i class="fa-solid fa-arrow-right"></i></span>
-          </div>
+        <div class="subservice-grid" id="grid-dev">
+          <!-- Handled by Firebase JS -->
         </div>
       </div>
     </section>
@@ -563,93 +282,58 @@
   
   <!-- ==================== DYNAMIC INDIVIDUAL DETAIL VIEW ==================== -->
   <div id="detail-view">
-    <!-- HERO -->
     <section class="service-hero">
       <h1 id="detail-title">Service Name</h1>
       <p id="detail-description">Service description goes here.</p>
     </section>
 
-    <!-- DETAILS -->
     <section class="service-content">
       <div style="text-align: left;">
           <a href="javascript:void(0)" onclick="showCatalog()" class="back-btn"><i class="fa-solid fa-arrow-left-long"></i> Back to All Services</a>
       </div>
-        
       <h2>Why Choose This Service?</h2>
-      <div class="features" id="detail-features">
-        <!-- Feature cards injected here by JavaScript -->
-      </div>
+      <div class="features" id="detail-features"></div>
     </section>
 
-    <!-- CTA -->
     <section class="cta-banner">
       <h2>Start Growing Your Business Today</h2>
       <p>Talk to our experts and get started quickly.</p>
     </section>
 
-    <!-- FORM -->
     <section class="form-box" id="demo-form">
       <h2>Request a Demo / Quote</h2>
-      <form  method="POST" class="service-form">
-        <!-- Hidden input tracks which service they are inquiring about -->
+      <form method="POST" class="service-form">
         <input type="hidden" name="service_type" id="form-service-type" value="General Service Request">
-        
+        <div class="form-group"><input type="text" name="Name" placeholder="Your Name" required></div>
+        <div class="form-group"><input type="email" name="Email" placeholder="Your Email" required></div>
         <div class="form-group">
-          <input type="text" name="Name" placeholder="Your Name" required>
+          <input type="tel" name="Phone" placeholder="Phone Number" required pattern="\d{10}" maxlength="10" minlength="10" title="Please enter exactly 10 digits" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
         </div>
-        <div class="form-group">
-          <input type="email" name="Email" placeholder="Your Email" required>
-        </div>
-        <div class="form-group">
-          <input 
-  type="tel" 
-  name="Phone" 
-  placeholder="Phone Number" 
-  required 
-  pattern="\d{10}" 
-  maxlength="10" 
-  minlength="10" 
-  title="Please enter exactly 10 digits" 
-  oninput="this.value = this.value.replace(/[^0-9]/g, '');"
->
-        </div>
-        <div class="form-group">
-          <textarea name="Message" placeholder="Tell us about your requirements..." rows="4" required></textarea>
-        </div>
+        <div class="form-group"><textarea name="Message" placeholder="Tell us about your requirements..." rows="4" required></textarea></div>
         <button type="submit">Submit Request <i class="fa-solid fa-paper-plane" style="margin-left:8px;"></i></button>
       </form>
     </section>
   </div>
   <!-- ==================== END DETAIL VIEW ==================== -->
-
 </main>
 
 
 <footer class="site-footer">
-
-  
   <div style="text-align: center; padding-top: 30px; padding-bottom: 10px;">
     <button id="footerToggleBtn" class="footer-toggle-btn">
       <span>Show Footer</span>
       <i class="fas fa-chevron-down"></i>
     </button>
   </div>
-
-  
   <div class="footer-collapsible-wrapper" id="footerCollapsible">
     <div class="footer-collapsible-inner">
       <div class="footer-container">
-
         <!-- Column 1: Logo & About -->
         <div class="footer-col">
           <div class="footer-logo">
             <img src="images/logo/Movictel 12 sept 25-01-01.png" alt="Movictel Logo">
           </div>
-          <p class="footer-about">
-            Movictel is a growth-driven digital solutions company offering
-            Marketing, Messaging & Development services to help businesses
-            connect, engage & scale faster.
-          </p>
+          <p class="footer-about">Movictel is a growth-driven digital solutions company offering Marketing, Messaging & Development services to help businesses connect, engage & scale faster.</p>
           <div class="footer-social">
             <a href="https://www.facebook.com/share/1CNLUSH1xV/"><i class="fab fa-facebook-f"></i></a>
             <a href="https://www.instagram.com/movictel?igsh=Mjg3cnowdnE3emd3"><i class="fab fa-instagram"></i></a>
@@ -675,44 +359,25 @@
               <div class="services-grid">
                 <div class="footer-service-group">
                   <span class="service-heading">Marketing</span>
-                  <ul>
-                    <li><a href="javascript:void(0)" onclick="loadService('social-media-marketing')">Social Media</a></li>
-                    <li><a href="javascript:void(0)" onclick="loadService('google-meta-ads')">Google & Meta Ads</a></li>
-                    <li><a href="javascript:void(0)" onclick="loadService('brand-awareness')">Brand Awareness</a></li>
-                    <li><a href="javascript:void(0)" onclick="loadService('seo-online-visibility')">SEO & Visibility</a></li>
-                    <li><a href="javascript:void(0)" onclick="loadService('content-writing')">Content Writing</a></li>
-                  </ul>
+                  <ul id="footer-marketing-list"></ul>
                 </div>
                 <div class="footer-service-group">
                   <span class="service-heading">Promote</span>
-                  <ul>
-                    <li><a href="javascript:void(0)" onclick="loadService('bulk-sms')">Bulk SMS</a></li>
-                    <li><a href="javascript:void(0)" onclick="loadService('rcs-sms')">RCS SMS</a></li>
-                    <li><a href="javascript:void(0)" onclick="loadService('voice-sms')">Voice SMS</a></li>
-                    <li><a href="javascript:void(0)" onclick="loadService('whatsapp-api')">WhatsApp API</a></li>
-                  </ul>
+                  <ul id="footer-promote-list"></ul>
                 </div>
                 <div class="footer-service-group">
                   <span class="service-heading">Development</span>
-                  <ul>
-                    <li><a href="javascript:void(0)" onclick="loadService('website-development')">Web Development</a></li>
-                    <li><a href="javascript:void(0)" onclick="loadService('app-development')">App Development</a></li>
-                    <li><a href="javascript:void(0)" onclick="loadService('landing-pages')">Landing Pages</a></li>
-                  </ul>
+                  <ul id="footer-dev-list"></ul>
                 </div>
               </div>
-            </div>
-      
+         </div>
+      </div> 
+    </div>
   </div> 
-
-  <!-- Bottom Bar -->
-  <div class="footer-bottom">
-    <p>© 2025 Movictel. All Rights Reserved.</p>
-  </div>
+  <div class="footer-bottom"><p>© 2025 Movictel. All Rights Reserved.</p></div>
 </footer>
 
-<!-- Swiper JS -->
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<button id="backToTop" title="Go to top"><i class="fas fa-arrow-up"></i></button>
 
 <!-- ========================================== -->
 <!-- DYNAMIC SPA LOGIC & UI BEHAVIORS           -->
@@ -735,12 +400,10 @@
       if (!data) return; 
       
       try {
-          if(data.detailedServices && data.detailedServices.length > 0) {
+          if(data.detailedServices && Array.isArray(data.detailedServices)) {
               
-              // Clear hardcoded data completely to prevent ghost entries
               servicesData = {};
               
-              // Rebuild servicesData object for loadService logic
               data.detailedServices.forEach(s => {
                   servicesData[s.id] = {
                       title: s.title,
@@ -752,36 +415,29 @@
                   if(s.f3T) servicesData[s.id].features.push({title: s.f3T, desc: s.f3D});
               });
 
-              // --- REBUILD DOM GRIDS DYNAMICALLY ---
-              // FIX: Use querySelectorAll to correctly index the grid blocks directly
-              const allGrids = document.querySelectorAll(".subservice-grid");
-              const gridMarketing = allGrids[0];
-              const gridPromote = allGrids[1];
-              const gridDev = allGrids[2];
+              const gridMarketing = document.getElementById("grid-marketing");
+              const gridPromote = document.getElementById("grid-promote");
+              const gridDev = document.getElementById("grid-dev");
               
               if(gridMarketing) gridMarketing.innerHTML = '';
               if(gridPromote) gridPromote.innerHTML = '';
               if(gridDev) gridDev.innerHTML = '';
 
-              // --- REBUILD HEADER DROPDOWNS DYNAMICALLY ---
-              const headMarketing = document.querySelector(".dropdown-menu > li:nth-child(1) .submenu");
-              const headPromote = document.querySelector(".dropdown-menu > li:nth-child(2) .submenu");
-              const headDev = document.querySelector(".dropdown-menu > li:nth-child(3) .submenu");
+              const headMarketing = document.getElementById("nav-marketing-list");
+              const headPromote = document.getElementById("nav-promote-list");
+              const headDev = document.getElementById("nav-dev-list");
               if(headMarketing) headMarketing.innerHTML = '';
               if(headPromote) headPromote.innerHTML = '';
               if(headDev) headDev.innerHTML = '';
 
-              // --- REBUILD FOOTER LINKS DYNAMICALLY ---
-              const footMarketing = document.querySelector(".footer-service-group:nth-child(1) ul");
-              const footPromote = document.querySelector(".footer-service-group:nth-child(2) ul");
-              const footDev = document.querySelector(".footer-service-group:nth-child(3) ul");
+              const footMarketing = document.getElementById("footer-marketing-list");
+              const footPromote = document.getElementById("footer-promote-list");
+              const footDev = document.getElementById("footer-dev-list");
               if(footMarketing) footMarketing.innerHTML = '';
               if(footPromote) footPromote.innerHTML = '';
               if(footDev) footDev.innerHTML = '';
 
-              // INJECT DATA
               data.detailedServices.forEach(s => {
-                  // Grid Inject
                   let targetGrid = s.category === 'Marketing' ? gridMarketing : (s.category === 'Promote' ? gridPromote : gridDev);
                   if(targetGrid) {
                       targetGrid.innerHTML += `
@@ -793,23 +449,60 @@
                       `;
                   }
 
-                  // Header Inject
+                  // -----------------------------------------------------
+                  // HEADER INJECTION (UNCHANGED/FIXED AS REQUESTED)
+                  // -----------------------------------------------------
                   let targetHead = s.category === 'Marketing' ? headMarketing : (s.category === 'Promote' ? headPromote : headDev);
                   if(targetHead) {
                       targetHead.innerHTML += `<li><a href="javascript:void(0)" onclick="loadService('${s.id}')"><i class="${s.navIcon}"></i>${s.title}</a></li>`;
                   }
 
-                  // Footer Inject
+                  // -----------------------------------------------------
+                  // FOOTER INJECTION (FIXED & MADE ROBUST)
+                  // -----------------------------------------------------
                   let targetFoot = s.category === 'Marketing' ? footMarketing : (s.category === 'Promote' ? footPromote : footDev);
                   if(targetFoot) {
-                      targetFoot.innerHTML += `<li><a href="javascript:void(0)" onclick="loadService('${s.id}')">${s.title}</a></li>`;
+                      const li = document.createElement('li');
+                      const a = document.createElement('a');
+                      a.href = "javascript:void(0)";
+                      a.onclick = function(event) {
+                          event.preventDefault();
+                          loadService(s.id);
+                      };
+                      a.textContent = s.title;
+                      li.appendChild(a);
+                      targetFoot.appendChild(li);
                   }
               });
-          const requestedService = window.location.hash.substring(1); 
-        if (requestedService && servicesData[requestedService]) {
-            loadService(requestedService);
-        }
-            }
+              
+              const requestedService = window.location.hash.substring(1); 
+              if (requestedService && servicesData[requestedService]) {
+                  loadService(requestedService);
+              }
+          }
+
+          // DYNAMIC QUICK LINKS (FOOTER ONLY - HEADER REMAINS UNTOUCHED)
+          const quickLinksList = document.getElementById("quick-links-list");
+          if (quickLinksList && data.dynamicPages && Array.isArray(data.dynamicPages)) {
+              quickLinksList.innerHTML = `
+                <li><a href="index.html">Home</a></li>
+                <li><a href="aboutus.html">About Us</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="contact.html">Contact</a></li>
+              `;
+              data.dynamicPages.forEach(p => {
+                  if (p && typeof p.title === 'string' && p.title.trim() !== '' && typeof p.slug === 'string' && p.slug.trim() !== '') {
+                      const li = document.createElement('li');
+                      const a = document.createElement('a');
+                      a.href = `page.html?id=${encodeURIComponent(p.slug.trim())}`;
+                      a.textContent = p.title.trim();
+                      li.appendChild(a);
+                      quickLinksList.appendChild(li);
+                  }
+              });
+          }
+          // The dynamic pages header injection logic has been deliberately removed to keep the header fixed.
+
       } catch(e) {
           console.error("CMS Load Error:", e);
       }
@@ -821,18 +514,15 @@
     const data = servicesData[serviceId];
     if (!data) return;
 
-    // A. Hide the main catalog, show the detail view
     document.getElementById('catalog-view').style.display = 'none';
     document.getElementById('detail-view').style.display = 'block';
 
-    // B. Inject the text content
     document.getElementById('detail-title').innerText = data.title;
     document.getElementById('detail-description').innerText = data.description;
-    document.getElementById('form-service-type').value = data.title; // Update the form hidden field
+    document.getElementById('form-service-type').value = data.title;
 
-    // C. Inject the features dynamically
     const featuresContainer = document.getElementById('detail-features');
-    featuresContainer.innerHTML = ''; // Clear old features
+    featuresContainer.innerHTML = ''; 
     
     data.features.forEach(feature => {
       const card = document.createElement('div');
@@ -844,13 +534,11 @@
       featuresContainer.appendChild(card);
     });
 
-    // D. Close the mobile menu if it is open
     if(navMenu.classList.contains("active")) {
         navMenu.classList.remove("active");
         menuToggle.classList.remove("active");
     }
 
-    // E. Scroll instantly to the top so the user sees the new hero section
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -867,7 +555,24 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
- 
+  let lastScrollTop = 0;
+  const header = document.getElementById("main-header");
+  const backToTopBtn = document.getElementById("backToTop");
+
+  window.addEventListener("scroll", function() {
+    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    if (header) {
+      if (scrollTop > lastScrollTop && scrollTop > 100) header.style.transform = "translateY(-100%)";
+      else header.style.transform = "translateY(0)";
+    }
+    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+    if (backToTopBtn) {
+      if (scrollTop > 300) backToTopBtn.classList.add("show");
+      else backToTopBtn.classList.remove("show");
+    }
+  });
+
+  if (backToTopBtn) backToTopBtn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
 
   const footerToggleBtn = document.getElementById("footerToggleBtn");
   const footerCollapsible = document.getElementById("footerCollapsible");
@@ -876,27 +581,21 @@
     footerToggleBtn.addEventListener("click", () => {
       footerToggleBtn.classList.toggle("open");
       footerCollapsible.classList.toggle("open");
-      
       const spanText = footerToggleBtn.querySelector("span");
       if(spanText) {
-        if (footerToggleBtn.classList.contains("open")) {
-          spanText.textContent = "Hide Footer";
-        } else {
-          spanText.textContent = "Show Footer";
-        }
+        if (footerToggleBtn.classList.contains("open")) spanText.textContent = "Hide Footer";
+        else spanText.textContent = "Show Footer";
       }
     });
   }
-
 </script>
 
-<!-- Update your module imports to include auth -->
+<!-- FIREBASE CONNECTION -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
   import { getFirestore, collection, addDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
   import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
 
-  // 1. Initialize Firebase (No Auth Required for Reading!)
   const firebaseConfig = {
     apiKey: "AIzaSyCmMeoeZFsUeRKg2B6GM1riE1DpkmCHllw",
     authDomain: "movictel.firebaseapp.com",
@@ -910,44 +609,24 @@
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  // 2. DIRECT DATABASE CONNECTION
-  signInAnonymously(auth).then(() => {
+  const fetchCMSData = () => {
     const configRef = doc(db, "artifacts", "movictel", "public", "data", "siteConfig", "global");
-
     onSnapshot(configRef, (docSnap) => {
       if (docSnap.exists()) {
         const globalData = docSnap.data();
         window.firebaseSiteData = globalData;
-        
-        // ---> DYNAMIC FOOTER QUICK LINKS FIX <---
-        const quickLinksList = document.getElementById("quick-links-list");
-        if (quickLinksList && globalData.dynamicPages) {
-            quickLinksList.innerHTML = `
-              <li><a href="index.html">Home</a></li>
-              <li><a href="aboutus.html">About Us</a></li>
-              <li><a href="services.html">Services</a></li>
-              <li><a href="contact.html">Contact</a></li>
-            `;
-            globalData.dynamicPages.forEach(p => {
-                if (p.title && p.slug) {
-                    quickLinksList.innerHTML += `<li><a href="page.html?id=${p.slug}">${p.title}</a></li>`;
-                }
-            });
-        }
-        // ------------------------------------------
-
-        // Tell the website to instantly draw the data
         document.dispatchEvent(new CustomEvent('firebaseDataLoaded', { detail: globalData }));
-      } else {
-        console.warn("No CMS data found in Firestore yet.");
       }
     }, (err) => console.error("CMS Sync Error:", err));
+  };
+
+  signInAnonymously(auth).then(() => {
+    fetchCMSData();
   }).catch((error) => {
-    console.error("Firebase Anonymous Auth failed:", error);
+    console.warn("Firebase Anonymous Auth failed:", error.message, "- Fallback to unauthenticated read.");
+    fetchCMSData();
   });
 
-
-  // --- 3. LEAD SUBMISSION LOGIC ---
   const handleForm = (selector, collectionName) => {
     const form = document.querySelector(selector);
     if (!form) return;
@@ -997,12 +676,13 @@
     });
   };
 
-  // Attach form listeners once the DOM is fully loaded
   document.addEventListener('DOMContentLoaded', () => {
     handleForm('.service-form', 'service_leads');
     handleForm('.contact-form-fb', 'contact_leads');
   });
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script src="js/script.js"></script>
 </body> 
 </html>
