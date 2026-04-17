@@ -4,321 +4,222 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact Us - MOVICTEL</title>
+  <title>Contact Us - Movictel</title>
 
   <link rel="stylesheet" href="css/flip.css">
   <link rel="stylesheet" href="css/style.css">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
 
   <style>
     :root {
       --ig-blue: #018eec;
       --ig-purple: #015fa8;
-      --ig-pink: #c13584;
-      --ig-red: #fd1d1d;
-      --ig-orange: #f77737;
       --ig-yellow: #fcaf45;
-      --ig-light: #ffdc80;
-
-      /* Grayscale */
       --ig-dark: #242d3f;
       --ig-gray: #dcf0ff;
-      --ig-lightGray: #c8c9ce;
+      --ig-lightGray: #e2e8f0;
       --white: #ffffff;
       --black: #000000;
     }
 
-    /* Global */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
     body {
+      margin: 0;
       font-family: 'Poppins', sans-serif;
-      line-height: 1.6;
-      color: var(--text-dark);
-      background: radial-gradient(circle at left, var(--ig-gray), #fff 60%);
+      background: var(--ig-gray);
+      color: var(--ig-dark);
+      scroll-behavior: smooth;
     }
 
-    a {
-      text-decoration: none;
-      color: inherit;
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 0 20px;
     }
 
-    #main-header { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; transition: transform 0.3s ease; background-color: #fff; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }
+    /* ===== HEADER STYLES ===== */
+    #main-header {
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+      transition: transform 0.3s ease-in-out; background-color: #fff;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
     body { padding-top: 80px; }
     @media (max-width: 1023px) { body { padding-top: 115px; } }
     @media (max-width: 768px) { body { padding-top: 105px; } }
+    @media (min-width: 1400px) { body { padding-top: 100px; } }
 
-    #backToTop { display: none; position: fixed; bottom: 30px; right: 30px; z-index: 999; background-color: #018eec; color: white; cursor: pointer; padding: 15px; border-radius: 50%; width: 50px; height: 50px; align-items: center; justify-content: center; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); border: none; }
-    #backToTop.show { display: flex; }
-
-    .footer-collapsible-wrapper { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.6s ease; width: 100%; }
-    .footer-collapsible-wrapper.open { grid-template-rows: 1fr; }
-    .footer-collapsible-inner { overflow: hidden; opacity: 0; visibility: hidden; transition: opacity 0.4s; }
-    .footer-collapsible-wrapper.open .footer-collapsible-inner { opacity: 1; visibility: visible; }
-    .footer-toggle-btn { display: inline-flex; align-items: center; gap: 10px; background: linear-gradient(135deg, #018eec, #0166b3); color: white; padding: 12px 28px; border-radius: 30px; border: none; cursor: pointer; }
-    .footer-toggle-btn.open i { transform: rotate(180deg); }
-
-
-    /* Floating shapes for style */
-    .floating-shape {
-      position: absolute;
-      border-radius: 50%;
-      opacity: 0.2;
-      animation: float 20s ease-in-out infinite;
-      z-index: 0;
+    /* Increase Menu Text Size */
+    nav ul.dropdown-menu li a,
+    nav ul.submenu li a {
+        font-size: 1.05rem !important; 
+        padding-top: 12px !important;
+        padding-bottom: 12px !important;
     }
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0px) translateX(0px); }
-      50% { transform: translateY(-50px) translateX(50px); }
-    }
-
-    /* HERO */
-    .contact-hero {
-      height: 50vh;
+    /* ===== HERO SECTION ===== */
+    .blog-hero {
+      height: 40vh;
+      background: linear-gradient(to bottom, rgba(30, 41, 59, 0.7), rgba(30, 41, 59, 0.9)), url('images/3048207.jpg') center/cover no-repeat;
+      background-color: #242d3f; 
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
       overflow: hidden;
-      background-image: url(images/GTM_Playbook_2x-1.jpg);
-      border-radius: 0 0 60px 60px;
+      border-radius: 0 0 40px 40px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     }
 
-    .contact-hero h1 {
-      color: #1e37b3;
-      font-size: 3.5rem;
+    .blog-hero h1 {
+      color: var(--white);
+      font-size: 4rem;
       font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 3px;
-      opacity: 0;
-      transform: translateY(-30px);
-      animation: heroFade 1.5s forwards;
+      text-align: center;
+      letter-spacing: 4px;
+      text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
     }
 
-    @keyframes heroFade {
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* CONTACT SECTION */
-    .contact-section {
+    /* ===== CONTACT LAYOUT ===== */
+    .contact-wrapper {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      grid-template-columns: 1fr 1fr;
       gap: 50px;
-      max-width: 1200px;
-      margin: 0px auto;
-      position: relative;
+      padding: 80px 20px;
+      background: #fff;
+      border-radius: 20px;
+      margin: 40px auto;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+    .contact-info h2, .contact-form-box h2 {
+      color: var(--ig-blue);
+      font-size: 2.2rem;
+      margin-bottom: 30px;
+      font-weight: 700;
+    }
+    .contact-info p {
+      font-size: 1.05rem;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+    .contact-info strong {
+      color: var(--ig-dark);
+      font-size: 1.1rem;
+    }
+    .contact-info .social-links a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: var(--ig-lightGray);
+      color: var(--ig-dark);
+      border-radius: 50%;
+      margin-right: 10px;
+      transition: all 0.3s;
+      text-decoration: none;
+    }
+    .contact-info .social-links a:hover {
+      background: var(--ig-blue);
+      color: white;
     }
 
-    /* INFO BOX */
-    .contact-info {
-      background: var(--card-bg);
-      padding: 40px;
-      border-radius: 25px;
-      box-shadow: 0 25px 50px var(--shadow);
-      position: relative;
+    .form-group { margin-bottom: 20px; }
+    .contact-form-fb input, .contact-form-fb textarea { 
+      width: 100%; padding: 16px; border-radius: 12px; border: 2px solid #e2e8f0; 
+      background-color: #f8fafc; box-sizing: border-box; font-family: inherit; font-size: 1rem; color: var(--ig-dark); transition: all 0.3s ease; 
+    }
+    .contact-form-fb input:focus, .contact-form-fb textarea:focus { outline: none; border-color: var(--ig-blue); background-color: #fff; }
+    .contact-form-fb button { width: 100%; padding: 18px; background: var(--ig-blue); color: #fff; border: none; border-radius: 12px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; }
+    .contact-form-fb button:hover { background: var(--ig-purple); }
+
+    .map-container {
+      width: 100%;
+      border-radius: 20px;
       overflow: hidden;
-      opacity: 0;
-      transform: translateY(40px);
-      transition: transform 0.5s, opacity 0.5s;
+      margin-bottom: 80px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      height: 450px;
+    }
+    .map-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
     }
 
-    .contact-info.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .contact-info h2 {
-      font-size: 2rem;
-      margin-bottom: 25px;
-      background: linear-gradient(90deg, var(--ig-blue), var(--ig-purple));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .info-item { margin-bottom: 20px; }
-    .info-item strong { display: block; margin-bottom: 5px; font-weight: 600; color: var(--ig-dark); }
-    .social-links a { margin-right: 15px; font-weight: 600; color: var(--ig-blue); transition: color 0.3s; }
-    .social-links a:hover { color: var(--ig-purple); }
-
-    /* FORM BOX */
-    .contact-form {
-      background: var(--card-bg);
-      padding: 40px;
-      border-radius: 25px;
-      box-shadow: 0 25px 50px var(--shadow);
-      opacity: 0;
-      transform: translateY(40px);
-      transition: transform 0.5s, opacity 0.5s;
-    }
-
-    .contact-form.show { opacity: 1; transform: translateY(0); }
-    .contact-form h2 { font-size: 2rem; margin-bottom: 25px; background: linear-gradient(90deg, var(--ig-blue), var(--ig-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .contact-form form { display: flex; flex-direction: column; gap: 20px; }
-    .contact-form input, .contact-form textarea { width: 100%; padding: 15px 20px; border-radius: 12px; border: 1px solid #ddd; font-size: 1rem; font-family: 'Poppins', sans-serif; transition: all 0.3s; }
-    .contact-form input:focus, .contact-form textarea:focus { border: 2px solid var(--ig-purple); outline: none; box-shadow: 0 10px 25px rgba(131, 58, 180, 0.2); }
-    .contact-form textarea { height: 150px; resize: none; }
-    .contact-form button { padding: 15px; border-radius: 25px; background: linear-gradient(90deg, var(--ig-blue), var(--ig-purple)); color: #fff; font-weight: 600; font-size: 1rem; border: none; cursor: pointer; transition: all 0.3s; }
-    .contact-form button:hover { transform: scale(1.05); box-shadow: 0 10px 25px rgba(131, 58, 180, 0.3); }
-
-    /* RESPONSIVE */
-    @media(max-width:768px) {
-      .contact-hero h1 { font-size: 2.5rem; text-align: center; }
-      .contact-section { grid-template-columns: 1fr; }
+    /* Footer Styles */
+    .footer-collapsible-wrapper { display: block; width: 100%; }
+    .footer-collapsible-inner { overflow: visible; opacity: 1; visibility: visible; }
+    
+    @media (max-width: 900px) {
+      .contact-wrapper { grid-template-columns: 1fr; }
+      .blog-hero h1 { font-size: 2.5rem; }
     }
   </style>
-
 </head>
 
 <body>
- <header id="main-header">
-  <div class="container">
-    <div class="logo">
-      <a href="index.html">
-        <img src="images/logo/Movictel 12 sept 25-01-01.png" alt="Movictel Logo">
-      </a>
-    </div>
 
-    <div class="menu-toggle" id="menuToggle">
-      <i class="fas fa-bars"></i>
-    </div>
-
-    <nav>
-      <ul class="menu">
-        <li><a href="index.html">Home</a></li>
-       <li class="dropdown">
-          <a href="services.html">Services</a>
-          <ul class="dropdown-menu">
-            <li class="has-submenu">
-              <a href="#"><i class="fa-solid fa-bullhorn"></i>Marketing</a>
-              <ul class="submenu">
-                <li><a href="services.html#social-media-marketing"><i class="fa-solid fa-hashtag"></i>Social Media Marketing</a></li>
-                <li><a href="services.html#google-meta-ads"><i class="fa-solid fa-chart-line"></i>Google & Meta Ads</a></li>
-                <li><a href="services.html#brand-awareness"><i class="fa-solid fa-eye"></i>Brand Awareness Campaigns</a></li>
-                <li><a href="services.html#seo-online-visibility"><i class="fa-solid fa-magnifying-glass"></i>SEO & Online Visibility</a></li>
-                <li><a href="services.html#content-writing"><i class="fa-solid fa-pen-nib"></i> Content Writing</a></li>
-              </ul>
-            </li>
-            <li class="has-submenu">
-              <a href="#"><i class="fa-solid fa-paper-plane"></i>Promote</a>
-              <ul class="submenu">
-                <li><a href="services.html#bulk-sms"><i class="fa-solid fa-message"></i>Bulk SMS</a></li>
-                <li><a href="services.html#rcs-sms"><i class="fa-solid fa-comments"></i>RCS SMS</a></li>
-                <li><a href="services.html#voice-sms"><i class="fa-solid fa-microphone"></i>Voice SMS</a></li>
-                <li><a href="services.html#whatsapp-api"><i class="fa-brands fa-whatsapp"></i>WhatsApp Business API</a></li>
-              </ul>
-            </li>
-            <li class="has-submenu">
-              <a href="#"><i class="fa-solid fa-code"></i> Development</a>
-              <ul class="submenu">
-                <li><a href="services.html#website-development"><i class="fa-solid fa-globe"></i> Website Development</a></li>
-                <li><a href="services.html#app-development"><i class="fa-solid fa-mobile-screen"></i>App Development</a></li>
-                <li><a href="services.html#landing-pages"><i class="fa-solid fa-layer-group"></i> Landing Pages</a></li>
-              </ul>
-            </li>
-          </ul>
-        </li>
-        <li><a href="blog.html">Blog</a></li>
-        <li><a href="aboutus.html">About Us</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </nav>
-
-    <div class="social-icons">
-      <a href="https://www.facebook.com/share/1CNLUSH1xV/"><i class="fab fa-facebook-f"></i></a>
-      <a href="https://www.instagram.com/movictel?igsh=Mjg3cnowdnE3emd3"><i class="fab fa-instagram"></i></a>
-      <a href="https://www.linkedin.com/company/movictel/"><i class="fab fa-linkedin-in"></i></a>
-      <a href="https://x.com/movictel"><i class="fab fa-x-twitter"></i></a>
-    </div>
-  </div>
-</header>
-
-  <div class="floating-shape"
-    style="width:200px;height:200px;background:linear-gradient(45deg,var(--ig-blue),var(--ig-purple));top:50px;left:30px;">
-  </div>
-  <div class="floating-shape"
-    style="width:150px;height:150px;background:linear-gradient(45deg,var(--ig-purple),var(--ig-blue));top:500px;right:60px;">
-  </div>
-
-
-  <!-- HERO BANNER -->
-  <section class="contact-hero">
-    <h1>Contact Us</h1>
-  </section>
-
-  <!-- CONTACT SECTION -->
-  <section class="contact-section">
-
-    <!-- INFO BOX -->
-    <div class="contact-info">
-      <h2>Get In Touch</h2>
-      <div class="info-item">
-        <strong>Address:</strong>
-        OFFICE 21 ,TAGORE NAGAR, NEAR CMGORA HOSPITAL, 200FT, AJMER ROAD, JAIPUR, RAJASTHAN 302021
+  <header id="main-header">
+    <div class="container">
+      <div class="logo">
+        <a href="index.html">
+          <img src="images/logo/Movictel 12 sept 25-01-01.png" alt="Movictel Logo">
+        </a>
       </div>
-      <div class="info-item">
-        <strong>Phone:</strong>
-        +91 9001955232
-      </div>
-      <div class="info-item">
-        <strong>Email:</strong>
-        info.movictel@gmail.com
-      </div>
-      <div class="info-item">
-        <strong>Follow Us:</strong>
-        <div class="social-links">
+      <div class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></div>
+      <nav>
+        <ul class="menu">
+          <li><a href="index.html">Home</a></li>
+          <li class="dropdown">
+            <a href="services.html">Services</a>
+            <ul class="dropdown-menu">
+              <li class="has-submenu">
+                <a href="#"><i class="fa-solid fa-bullhorn"></i>Marketing</a>
+                <ul class="submenu" id="nav-marketing-list"></ul>
+              </li>
+              <li class="has-submenu">
+                <a href="#"><i class="fa-solid fa-paper-plane"></i>Promote</a>
+                <ul class="submenu" id="nav-promote-list"></ul>
+              </li>
+              <li class="has-submenu">
+                <a href="#"><i class="fa-solid fa-code"></i> Development</a>
+                <ul class="submenu" id="nav-dev-list"></ul>
+              </li>
+            </ul>
+          </li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="aboutus.html">About Us</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="social-icons">
          <a href="https://www.facebook.com/share/1CNLUSH1xV/"><i class="fab fa-facebook-f"></i></a>
-            <a href="https://www.instagram.com/movictel?igsh=Mjg3cnowdnE3emd3"><i class="fab fa-instagram"></i></a>
-            <a href="https://www.linkedin.com/company/movictel/"><i class="fab fa-linkedin-in"></i></a>
-            <a href="https://x.com/movictel"><i class="fab fa-x-twitter"></i></a>
-        </div>
+        <a href="https://www.instagram.com/movictel?igsh=Mjg3cnowdnE3emd3"><i class="fab fa-instagram"></i></a>
+        <a href="https://www.linkedin.com/company/movictel/"><i class="fab fa-linkedin-in"></i></a>
+        <a href="https://x.com/movictel"><i class="fab fa-x-twitter"></i></a>
       </div>
     </div>
+  </header>
 
-    <!-- FORM BOX -->
-   <div class="contact-form">
-  <h2>Send Us a Message</h2>
+  <main id="app-container">
+    <section class="blog-hero">
+      <h1>CONTACT US</h1>
+    </section>
 
-  <form class="contact-form-fb">
-  <input type="text" name="Name" placeholder="Your Name" required>
-  <input type="email" name="Email" placeholder="Your Email" required>
-  
-  <input type="tel" name="Phone" placeholder="Your Phone Number (10 Digits)" required pattern="\d{10}" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
-  
-  <input type="text" name="Subject" placeholder="Subject">
-  <textarea name="Message" placeholder="Your Message" required></textarea>
-  <button type="submit">Send Message</button>
-</form>
-</div>
-  </section>
-
- <footer class="site-footer">
-  <div style="text-align: center; padding-top: 30px; padding-bottom: 10px;">
-    <button id="footerToggleBtn" class="footer-toggle-btn">
-      <span>Show Footer</span>
-      <i class="fas fa-chevron-down"></i>
-    </button>
-  </div>
-  <div class="footer-collapsible-wrapper" id="footerCollapsible">
-    <div class="footer-collapsible-inner">
-      <div class="footer-container">
-        <!-- Column 1: Logo & About -->
-        <div class="footer-col">
-          <div class="footer-logo">
-            <img src="images/logo/Movictel 12 sept 25-01-01.png" alt="Movictel Logo">
-          </div>
-          <p class="footer-about">
-            Movictel is a growth-driven digital solutions company offering
-            Marketing, Messaging & Development services to help businesses
-            connect, engage & scale faster.
-          </p>
-          <div class="footer-social">
+    <div class="container">
+      <div class="contact-wrapper">
+        <div class="contact-info">
+          <h2>Get in Touch</h2>
+          <p><strong>Address:</strong><br><span id="cp-address">Loading...</span></p>
+          <p><strong>Phone:</strong><br><span id="cp-phone">Loading...</span></p>
+          <p><strong>Email:</strong><br><span id="cp-email">Loading...</span></p>
+          
+          <br>
+          <strong>Follow Us:</strong>
+          <div class="social-links" style="margin-top: 10px;">
             <a href="https://www.facebook.com/share/1CNLUSH1xV/"><i class="fab fa-facebook-f"></i></a>
             <a href="https://www.instagram.com/movictel?igsh=Mjg3cnowdnE3emd3"><i class="fab fa-instagram"></i></a>
             <a href="https://www.linkedin.com/company/movictel/"><i class="fab fa-linkedin-in"></i></a>
@@ -326,254 +227,214 @@
           </div>
         </div>
 
-        <!-- Column 2: Quick Links -->
-        <div class="footer-col">
-          <h3>Quick Links</h3>
-          <ul id="quick-links-list">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="aboutus.html">About Us</a></li>
-            <li><a href="services.html">Services</a></li>
-            <li><a href="contact.html">Contact</a></li>
-          </ul>
+        <div class="contact-form-box">
+          <h2>Send Us a Message</h2>
+          <form class="contact-form-fb">
+            <div class="form-group"><input type="text" name="Name" placeholder="Your Name" required></div>
+            <div class="form-group"><input type="email" name="Email" placeholder="Your Email" required></div>
+            <div class="form-group">
+                <input type="tel" name="Phone" placeholder="Your Phone Number (10 Digits)" required pattern="\d{10}" maxlength="10" minlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+            </div>
+            <div class="form-group"><input type="text" name="Subject" placeholder="Subject" required></div>
+            <div class="form-group"><textarea name="Message" placeholder="Your Message..." rows="4" required></textarea></div>
+            <button type="submit">Submit <i class="fa-solid fa-paper-plane" style="margin-left:8px;"></i></button>
+          </form>
         </div>
+      </div>
 
-        <!-- Column 3: Services -->
-        <div class="footer-col services-col">
-          <h3>Our Services</h3>
-          <div class="services-grid">
-            <div class="footer-service-group">
-              <span class="service-heading">Marketing</span>
-              <ul id="footer-marketing-list"></ul>
-            </div>
-            <div class="footer-service-group">
-              <span class="service-heading">Promote</span>
-              <ul id="footer-promote-list"></ul>
-            </div>
-            <div class="footer-service-group">
-              <span class="service-heading">Development</span>
-              <ul id="footer-dev-list"></ul>
-            </div>
-          </div>
-        </div>
-
-      </div> 
+      <div class="map-container" id="cp-map-container">
+        <!-- Iframe injected here -->
+      </div>
     </div>
-  </div> 
-  <div class="footer-bottom">
-    <p>© 2025 Movictel. All Rights Reserved.</p>
-  </div>
-</footer>
-<button id="backToTop" title="Go to top"><i class="fas fa-arrow-up"></i></button>
+  </main>
 
-  <!-- CMS DATA BINDING SCRIPT -->
-  <script>
-    document.addEventListener('firebaseDataLoaded', (e) => {
-      const data = e.detail;
-      if (!data) return; 
-      
-      try {
-        // UPDATE FOOTER SERVICE LINKS DYNAMICALLY (Header stays fixed!)
-        if (data.detailedServices && Array.isArray(data.detailedServices)) {
-            const footMarketing = document.querySelector(".footer-service-group:nth-child(1) ul");
-            const footPromote = document.querySelector(".footer-service-group:nth-child(2) ul");
-            const footDev = document.querySelector(".footer-service-group:nth-child(3) ul");
-            
-            if(footMarketing) footMarketing.innerHTML = '';
-            if(footPromote) footPromote.innerHTML = '';
-            if(footDev) footDev.innerHTML = '';
-
-            data.detailedServices.forEach(s => {
-                const li = document.createElement('li');
-                const a = document.createElement('a');
-                a.href = `services.html#${s.id}`;
-                a.textContent = s.title;
-                li.appendChild(a);
-
-                let targetFoot = s.category === 'Marketing' ? footMarketing : (s.category === 'Promote' ? footPromote : footDev);
-                if(targetFoot) targetFoot.appendChild(li);
-            });
-        }
-
-        // DYNAMIC QUICK LINKS (FOOTER ONLY - HEADER REMAINS UNTOUCHED)
-        const quickLinksList = document.getElementById("quick-links-list");
-        if (quickLinksList && data.dynamicPages && Array.isArray(data.dynamicPages)) {
-            quickLinksList.innerHTML = `
+  <footer class="site-footer">
+    <div class="footer-collapsible-wrapper" id="footerCollapsible">
+      <div class="footer-collapsible-inner">
+        <div class="footer-container">
+          <div class="footer-col">
+            <div class="footer-logo">
+              <img src="images/logo/Movictel 12 sept 25-01-01.png" alt="Movictel Logo">
+            </div>
+            <p class="footer-about">Movictel is a growth-driven digital solutions company offering Marketing, Messaging & Development services to help businesses connect, engage & scale faster.</p>
+          </div>
+          <div class="footer-col">
+            <h3>Quick Links</h3>
+            <ul id="quick-links-list">
               <li><a href="index.html">Home</a></li>
               <li><a href="aboutus.html">About Us</a></li>
               <li><a href="services.html">Services</a></li>
               <li><a href="contact.html">Contact</a></li>
-            `;
-            data.dynamicPages.forEach(p => {
-                if (p && typeof p.title === 'string' && p.title.trim() !== '' && typeof p.slug === 'string' && p.slug.trim() !== '') {
-                    const li = document.createElement('li');
-                    const a = document.createElement('a');
-                    a.href = `page.html?id=${encodeURIComponent(p.slug.trim())}`;
-                    a.textContent = p.title.trim();
-                    li.appendChild(a);
-                    quickLinksList.appendChild(li);
-                }
-            });
-        }
-
-      } catch(e) {
-        console.error("CMS Load Error:", e);
-      }
-    });
-  </script>
+            </ul>
+          </div>
+           <div class="footer-col services-col">
+                <h3>Our Services</h3>
+                <div class="services-grid">
+                  <div class="footer-service-group">
+                    <span class="service-heading">Marketing</span>
+                    <ul id="footer-marketing-list"></ul>
+                  </div>
+                  <div class="footer-service-group">
+                    <span class="service-heading">Promote</span>
+                    <ul id="footer-promote-list"></ul>
+                  </div>
+                  <div class="footer-service-group">
+                    <span class="service-heading">Development</span>
+                    <ul id="footer-dev-list"></ul>
+                  </div>
+                </div>
+           </div>
+        </div> 
+      </div>
+    </div> 
+    <div class="footer-bottom"><p>© 2025 Movictel. All Rights Reserved.</p></div>
+  </footer>
 
   <script>
-    const infoBox = document.querySelector('.contact-info');
-    const formBox = document.querySelector('.contact-form');
-
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('show');
-        }
-      });
-    }, { threshold: 0.3 });
-
-    observer.observe(infoBox);
-    observer.observe(formBox);
-
-    
-  const menuToggle = document.getElementById("menuToggle");
-  const navMenu = document.querySelector("header nav");
-
-  if(menuToggle && navMenu) {
-      menuToggle.addEventListener("click", () => {
-        navMenu.classList.toggle("active");
-        menuToggle.classList.toggle("active");
-      });
-  }
-
- let lastScrollTop = 0;
-  const header = document.getElementById("main-header");
-  const backToTopBtn = document.getElementById("backToTop");
-
-  window.addEventListener("scroll", function() {
-    let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    if (header) {
-      if (scrollTop > lastScrollTop && scrollTop > 100) header.style.transform = "translateY(-100%)";
-      else header.style.transform = "translateY(0)";
-    }
-    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-
-    if (backToTopBtn) {
-      if (scrollTop > 300) backToTopBtn.classList.add("show");
-      else backToTopBtn.classList.remove("show");
-    }
-  });
-
-  if (backToTopBtn) backToTopBtn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
-
-  const footerToggleBtn = document.getElementById("footerToggleBtn");
-  const footerCollapsible = document.getElementById("footerCollapsible");
-
-  if (footerToggleBtn && footerCollapsible) {
-    footerToggleBtn.addEventListener("click", () => {
-      footerToggleBtn.classList.toggle("open");
-      footerCollapsible.classList.toggle("open");
-      const spanText = footerToggleBtn.querySelector("span");
-      if(spanText) {
-        if (footerToggleBtn.classList.contains("open")) spanText.textContent = "Hide Footer";
-        else spanText.textContent = "Show Footer";
-      }
+    const menuToggle = document.getElementById("menuToggle");
+    const navMenu = document.querySelector("header nav");
+    menuToggle.addEventListener("click", () => {
+      navMenu.classList.toggle("active");
+      menuToggle.classList.toggle("active");
     });
-  }
+
+    document.addEventListener('firebaseDataLoaded', (e) => {
+        const data = e.detail;
+        if (!data) return; 
+
+        try {
+            // SEO
+            if(data.metaDetails && data.metaDetails.contact) {
+              if(data.metaDetails.contact.title) document.title = data.metaDetails.contact.title;
+              if(data.metaDetails.contact.desc) {
+                let metaDesc = document.querySelector('meta[name="description"]');
+                if (!metaDesc) { metaDesc = document.createElement('meta'); metaDesc.name = "description"; document.head.appendChild(metaDesc); }
+                metaDesc.content = data.metaDetails.contact.desc;
+              }
+            }
+
+            // Contact Info bindings
+            if(data.contactPage) {
+                document.getElementById('cp-address').innerText = data.contactPage.address || '';
+                document.getElementById('cp-phone').innerText = data.contactPage.phone || '';
+                document.getElementById('cp-email').innerText = data.contactPage.email || '';
+                document.getElementById('cp-map-container').innerHTML = data.contactPage.mapEmbed || '';
+            }
+
+            // Navigation Headers & Footers
+            if(data.detailedServices && Array.isArray(data.detailedServices)) {
+                const gridMarketing = document.getElementById("nav-marketing-list");
+                const gridPromote = document.getElementById("nav-promote-list");
+                const gridDev = document.getElementById("nav-dev-list");
+                const footMarketing = document.getElementById("footer-marketing-list");
+                const footPromote = document.getElementById("footer-promote-list");
+                const footDev = document.getElementById("footer-dev-list");
+                
+                if(gridMarketing) gridMarketing.innerHTML = '';
+                if(gridPromote) gridPromote.innerHTML = '';
+                if(gridDev) gridDev.innerHTML = '';
+                if(footMarketing) footMarketing.innerHTML = '';
+                if(footPromote) footPromote.innerHTML = '';
+                if(footDev) footDev.innerHTML = '';
+
+                data.detailedServices.forEach(s => {
+                    let headTarget = s.category === 'Marketing' ? gridMarketing : (s.category === 'Promote' ? gridPromote : gridDev);
+                    if(headTarget) { headTarget.innerHTML += `<li><a href="services.html#${s.id}"><i class="${s.navIcon}"></i>${s.title}</a></li>`; }
+                    
+                    let footTarget = s.category === 'Marketing' ? footMarketing : (s.category === 'Promote' ? footPromote : footDev);
+                    if(footTarget) { footTarget.innerHTML += `<li><a href="services.html#${s.id}">${s.title}</a></li>`; }
+                });
+            }
+
+            // Dynamic Links
+            const quickLinksList = document.getElementById("quick-links-list");
+            if (quickLinksList && data.dynamicPages && Array.isArray(data.dynamicPages)) {
+                quickLinksList.innerHTML = `
+                  <li><a href="index.html">Home</a></li>
+                  <li><a href="aboutus.html">About Us</a></li>
+                  <li><a href="services.html">Services</a></li>
+                  <li><a href="contact.html">Contact</a></li>
+                `;
+                data.dynamicPages.forEach(p => {
+                    if (p && typeof p.title === 'string' && p.title.trim() !== '' && typeof p.slug === 'string' && p.slug.trim() !== '') {
+                        quickLinksList.innerHTML += `<li><a href="page.html?id=${encodeURIComponent(p.slug.trim())}">${p.title.trim()}</a></li>`;
+                    }
+                });
+            }
+        } catch(e) { console.error("CMS Load Error:", e); }
+    });
   </script>
 
-<!-- FIREBASE CONNECTION -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
-  import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
+    import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyCmMeoeZFsUeRKg2B6GM1riE1DpkmCHllw",
-    authDomain: "movictel.firebaseapp.com",
-    projectId: "movictel",
-    storageBucket: "movictel.firebasestorage.app",
-    messagingSenderId: "614749394807",
-    appId: "1:614749394807:web:647f3d1ea27d38f7c83372"
-  };
+    const firebaseConfig = {
+      apiKey: "AIzaSyCmMeoeZFsUeRKg2B6GM1riE1DpkmCHllw",
+      authDomain: "movictel.firebaseapp.com",
+      projectId: "movictel",
+      storageBucket: "movictel.firebasestorage.app",
+      messagingSenderId: "614749394807",
+      appId: "1:614749394807:web:647f3d1ea27d38f7c83372"
+    };
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-  const fetchCMSData = () => {
-    const configRef = doc(db, "artifacts", "movictel", "public", "data", "siteConfig", "global");
-    onSnapshot(configRef, (docSnap) => {
-      if (docSnap.exists()) {
-        const globalData = docSnap.data();
-        window.firebaseSiteData = globalData;
-        document.dispatchEvent(new CustomEvent('firebaseDataLoaded', { detail: globalData }));
-      }
-    }, (err) => console.error("CMS Sync Error:", err));
-  };
-
-  signInAnonymously(auth).then(() => {
-    fetchCMSData();
-  }).catch((error) => {
-    console.warn("Firebase Anonymous Auth failed:", error.message, "- Fallback to unauthenticated read.");
-    fetchCMSData();
-  });
-
-  const handleForm = (selector, collectionName) => {
-    const form = document.querySelector(selector);
-    if (!form) return;
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const btn = form.querySelector('button[type="submit"]') || form.querySelector('button');
-      const ogText = btn ? btn.innerHTML : 'Submit';
-      
-      if (btn) {
-          btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-          btn.disabled = true;
-      }
-
-      const formData = {
-        name: form.querySelector('[name="Name"]')?.value || 'N/A',
-        email: form.querySelector('[name="Email"]')?.value || 'N/A',
-        phone: form.querySelector('[name="Phone"]')?.value || 'N/A',
-        timestamp: Date.now()
-      };
-
-      if (collectionName === 'service_leads') {
-        const activeService = window.location.hash 
-          ? window.location.hash.substring(1).replace(/-/g, ' ').toUpperCase() 
-          : (document.getElementById('form-service-type')?.value || 'GENERAL');
-          
-        formData.service_type = activeService;
-        formData.message = form.querySelector('textarea[name="Message"]')?.value || form.querySelector('textarea')?.value || '';
-      } else {
-        formData.subject = form.querySelector('input[name="Subject"]')?.value || 'N/A';
-        formData.message = form.querySelector('textarea[name="Message"]')?.value || form.querySelector('textarea')?.value || '';
-      }
-
-      try {
-        await addDoc(collection(db, "artifacts", "movictel", "public", "data", collectionName), formData);
-        alert('Request sent successfully!');
-        form.reset();
-      } catch (error) {
-        console.error("Submission Error:", error);
-        alert('Failed to send. Please try again.');
-      } finally {
-        if (btn) {
-            btn.innerHTML = ogText;
-            btn.disabled = false;
+    const fetchCMSData = () => {
+      const configRef = doc(db, "artifacts", "movictel", "public", "data", "siteConfig", "global");
+      onSnapshot(configRef, (docSnap) => {
+        if (docSnap.exists()) {
+          const globalData = docSnap.data();
+          window.firebaseSiteData = globalData;
+          document.dispatchEvent(new CustomEvent('firebaseDataLoaded', { detail: globalData }));
         }
-      }
+      }, (err) => console.error("CMS Sync Error:", err));
+    };
+
+    signInAnonymously(auth).then(() => {
+      fetchCMSData();
+    }).catch((error) => {
+      console.warn("Firebase Anonymous Auth failed:", error.message, "- Fallback to unauthenticated read.");
+      fetchCMSData();
     });
-  };
 
-  document.addEventListener('DOMContentLoaded', () => {
-    handleForm('.service-form', 'service_leads');
-    handleForm('.contact-form-fb', 'contact_leads');
-  });
-</script>
+    const handleForm = (selector, collectionName) => {
+      const form = document.querySelector(selector);
+      if (!form) return;
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = form.querySelector('button[type="submit"]') || form.querySelector('button');
+        const ogText = btn ? btn.innerHTML : 'Submit';
+        if (btn) { btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...'; btn.disabled = true; }
 
+        const formData = {
+          name: form.querySelector('[name="Name"]')?.value || 'N/A',
+          email: form.querySelector('[name="Email"]')?.value || 'N/A',
+          phone: form.querySelector('[name="Phone"]')?.value || 'N/A',
+          subject: form.querySelector('input[name="Subject"]')?.value || 'N/A',
+          message: form.querySelector('textarea[name="Message"]')?.value || form.querySelector('textarea')?.value || '',
+          timestamp: Date.now()
+        };
+
+        try {
+          await addDoc(collection(db, "artifacts", "movictel", "public", "data", collectionName), formData);
+          alert('Request sent successfully!');
+          form.reset();
+        } catch (error) {
+          console.error("Submission Error:", error);
+          alert('Failed to send. Please try again.');
+        } finally {
+          if (btn) { btn.innerHTML = ogText; btn.disabled = false; }
+        }
+      });
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      handleForm('.contact-form-fb', 'contact_leads');
+    });
+  </script>
 </body>
 </html>
