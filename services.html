@@ -20,19 +20,15 @@
 
   <style>
    :root {
-      /* Instagram-Inspired Palette */
+      /* Palette */
       --ig-blue: #018eec;
       --ig-purple: #015fa8;
-      --ig-pink: #c13584;
-      --ig-red: #fd1d1d;
-      --ig-orange: #f77737;
       --ig-yellow: #fcaf45;
-      --ig-light: #ffdc80;
 
       /* Grayscale */
       --ig-dark: #242d3f;
       --ig-gray: #dcf0ff;
-      --ig-lightGray: #c8c9ce;
+      --ig-lightGray: #e2e8f0;
       --white: #ffffff;
       --black: #000000;
     }
@@ -60,6 +56,15 @@
     body { padding-top: 80px; }
     @media (max-width: 1023px) { body { padding-top: 115px; } }
     @media (max-width: 768px) { body { padding-top: 105px; } }
+    @media (min-width: 1400px) { body { padding-top: 100px; } }
+
+    /* Increase Menu Text Size */
+    nav ul.dropdown-menu li a,
+    nav ul.submenu li a {
+        font-size: 1.05rem !important; 
+        padding-top: 12px !important;
+        padding-bottom: 12px !important;
+    }
 
     /* ===== HERO SECTION ===== */
     .blog-hero {
@@ -138,45 +143,161 @@
     .feature-card h3 { color: var(--ig-blue); margin-bottom: 15px; font-size: 1.3rem; }
     .feature-card p { color: #475569; line-height: 1.6; }
 
-    .cta-banner {
-      background: linear-gradient(135deg, var(--ig-blue), var(--ig-purple)); color: white; text-align: center;
-      padding: 70px 20px; border-radius: 30px; max-width: 1100px; margin: 40px auto; box-shadow: 0 15px 35px rgba(1, 142, 236, 0.3);
+    /* Multiple Custom CTAs */
+    .dynamic-ctas-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 50px;
     }
-    .cta-banner h2 { margin-bottom: 15px; font-size: 2.5rem; font-weight: 700; }
-    .cta-banner p { font-size: 1.1rem; opacity: 0.9; }
+    .btn-custom-cta {
+      padding: 14px 30px;
+      background: var(--ig-blue);
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1.05rem;
+      transition: all 0.3s;
+      box-shadow: 0 4px 10px rgba(1, 142, 236, 0.3);
+    }
+    .btn-custom-cta:hover {
+      background: var(--ig-purple);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(1, 142, 236, 0.5);
+    }
 
-    /* ===== FORM STYLING ===== */
-    .form-box { max-width: 600px; margin: 60px auto 100px auto; background: #fff; padding: 50px 40px; border-radius: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.08); border: 1px solid var(--ig-lightGray); }
-    .form-box h2 { text-align: center; color: var(--black); margin-bottom: 30px; font-weight: 700; }
-    .form-group { margin-bottom: 20px; }
-    .form-box input, .form-box textarea { width: 100%; padding: 16px; border-radius: 12px; border: 2px solid #e2e8f0; background-color: #f8fafc; box-sizing: border-box; font-family: inherit; font-size: 1rem; color: var(--ig-dark); transition: all 0.3s ease; }
-    .form-box input:focus, .form-box textarea:focus { outline: none; border-color: var(--ig-blue); background-color: #fff; box-shadow: 0 0 0 4px rgba(1, 142, 236, 0.1); }
-    .form-box textarea { resize: vertical; }
-    .form-box button { width: 100%; padding: 18px; background: var(--ig-blue); color: #fff; border: none; border-radius: 12px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(1, 142, 236, 0.4); }
-    .form-box button:hover { background: var(--ig-purple); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(1, 142, 236, 0.5); }
+    /* ===== HORIZONTAL FORM STYLING ===== */
+    .horizontal-form-wrapper {
+      background: linear-gradient(135deg, var(--ig-blue), var(--ig-purple));
+      padding: 40px 30px;
+      margin: 60px auto 80px auto;
+      max-width: 1200px;
+      border-radius: 16px;
+      box-shadow: 0 15px 35px rgba(1, 142, 236, 0.3);
+    }
+    .horizontal-form-wrapper h2 {
+      color: white;
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 25px;
+      font-size: 2rem;
+      font-weight: 700;
+    }
+    .horizontal-form-wrapper p.form-subtext {
+      color: rgba(255, 255, 255, 0.9);
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 1.05rem;
+    }
+    .horizontal-form {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+    .horizontal-form .form-group {
+      flex: 1;
+      min-width: 180px;
+      margin-bottom: 0;
+    }
+    .horizontal-form input {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      outline: none;
+      box-sizing: border-box;
+      background: #fff;
+      color: var(--ig-dark);
+      font-family: 'Poppins', sans-serif;
+    }
+    .horizontal-form button {
+      padding: 16px 35px;
+      background: var(--ig-yellow);
+      color: var(--ig-dark);
+      border: none;
+      border-radius: 8px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+      white-space: nowrap;
+    }
+    .horizontal-form button:hover {
+      background: #ffdc80;
+      transform: translateY(-2px);
+    }
+
+    /* ===== SERVICE SPECIFIC FAQs ===== */
+    .service-faq-section {
+      padding: 60px 20px 80px;
+      max-width: 900px;
+      margin: auto;
+      display: none; /* Hidden by default if no FAQs exist */
+    }
+    .service-faq-section h2 {
+      text-align: center;
+      font-size: 2.2rem;
+      color: var(--black);
+      margin-bottom: 40px;
+    }
+    .service-faq-item {
+      margin-bottom: 15px;
+      border: 1px solid var(--ig-lightGray);
+      border-radius: 10px;
+      background: #fff;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    }
+    .service-faq-question {
+      width: 100%;
+      text-align: left;
+      padding: 20px 25px;
+      border: none;
+      background: transparent;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--ig-dark);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .service-faq-answer {
+      padding: 0 25px 20px;
+      display: none;
+      color: #475569;
+      line-height: 1.7;
+    }
+    .service-faq-question.active + .service-faq-answer { display: block; }
+    .service-faq-question.active .icon { transform: rotate(45deg); color: var(--ig-blue); }
+    .service-faq-question .icon { transition: transform 0.3s; font-size: 1.2rem; color: #94a3b8; }
 
     /* Footer Styles */
-    .footer-collapsible-wrapper { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.6s ease; width: 100%; }
-    .footer-collapsible-wrapper.open { grid-template-rows: 1fr; }
-    .footer-collapsible-inner { overflow: hidden; opacity: 0; visibility: hidden; transition: opacity 0.4s; }
-    .footer-collapsible-wrapper.open .footer-collapsible-inner { opacity: 1; visibility: visible; }
-    .footer-toggle-btn {
-      display: inline-flex; align-items: center; gap: 10px; background: linear-gradient(135deg, #018eec, #0166b3);
-      color: white; padding: 12px 28px; border-radius: 30px; border: none; cursor: pointer;
-    }
-    .footer-toggle-btn.open i { transform: rotate(180deg); }
+    .footer-collapsible-wrapper { display: block; width: 100%; }
+    .footer-collapsible-inner { overflow: visible; opacity: 1; visibility: visible; }
+    
     #backToTop { display: none; position: fixed; bottom: 30px; right: 30px; z-index: 999; background-color: #018eec; color: white; cursor: pointer; padding: 15px; border-radius: 50%; width: 50px; height: 50px; align-items: center; justify-content: center; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); border: none; }
     #backToTop.show { display: flex; }
 
     @media (max-width: 900px) { .subservice-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 768px) {
+      .horizontal-form { flex-direction: column; }
+      .horizontal-form .form-group { width: 100%; }
+      .horizontal-form button { width: 100%; }
+    }
     @media (max-width: 600px) {
       .service-header h2 { font-size: 2.2rem; }
       .blog-hero h1 { font-size: 2.5rem; }
       .subservice-grid { grid-template-columns: 1fr; }
       .service-hero h1 { font-size: 2.2rem; }
-      .form-box { margin: 40px 20px; padding: 40px 25px; }
-      .cta-banner { padding: 50px 20px; border-radius: 20px;}
-      .cta-banner h2 { font-size: 1.8rem; }
+      .horizontal-form-wrapper { margin: 40px 20px; padding: 30px 20px; }
+      .horizontal-form-wrapper h2 { font-size: 1.6rem; }
     }
   </style>
 </head>
@@ -235,7 +356,7 @@
   <!-- ==================== MAIN CATALOG VIEW ==================== -->
   <div id="catalog-view">
     <section class="blog-hero">
-      <h1>OUR SERVICES</h1>
+      <h1 id="main-hero-title">OUR SERVICES</h1>
     </section>
 
     <!-- MARKETING -->
@@ -243,7 +364,7 @@
       <div class="container">
         <div class="service-header">
           <h2>Marketing Services</h2>
-          <p>Our marketing solutions are designed to help businesses build visibility, establish trust, and convert audiences through consistent and data-driven strategies.</p>
+          <p id="main-hero-desc">Our marketing solutions are designed to help businesses build visibility, establish trust, and convert audiences through consistent and data-driven strategies.</p>
         </div>
         <div class="subservice-grid" id="grid-marketing">
            <!-- Handled by Firebase JS -->
@@ -293,25 +414,34 @@
       </div>
       <h2>Why Choose This Service?</h2>
       <div class="features" id="detail-features"></div>
+
+      <!-- Multiple CTAs dynamically populate here -->
+      <div class="dynamic-ctas-container" id="detail-ctas"></div>
     </section>
 
-    <section class="cta-banner">
-      <h2>Start Growing Your Business Today</h2>
-      <p>Talk to our experts and get started quickly.</p>
+    <!-- Service Specific FAQs -->
+    <section class="service-faq-section" id="service-faq-wrapper">
+        <h2>Frequently Asked Questions</h2>
+        <div id="detail-faqs"></div>
     </section>
 
-    <section class="form-box" id="demo-form">
-      <h2>Request a Demo / Quote</h2>
-      <form method="POST" class="service-form">
-        <input type="hidden" name="service_type" id="form-service-type" value="General Service Request">
-        <div class="form-group"><input type="text" name="Name" placeholder="Your Name" required></div>
-        <div class="form-group"><input type="email" name="Email" placeholder="Your Email" required></div>
-        <div class="form-group">
-          <input type="tel" name="Phone" placeholder="Phone Number" required pattern="\d{10}" maxlength="10" minlength="10" title="Please enter exactly 10 digits" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
-        </div>
-        <div class="form-group"><textarea name="Message" placeholder="Tell us about your requirements..." rows="4" required></textarea></div>
-        <button type="submit">Submit Request <i class="fa-solid fa-paper-plane" style="margin-left:8px;"></i></button>
-      </form>
+    <!-- New Horizontal Contact Form -->
+    <section class="container">
+      <div class="horizontal-form-wrapper" id="demo-form">
+        <h2>Start Growing Your Business Today</h2>
+        <p class="form-subtext">Talk to our experts and get started quickly. Request a Quote instantly.</p>
+        
+        <form method="POST" class="service-form horizontal-form">
+          <input type="hidden" name="service_type" id="form-service-type" value="General Service Request">
+          <div class="form-group"><input type="text" name="Name" placeholder="Your Name" required></div>
+          <div class="form-group"><input type="email" name="Email" placeholder="Your Email" required></div>
+          <div class="form-group">
+            <input type="tel" name="Phone" placeholder="Phone Number" required pattern="\d{10}" maxlength="10" minlength="10" title="Please enter exactly 10 digits" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+          </div>
+          <div class="form-group"><input type="text" name="Message" placeholder="Requirements (Optional)"></div>
+          <button type="submit">Get Quote <i class="fa-solid fa-paper-plane" style="margin-left:5px;"></i></button>
+        </form>
+      </div>
     </section>
   </div>
   <!-- ==================== END DETAIL VIEW ==================== -->
@@ -319,12 +449,6 @@
 
 
 <footer class="site-footer">
-  <div style="text-align: center; padding-top: 30px; padding-bottom: 10px;">
-    <button id="footerToggleBtn" class="footer-toggle-btn">
-      <span>Show Footer</span>
-      <i class="fas fa-chevron-down"></i>
-    </button>
-  </div>
   <div class="footer-collapsible-wrapper" id="footerCollapsible">
     <div class="footer-collapsible-inner">
       <div class="footer-container">
@@ -400,19 +524,45 @@
       if (!data) return; 
       
       try {
+          // Set Page Main SEO and Titles
+          if(data.metaDetails && data.metaDetails.services) {
+            if(data.metaDetails.services.title) document.title = data.metaDetails.services.title;
+            if(data.metaDetails.services.desc) {
+              let metaDesc = document.querySelector('meta[name="description"]');
+              if (!metaDesc) { metaDesc = document.createElement('meta'); metaDesc.name = "description"; document.head.appendChild(metaDesc); }
+              metaDesc.content = data.metaDetails.services.desc;
+            }
+          }
+
+          if(data.servicesPage) {
+              const mt = document.getElementById('main-hero-title');
+              const md = document.getElementById('main-hero-desc');
+              if(mt && data.servicesPage.heroTitle) mt.innerHTML = data.servicesPage.heroTitle;
+              if(md && data.servicesPage.heroDesc) md.innerHTML = data.servicesPage.heroDesc;
+          }
+
           if(data.detailedServices && Array.isArray(data.detailedServices)) {
               
               servicesData = {};
               
               data.detailedServices.forEach(s => {
+                  // Merge legacy features and unlimited array features
+                  let mergedFeatures = s.features ? [...s.features] : [];
+                  if(!s.features || s.features.length === 0) {
+                      if(s.f1T) mergedFeatures.push({title: s.f1T, desc: s.f1D});
+                      if(s.f2T) mergedFeatures.push({title: s.f2T, desc: s.f2D});
+                      if(s.f3T) mergedFeatures.push({title: s.f3T, desc: s.f3D});
+                  }
+
                   servicesData[s.id] = {
                       title: s.title,
                       description: s.longDesc || s.shortDesc,
-                      features: []
+                      features: mergedFeatures,
+                      ctas: s.ctas || [],
+                      serviceFaqs: s.serviceFaqs || [],
+                      metaTitle: s.metaTitle || '',
+                      metaDesc: s.metaDesc || ''
                   };
-                  if(s.f1T) servicesData[s.id].features.push({title: s.f1T, desc: s.f1D});
-                  if(s.f2T) servicesData[s.id].features.push({title: s.f2T, desc: s.f2D});
-                  if(s.f3T) servicesData[s.id].features.push({title: s.f3T, desc: s.f3D});
               });
 
               const gridMarketing = document.getElementById("grid-marketing");
@@ -449,17 +599,11 @@
                       `;
                   }
 
-                  // -----------------------------------------------------
-                  // HEADER INJECTION (UNCHANGED/FIXED AS REQUESTED)
-                  // -----------------------------------------------------
                   let targetHead = s.category === 'Marketing' ? headMarketing : (s.category === 'Promote' ? headPromote : headDev);
                   if(targetHead) {
                       targetHead.innerHTML += `<li><a href="javascript:void(0)" onclick="loadService('${s.id}')"><i class="${s.navIcon}"></i>${s.title}</a></li>`;
                   }
 
-                  // -----------------------------------------------------
-                  // FOOTER INJECTION (FIXED & MADE ROBUST)
-                  // -----------------------------------------------------
                   let targetFoot = s.category === 'Marketing' ? footMarketing : (s.category === 'Promote' ? footPromote : footDev);
                   if(targetFoot) {
                       const li = document.createElement('li');
@@ -481,7 +625,7 @@
               }
           }
 
-          // DYNAMIC QUICK LINKS (FOOTER ONLY - HEADER REMAINS UNTOUCHED)
+          // DYNAMIC QUICK LINKS
           const quickLinksList = document.getElementById("quick-links-list");
           if (quickLinksList && data.dynamicPages && Array.isArray(data.dynamicPages)) {
               quickLinksList.innerHTML = `
@@ -501,7 +645,6 @@
                   }
               });
           }
-          // The dynamic pages header injection logic has been deliberately removed to keep the header fixed.
 
       } catch(e) {
           console.error("CMS Load Error:", e);
@@ -514,6 +657,14 @@
     const data = servicesData[serviceId];
     if (!data) return;
 
+    // Apply Specific Meta tags for this service
+    if(data.metaTitle) document.title = data.metaTitle;
+    if(data.metaDesc) {
+        let metaDesc = document.querySelector('meta[name="description"]');
+        if (!metaDesc) { metaDesc = document.createElement('meta'); metaDesc.name = "description"; document.head.appendChild(metaDesc); }
+        metaDesc.content = data.metaDesc;
+    }
+
     document.getElementById('catalog-view').style.display = 'none';
     document.getElementById('detail-view').style.display = 'block';
 
@@ -521,9 +672,9 @@
     document.getElementById('detail-description').innerText = data.description;
     document.getElementById('form-service-type').value = data.title;
 
+    // Load Unlimited Features
     const featuresContainer = document.getElementById('detail-features');
     featuresContainer.innerHTML = ''; 
-    
     data.features.forEach(feature => {
       const card = document.createElement('div');
       card.className = 'feature-card';
@@ -533,6 +684,45 @@
       `;
       featuresContainer.appendChild(card);
     });
+
+    // Load Dynamic CTAs
+    const ctasContainer = document.getElementById('detail-ctas');
+    ctasContainer.innerHTML = '';
+    if(data.ctas && data.ctas.length > 0) {
+        data.ctas.forEach(cta => {
+            const a = document.createElement('a');
+            a.href = cta.link;
+            a.className = 'btn-custom-cta';
+            a.innerText = cta.text;
+            ctasContainer.appendChild(a);
+        });
+    }
+
+    // Load Service FAQs
+    const faqWrapper = document.getElementById('service-faq-wrapper');
+    const faqsContainer = document.getElementById('detail-faqs');
+    faqsContainer.innerHTML = '';
+    if(data.serviceFaqs && data.serviceFaqs.length > 0) {
+        faqWrapper.style.display = 'block';
+        data.serviceFaqs.forEach(faq => {
+            const div = document.createElement('div');
+            div.className = 'service-faq-item';
+            div.innerHTML = `
+                <button class="service-faq-question">${faq.q} <span class="icon">+</span></button>
+                <div class="service-faq-answer"><p>${faq.a}</p></div>
+            `;
+            faqsContainer.appendChild(div);
+        });
+
+        // Add click events to new FAQ accordions
+        faqsContainer.querySelectorAll('.service-faq-question').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.classList.toggle('active');
+            });
+        });
+    } else {
+        faqWrapper.style.display = 'none';
+    }
 
     if(navMenu.classList.contains("active")) {
         navMenu.classList.remove("active");
@@ -546,6 +736,10 @@
   function showCatalog() {
     document.getElementById('detail-view').style.display = 'none';
     document.getElementById('catalog-view').style.display = 'block';
+    
+    // Restore Main Service Title
+    const globalTitle = window.firebaseSiteData?.metaDetails?.services?.title || "Movictel - Services";
+    document.title = globalTitle;
     
     if(navMenu.classList.contains("active")) {
         navMenu.classList.remove("active");
@@ -574,20 +768,6 @@
 
   if (backToTopBtn) backToTopBtn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
 
-  const footerToggleBtn = document.getElementById("footerToggleBtn");
-  const footerCollapsible = document.getElementById("footerCollapsible");
-
-  if (footerToggleBtn && footerCollapsible) {
-    footerToggleBtn.addEventListener("click", () => {
-      footerToggleBtn.classList.toggle("open");
-      footerCollapsible.classList.toggle("open");
-      const spanText = footerToggleBtn.querySelector("span");
-      if(spanText) {
-        if (footerToggleBtn.classList.contains("open")) spanText.textContent = "Hide Footer";
-        else spanText.textContent = "Show Footer";
-      }
-    });
-  }
 </script>
 
 <!-- FIREBASE CONNECTION -->
@@ -617,6 +797,11 @@
         window.firebaseSiteData = globalData;
         document.dispatchEvent(new CustomEvent('firebaseDataLoaded', { detail: globalData }));
       }
+       setTimeout(() => {
+            if (typeof AOS !== 'undefined') {
+                AOS.refresh(); // Recalculates offsets after content loads
+            }
+        }, 300);
     }, (err) => console.error("CMS Sync Error:", err));
   };
 
@@ -654,10 +839,10 @@
           : (document.getElementById('form-service-type')?.value || 'GENERAL');
           
         formData.service_type = activeService;
-        formData.message = form.querySelector('textarea[name="Message"]')?.value || form.querySelector('textarea')?.value || '';
+        formData.message = form.querySelector('input[name="Message"]')?.value || form.querySelector('textarea[name="Message"]')?.value || form.querySelector('textarea')?.value || '';
       } else {
         formData.subject = form.querySelector('input[name="Subject"]')?.value || 'N/A';
-        formData.message = form.querySelector('textarea[name="Message"]')?.value || form.querySelector('textarea')?.value || '';
+        formData.message = form.querySelector('input[name="Message"]')?.value || form.querySelector('textarea[name="Message"]')?.value || form.querySelector('textarea')?.value || '';
       }
 
       try {
@@ -678,8 +863,8 @@
 
   document.addEventListener('DOMContentLoaded', () => {
     handleForm('.service-form', 'service_leads');
-    handleForm('.contact-form-fb', 'contact_leads');
   });
+
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
