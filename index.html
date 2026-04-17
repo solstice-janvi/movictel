@@ -135,60 +135,24 @@
       transform: translateY(-3px);
     }
 
-    /* Advanced CSS Grid Logic for Smooth Footer Collapse */
+    /* Advanced CSS Logic for Permanent Footer Visibility (Fixed Issue) */
     .footer-collapsible-wrapper {
-      display: grid;
-      grid-template-rows: 0fr;
-      transition: grid-template-rows 0.6s ease-in-out;
+      display: block; /* Overrides the previous grid trick */
       width: 100%;
     }
 
-    .footer-collapsible-wrapper.open {
-      grid-template-rows: 1fr;
-    }
-
     .footer-collapsible-inner {
-      overflow: hidden;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.4s ease-in-out, visibility 0.6s;
-    }
-
-    .footer-collapsible-wrapper.open .footer-collapsible-inner {
+      overflow: visible;
       opacity: 1;
       visibility: visible;
-      transition: opacity 0.6s ease-in-out, visibility 0.1s;
     }
 
-    /* Footer Toggle Button Enhancement */
-    .footer-toggle-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      background: linear-gradient(135deg, #018eec, #0166b3);
-      color: white;
-      font-size: 1rem;
-      font-weight: 600;
-      border: none;
-      padding: 12px 28px;
-      border-radius: 30px;
-      cursor: pointer;
-      box-shadow: 0 4px 15px rgba(1, 142, 236, 0.4);
-      transition: all 0.3s ease;
-    }
-
-    .footer-toggle-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 20px rgba(1, 142, 236, 0.6);
-    }
-
-    .footer-toggle-btn i {
-      transition: transform 0.4s ease;
-    }
-
-    .footer-toggle-btn.open i {
-      transform: rotate(180deg);
+    /* Increase Menu Text Size */
+    nav ul.dropdown-menu li a,
+    nav ul.submenu li a {
+        font-size: 1.05rem !important; /* Increased font size */
+        padding-top: 12px !important;
+        padding-bottom: 12px !important;
     }
 
     /* ==========================================
@@ -224,6 +188,12 @@
 
     .testi-left-content {
       max-width: 450px;
+    }
+
+    @media (min-width: 993px) {
+        .testi-left-content {
+            padding-right: 120px; /* Fix: Prevent text from hiding under the overlapping swiper */
+        }
     }
 
     .testi-brand-line {
@@ -395,6 +365,17 @@
     .nav-arrow {
       z-index: 10 !important;
     }
+    /* ==========================================
+   TESTIMONIAL ALIGNMENT FIX
+   ========================================== */
+@media (min-width: 993px) {
+  .testimonial-container.split-testimonial-wrap {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+}
   </style>
 
 </head>
@@ -538,54 +519,9 @@
           🚀 Experts in Real Estate Lead Generation — turning campaigns into conversions!
         </p>
 
-        <!-- Fixed Hover Animation Button -->
-        <a href="aboutus.html"><button class="button">
-            <span class="actual-text">Know More</span>
-            <span class="hover-text">Know More</span>
-          </button></a>
+        <!-- Clean, Standardized CTA Button -->
+        <a href="aboutus.html" class="about-btn" style="margin-top: 15px; display: inline-block; padding: 12px 30px; background: #018eec; color: #fff; text-decoration: none; border-radius: 30px; font-weight: 600; font-size: 1rem; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(1, 142, 236, 0.3);">Know More</a>
 
-        <!-- Scoped CSS -->
-        <style>
-          .button {
-            position: relative;
-            background: transparent;
-            border: none;
-            padding: 0;
-            cursor: pointer;
-            font-family: Arial, sans-serif;
-            font-size: 1.5em;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            -webkit-text-stroke: 1px #018eec;
-            color: transparent;
-            display: inline-block;
-            overflow: hidden;
-          }
-
-          .actual-text {
-            display: block;
-            color: transparent;
-            -webkit-text-stroke: 1px #018eec;
-          }
-
-          .hover-text {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 0;
-            color: #018eec;
-            overflow: hidden;
-            white-space: nowrap;
-            border-right: 4px solid #018eec;
-            transition: width 0.5s;
-            -webkit-text-stroke: 1px #018eec;
-          }
-
-          .button:hover .hover-text {
-            width: 100%;
-            filter: drop-shadow(0 0 23px #018eec);
-          }
-        </style>
       </div>
 
       <!-- Right Side (Rotating Image) -->
@@ -701,7 +637,6 @@
       </div>
 
     </div>
-    </div>
 
   </section>
 
@@ -749,12 +684,6 @@
 
       <button class="nav-arrow right">›</button>
     </div>
-
-    <div class="member-info">
-      <h2 class="member-name">Real Estate Industry</h2>
-      <p class="member-role">Industry Focus</p>
-    </div>
-
 
   </section>
 
@@ -989,7 +918,8 @@
   </section>
 
   <!-- NEW SPLIT TESTIMONIAL REDESIGN -->
-  <section class="split-testimonial-wrap">
+ <section class="testimonial-container split-testimonial-wrap" style="overflow: visible !important; min-height: fit-content; display: flex; align-items: center;">
+
     <!-- Left Dark Section -->
     <div class="split-testi-left">
       <div class="testi-left-content">
@@ -1061,15 +991,7 @@
 
   <!-- Footer -->
   <footer class="site-footer">
-
-    <!-- Toggle Expand Button placed on top of the footer content -->
-    <div style="text-align: center; padding-top: 30px; padding-bottom: 10px;">
-      <button id="footerToggleBtn" class="footer-toggle-btn">
-        <span>Show Footer</span>
-        <i class="fas fa-chevron-down"></i>
-      </button>
-    </div>
-
+    <!-- Removed Footer Toggle Button -->
 
     <div class="footer-collapsible-wrapper" id="footerCollapsible">
       <div class="footer-collapsible-inner">
@@ -1286,28 +1208,6 @@
       }
 
       // ==========================================
-      // FOOTER EXPAND/COLLAPSE LOGIC
-      // ==========================================
-      const footerToggleBtn = document.getElementById("footerToggleBtn");
-      const footerCollapsible = document.getElementById("footerCollapsible");
-
-      if (footerToggleBtn && footerCollapsible) {
-        footerToggleBtn.addEventListener("click", () => {
-          footerToggleBtn.classList.toggle("open");
-          footerCollapsible.classList.toggle("open");
-
-          const spanText = footerToggleBtn.querySelector("span");
-          if (spanText) {
-            if (footerToggleBtn.classList.contains("open")) {
-              spanText.textContent = "Hide Footer";
-            } else {
-              spanText.textContent = "Show Footer";
-            }
-          }
-        });
-      }
-
-      // ==========================================
       // CLOSE POPUP HANDLER
       // ==========================================
       const popup = document.getElementById("casePopup");
@@ -1360,10 +1260,26 @@
 
   <!-- CMS DATA BINDING SCRIPT - BULLETPROOFED VERSION -->
   <script>
-    // We wrap everything in a function that receives LIVE data from Firebase
+  // We wrap everything in a function that receives LIVE data from Firebase
     window.renderCMSUI = function (data) {
       if (!data) return;
       console.log("✅ CMS Data Received:", data);
+      
+      // 0. GLOBAL SEO TAGS
+      try {
+          if (data.metaDetails && data.metaDetails.home) {
+              if (data.metaDetails.home.title) document.title = data.metaDetails.home.title;
+              if (data.metaDetails.home.desc) {
+                  let metaDesc = document.querySelector('meta[name="description"]');
+                  if (!metaDesc) {
+                      metaDesc = document.createElement('meta');
+                      metaDesc.name = "description";
+                      document.head.appendChild(metaDesc);
+                  }
+                  metaDesc.content = data.metaDetails.home.desc;
+              }
+          }
+      } catch(err) { console.error("SEO Error:", err); }
 
       // 1. VISIBILITY CONTROLS
       try {
@@ -1398,11 +1314,11 @@
               div.className = 'swiper-slide';
               const mobileImgSrc = slide.imageMobile ? slide.imageMobile : slide.image;
               div.innerHTML = `
-                 <picture style="display: block; width: 100%; height: 100%;">
-                   <source media="(max-width: 768px)" srcset="${mobileImgSrc}">
-                   <img src="${slide.image}" alt="Banner Image" style="width: 100%; height: 100%; object-fit: cover; display: block; object-position: center;">
-                 </picture>
-               `;
+                <picture style="display: block; width: 100%; height: 100%;">
+                  <source media="(max-width: 768px)" srcset="${mobileImgSrc}">
+                  <img src="${slide.image}" alt="Banner Image" style="width: 100%; height: 100%; object-fit: cover; display: block; object-position: center;">
+                </picture>
+              `;
               bannerWrapper.appendChild(div);
             });
             if (swiperEl) {
@@ -1515,7 +1431,7 @@
           }
       } catch (err) { console.error("CMS Error (Main Services):", err); }
 
-      // 7. CASE STUDIES (FIXED TO PRESERVE EXTERNAL DOM BINDINGS)
+      // 7. CASE STUDIES
       try {
           const caseSec = document.querySelector('.case-elegant');
           if (caseSec && data.cases) {
@@ -1528,14 +1444,11 @@
 
             const track = caseSec.querySelector('.carousel-track');
             if (track) {
-              // INSTEAD OF clearing track.innerHTML completely and wiping out GSAP/Coverflow
-              // initializations, we safely update existing DOM structures.
               const existingItems = Array.from(track.querySelectorAll('.case-item'));
 
               data.cases.forEach((c, i) => {
                 let div = existingItems[i];
                 
-                // If there are more CMS cases than existing items, append carefully
                 if (!div) {
                   div = document.createElement('div');
                   div.className = 'case-item';
@@ -1549,7 +1462,6 @@
                   track.appendChild(div);
                 }
 
-                // Update the fields inside the safely-preserved parent <div>
                 const img = div.querySelector('.img img');
                 const title = div.querySelector('h3');
                 const desc = div.querySelector('p');
@@ -1565,12 +1477,10 @@
                 }
               });
 
-              // Hide extra static cards if the CMS returns fewer cards than existed initially
               for (let i = data.cases.length; i < existingItems.length; i++) {
-                 existingItems[i].style.display = 'none';
+                existingItems[i].style.display = 'none';
               }
 
-              // Re-bind popup clicks independently of external GSAP click handlers
               track.querySelectorAll('.cms-case-btn').forEach(btn => {
                 btn.onclick = (e) => {
                   e.preventDefault();
@@ -1593,9 +1503,9 @@
                     if (benefits) {
                       benefits.innerHTML = "";
                       if (d.benefits) {
-                         d.benefits.split('\n').forEach(b => { 
+                        d.benefits.split('\n').forEach(b => { 
                             if (b.trim()) benefits.innerHTML += `<li>${b}</li>`; 
-                         });
+                        });
                       }
                     }
                     if (popup) popup.classList.add("active");
@@ -1647,7 +1557,7 @@
           }
       } catch (err) { console.error("CMS Error (Clients):", err); }
 
-      // 10. FAQS
+      // 10. FAQS - Completely Cleared and Rebuilt to fix duplicate static <p> tag issues
       try {
           const faqSec = document.querySelector('.faq-section');
           if (faqSec && data.faqs) {
@@ -1657,21 +1567,27 @@
             if(h3) h3.innerHTML = data.faqsSubHeading || '';
             const faqCont = faqSec.querySelector('.faq-container');
             if(faqCont) {
-                const existingFaqs = Array.from(faqCont.querySelectorAll('.faq-item'));
+                // Clear the container completely to avoid stale HTML leftover from the initial hardcoded load
                 faqCont.innerHTML = '';
-                data.faqs.forEach((f, i) => {
-                  if (existingFaqs[i]) {
-                    const btn = existingFaqs[i].querySelector('.faq-question');
-                    if(btn) btn.innerHTML = `${f.q} <span class="icon">+</span>`;
-                    const p = existingFaqs[i].querySelector('.faq-answer p');
-                    if(p) p.innerHTML = f.a;
-                    faqCont.appendChild(existingFaqs[i]);
-                  } else {
-                    const div = document.createElement('div');
-                    div.className = 'faq-item';
-                    div.innerHTML = `<button class="faq-question">${f.q} <span class="icon">+</span></button><div class="faq-answer"><p>${f.a}</p></div>`;
-                    faqCont.appendChild(div);
-                  }
+                
+                data.faqs.forEach((f) => {
+                  const div = document.createElement('div');
+                  div.className = 'faq-item';
+                  div.innerHTML = `<button class="faq-question">${f.q} <span class="icon">+</span></button><div class="faq-answer" style="display:none;"><p>${f.a}</p></div>`;
+                  faqCont.appendChild(div);
+                });
+
+                // Re-bind click events for newly created FAQ items
+                faqCont.querySelectorAll('.faq-question').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        this.classList.toggle('active');
+                        var answer = this.nextElementSibling;
+                        if (answer.style.display === "block" || answer.style.display === "") {
+                            answer.style.display = "none";
+                        } else {
+                            answer.style.display = "block";
+                        }
+                    });
                 });
             }
           }
@@ -1741,6 +1657,12 @@
             });
           }
       } catch (err) { console.error("CMS Error (Dynamic Pages):", err); }
+
+      // 13. FIX SCROLL/AOS BUGS ON DYNAMIC LOAD
+      setTimeout(() => {
+          if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+          if (typeof AOS !== 'undefined') AOS.refresh();
+      }, 500);
 
     };
 
@@ -1870,6 +1792,11 @@
         window.firebaseSiteData = globalData;
         document.dispatchEvent(new CustomEvent('firebaseDataLoaded', { detail: globalData }));
       }
+       setTimeout(() => {
+            if (typeof AOS !== 'undefined') {
+                AOS.refresh(); // Recalculates offsets after content loads
+            }
+        }, 300);
     }, (err) => console.error("CMS Sync Error:", err));
   };
 
