@@ -51,8 +51,7 @@
 
     nav ul.dropdown-menu li a, nav ul.submenu li a {
         font-size: 1.05rem !important; 
-        padding-top: 12px !important;
-        padding-bottom: 12px !important;
+        padding-top: 12px !important; padding-bottom: 12px !important;
     }
 
     /* ===== HERO SECTION ===== */
@@ -60,46 +59,90 @@
       height: 40vh;
       background: linear-gradient(to bottom, rgba(30, 41, 59, 0.7), rgba(30, 41, 59, 0.9)), url('images/3048207.jpg') center/cover no-repeat;
       background-color: #242d3f; 
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-      border-radius: 0 0 40px 40px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    }
-    .blog-hero h1 {
-      color: var(--white); font-size: 4rem; font-weight: 800; text-transform: uppercase;
-      text-align: center; letter-spacing: 4px; text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden; border-radius: 0 0 40px 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     }
 
-    /* ===== BLOG SECTION ===== */
-    .blog-section { padding: 80px 20px; }
-    .blog-section h2 { text-align: center; color: var(--ig-blue); font-size: 2.5rem; margin-bottom: 50px; font-weight: 700; }
-    .blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+    .blog-hero h1 {
+      color: var(--white); font-size: 4rem; font-weight: 800;
+      text-transform: uppercase; text-align: center; letter-spacing: 4px;
+      animation: heroFade 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+    }
+
+    @keyframes heroFade {
+      from { opacity: 0; transform: translateY(30px) scale(0.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* ===== BLOG VIEWS & GRIDS ===== */
+    #blog-grid-view { display: block; animation: fadeIn 0.6s ease; }
+    #blog-detail-view { display: none; animation: fadeIn 0.6s ease; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .service-section { padding: 80px 0; border-bottom: 1px solid var(--ig-lightGray); }
+    .service-header { margin-bottom: 60px; text-align: center; }
+    .service-header h2 { font-size: 2.8rem; color: var(--ig-blue); margin-bottom: 16px; font-weight: 700; }
     
-    .blog-card {
-      background: #fff; border-radius: 20px; overflow: hidden;
-      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: 1px solid var(--ig-lightGray);
-      transition: all 0.3s; display: flex; flex-direction: column;
+    .subservice-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+    .subservice-card {
+      background: #fff; border-radius: 20px; padding: 35px 30px;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+      border: 1px solid var(--ig-lightGray); border-top: 5px solid var(--ig-blue);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; display: flex; flex-direction: column;
     }
-    .blog-card:hover { transform: translateY(-8px); box-shadow: 0 20px 30px -10px rgba(1, 142, 236, 0.15); border-color: var(--ig-blue); }
-    .blog-img { width: 100%; height: 220px; object-fit: cover; }
-    .blog-content { padding: 30px; display: flex; flex-direction: column; flex: 1; }
-    .blog-content h3 { font-size: 1.3rem; color: var(--ig-dark); margin-bottom: 15px; font-weight: 700; }
-    .blog-content p { color: #475569; line-height: 1.6; margin-bottom: 25px; flex: 1; }
-    .blog-btn {
-      align-self: flex-start; padding: 10px 25px; background: var(--ig-blue); color: white;
-      text-decoration: none; border-radius: 30px; font-weight: 600; font-size: 0.95rem; transition: background 0.3s;
+    .subservice-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px -5px rgba(1, 142, 236, 0.15), 0 10px 20px -5px rgba(0,0,0,0.04); border-top-color: var(--ig-purple); }
+    .subservice-card h4 { font-size: 1.4rem; color: var(--black); margin-bottom: 15px; font-weight: 600; line-height: 1.4; }
+    .subservice-card p { font-size: 0.95rem; line-height: 1.7; color: #475569; margin-bottom: 25px; flex-grow: 1; }
+    .subservice-card span.read-more { font-size: 0.95rem; font-weight: 600; color: var(--ig-blue); display: inline-flex; align-items: center; gap: 5px; transition: gap 0.3s; margin-top: auto; }
+    .subservice-card:hover span.read-more { gap: 10px; color: var(--ig-purple); }
+
+    .category-badge { font-size: 0.75rem; background: var(--ig-gray); color: var(--ig-blue); padding: 5px 12px; border-radius: 6px; display: inline-block; margin-bottom: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; width: max-content;}
+
+    /* ===== DETAIL VIEW STYLING ===== */
+    .service-hero {
+      background: linear-gradient(to bottom, rgba(1, 142, 236, 0.8), rgba(1, 95, 168, 0.9)), url("images/3048207.jpg") center/cover no-repeat;
+      border-radius: 0 0 40px 40px; color: white; text-align: center; padding: 120px 20px;
+      display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     }
-    .blog-btn:hover { background: var(--ig-purple); }
+    .service-hero h1 { font-size: 3rem; margin-bottom: 15px; color: white; font-weight: 700; max-width: 900px; line-height: 1.2; }
+    
+    .back-btn {
+      display: inline-flex; align-items: center; gap: 10px; margin-bottom: 40px; padding: 12px 24px;
+      background: #fff; border: 1px solid var(--ig-lightGray); border-radius: 30px; color: var(--ig-dark);
+      text-decoration: none; font-weight: 600; font-size: 0.95rem; box-shadow: 0 2px 10px rgba(0,0,0,0.05); transition: all 0.3s ease; cursor: pointer;
+    }
+    .back-btn:hover { background: var(--ig-blue); color: white; border-color: var(--ig-blue); transform: translateX(-5px); box-shadow: 0 5px 15px rgba(1, 142, 236, 0.3); }
+
+    /* Rich Text Standard Styling */
+    .rich-text-container {
+        color: var(--black); line-height: 1.8; font-size: 1.15rem; word-wrap: break-word; overflow-wrap: break-word; background: #fff; padding: 50px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border: 1px solid var(--ig-lightGray);
+    }
+    .rich-text-container h1 { font-size: 2.2rem; margin: 1.5em 0 0.5em; color: var(--ig-dark); font-weight: 700; line-height: 1.3;}
+    .rich-text-container h2 { font-size: 1.8rem; margin: 1.5em 0 0.5em; color: var(--ig-dark); font-weight: 600; line-height: 1.3;}
+    .rich-text-container h3 { font-size: 1.5rem; margin: 1.2em 0 0.5em; color: var(--ig-dark); font-weight: 600; line-height: 1.4;}
+    .rich-text-container p { margin-bottom: 1.5em; color: #475569; }
+    .rich-text-container ul, .rich-text-container ol { margin-bottom: 1.5em; padding-left: 20px; color: #475569; }
+    .rich-text-container li { margin-bottom: 0.5em; }
+    .rich-text-container a { color: var(--ig-blue); text-decoration: underline; font-weight: 500; transition: color 0.3s;}
+    .rich-text-container a:hover { color: var(--ig-purple); }
+    .rich-text-container img { max-width: 100%; height: auto; border-radius: 12px; margin: 2em auto; display: block; box-shadow: 0 4px 15px rgba(0,0,0,0.05);}
+    .rich-text-container iframe { max-width: 100%; width: 100%; aspect-ratio: 16/9; border-radius: 12px; margin: 2em 0; border: none; }
+    .rich-text-container blockquote { border-left: 4px solid var(--ig-blue); padding: 20px; font-style: italic; color: #1e293b; margin: 2em 0; background: var(--ig-gray); border-radius: 0 12px 12px 0; font-size: 1.2rem; }
 
     /* Footer Styles */
     .footer-collapsible-wrapper { display: block; width: 100%; }
     .footer-collapsible-inner { overflow: visible; opacity: 1; visibility: visible; }
-    
-    @media (max-width: 900px) {
+    #backToTop { display: none; position: fixed; bottom: 30px; right: 30px; z-index: 999; background-color: #018eec; color: white; cursor: pointer; padding: 15px; border-radius: 50%; width: 50px; height: 50px; align-items: center; justify-content: center; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); border: none; }
+    #backToTop.show { display: flex; }
+
+    @media (max-width: 900px) { .subservice-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) {
+      .service-header h2 { font-size: 2.2rem; }
       .blog-hero h1 { font-size: 2.5rem; }
+      .service-hero h1 { font-size: 2rem; padding: 0 15px;}
+      .subservice-grid { grid-template-columns: 1fr; }
+      .rich-text-container { padding: 30px 20px; font-size: 1.05rem; }
     }
   </style>
 </head>
@@ -108,24 +151,42 @@
 
   <header id="main-header">
     <div class="container">
-      <div class="logo"><a href="index.html"><img src="images/logo/Movictel 12 sept 25-01-01.png" alt="Movictel Logo"></a></div>
-      <div class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></div>
+      <div class="logo">
+        <a href="index.html">
+          <img src="images/logo/Movictel 12 sept 25-01-01.png" alt="Movictel Logo">
+        </a>
+      </div>
+  
+      <div class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+      </div>
+  
       <nav>
         <ul class="menu">
           <li><a href="index.html">Home</a></li>
           <li class="dropdown">
             <a href="services.html">Services</a>
             <ul class="dropdown-menu">
-              <li class="has-submenu"><a href="#"><i class="fa-solid fa-bullhorn"></i>Marketing</a><ul class="submenu" id="nav-marketing-list"></ul></li>
-              <li class="has-submenu"><a href="#"><i class="fa-solid fa-paper-plane"></i>Promote</a><ul class="submenu" id="nav-promote-list"></ul></li>
-              <li class="has-submenu"><a href="#"><i class="fa-solid fa-code"></i> Development</a><ul class="submenu" id="nav-dev-list"></ul></li>
+              <li class="has-submenu">
+                <a href="#"><i class="fa-solid fa-bullhorn"></i>Marketing</a>
+                <ul class="submenu" id="nav-marketing-list"></ul>
+              </li>
+              <li class="has-submenu">
+                <a href="#"><i class="fa-solid fa-paper-plane"></i>Promote</a>
+                <ul class="submenu" id="nav-promote-list"></ul>
+              </li>
+              <li class="has-submenu">
+                <a href="#"><i class="fa-solid fa-code"></i> Development</a>
+                <ul class="submenu" id="nav-dev-list"></ul>
+              </li>
             </ul>
           </li>
-          <li><a href="blog.html">Blog</a></li>
+          <li><a href="javascript:void(0)" onclick="renderBlogGrid()">Blog</a></li>
           <li><a href="aboutus.html">About Us</a></li>
           <li><a href="contact.html">Contact</a></li>
         </ul>
       </nav>
+  
       <div class="social-icons">
          <a href="https://www.facebook.com/share/1CNLUSH1xV/"><i class="fab fa-facebook-f"></i></a>
         <a href="https://www.instagram.com/movictel?igsh=Mjg3cnowdnE3emd3"><i class="fab fa-instagram"></i></a>
@@ -136,14 +197,47 @@
   </header>
 
   <main id="app-container">
-    <section class="blog-hero">
-      <h1 id="bp-hero-title">Our Blog</h1>
-    </section>
+    
+    <!-- ==================== MAIN BLOG GRID VIEW ==================== -->
+    <div id="blog-grid-view">
+        <section class="blog-hero">
+            <h1 id="main-hero-title">Our Blog</h1>
+        </section>
 
-    <section class="blog-section container">
-       <h2 id="bp-section-heading">Latest Articles & Insights</h2>
-       <div id="bp-cards-container" class="blog-grid"></div>
-    </section>
+        <section class="service-section">
+            <div class="container">
+                <div class="service-header">
+                    <h2 id="blog-section-heading">Insights & Updates</h2>
+                    <p>Stay up to date with the latest industry news, marketing tips, and technology insights from the Movictel team.</p>
+                </div>
+                <div class="subservice-grid" id="blog-grid-container">
+                    <!-- Dynamic blogs injected here -->
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- ==================== END MAIN BLOG GRID VIEW ==================== -->
+
+    <!-- ==================== DYNAMIC BLOG DETAIL VIEW ==================== -->
+    <div id="blog-detail-view">
+        <section class="service-hero">
+            <h1 id="detail-title">Blog Title</h1>
+        </section>
+
+        <section style="max-width: 900px; margin: auto; padding: 60px 20px;">
+            <a href="javascript:void(0)" onclick="renderBlogGrid()" class="back-btn">
+                <i class="fa-solid fa-arrow-left-long"></i> Back to All Articles
+            </a>
+            
+            <img id="detail-image" src="" style="width: 100%; max-height: 500px; object-fit: cover; border-radius: 20px; margin-bottom: 40px; display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+            
+            <div id="detail-content" class="rich-text-container">
+                <!-- Rich text content injected here via Quill output -->
+            </div>
+        </section>
+    </div>
+    <!-- ==================== END DYNAMIC BLOG DETAIL VIEW ==================== -->
+
   </main>
 
   <footer class="site-footer">
@@ -151,9 +245,18 @@
       <div class="footer-collapsible-inner">
         <div class="footer-container">
           <div class="footer-col">
-            <div class="footer-logo"><img src="images/logo/Movictel 12 sept 25-01-01.png" alt="Movictel Logo"></div>
+            <div class="footer-logo">
+              <img src="images/logo/Movictel 12 sept 25-01-01.png" alt="Movictel Logo">
+            </div>
             <p class="footer-about">Movictel is a growth-driven digital solutions company offering Marketing, Messaging & Development services to help businesses connect, engage & scale faster.</p>
+            <div class="footer-social">
+              <a href="https://www.facebook.com/share/1CNLUSH1xV/"><i class="fab fa-facebook-f"></i></a>
+              <a href="https://www.instagram.com/movictel?igsh=Mjg3cnowdnE3emd3"><i class="fab fa-instagram"></i></a>
+              <a href="https://www.linkedin.com/company/movictel/"><i class="fab fa-linkedin-in"></i></a>
+              <a href="https://x.com/movictel"><i class="fab fa-x-twitter"></i></a>
+            </div>
           </div>
+  
           <div class="footer-col">
             <h3>Quick Links</h3>
             <ul id="quick-links-list">
@@ -163,12 +266,22 @@
               <li><a href="contact.html">Contact</a></li>
             </ul>
           </div>
+  
            <div class="footer-col services-col">
                 <h3>Our Services</h3>
                 <div class="services-grid">
-                  <div class="footer-service-group"><span class="service-heading">Marketing</span><ul id="footer-marketing-list"></ul></div>
-                  <div class="footer-service-group"><span class="service-heading">Promote</span><ul id="footer-promote-list"></ul></div>
-                  <div class="footer-service-group"><span class="service-heading">Development</span><ul id="footer-dev-list"></ul></div>
+                  <div class="footer-service-group">
+                    <span class="service-heading">Marketing</span>
+                    <ul id="footer-marketing-list"></ul>
+                  </div>
+                  <div class="footer-service-group">
+                    <span class="service-heading">Promote</span>
+                    <ul id="footer-promote-list"></ul>
+                  </div>
+                  <div class="footer-service-group">
+                    <span class="service-heading">Development</span>
+                    <ul id="footer-dev-list"></ul>
+                  </div>
                 </div>
            </div>
         </div> 
@@ -176,6 +289,8 @@
     </div> 
     <div class="footer-bottom"><p>© 2025 Movictel. All Rights Reserved.</p></div>
   </footer>
+
+  <button id="backToTop" title="Go to top"><i class="fas fa-arrow-up"></i></button>
 
   <script>
     const menuToggle = document.getElementById("menuToggle");
@@ -185,87 +300,175 @@
       menuToggle.classList.toggle("active");
     });
 
+    window.pageBlogsMap = [];
+
     document.addEventListener('firebaseDataLoaded', (e) => {
         const data = e.detail;
-        if (!data) return; 
+        if(!data) return;
 
-        try {
-            // SEO
-            if(data.metaDetails && data.metaDetails.blog) {
-              if(data.metaDetails.blog.title) document.title = data.metaDetails.blog.title;
-              if(data.metaDetails.blog.desc) {
+        // Apply Global Meta Tags for Blog Page
+        if(data.metaDetails && data.metaDetails.blog) {
+            if(data.metaDetails.blog.title) document.title = data.metaDetails.blog.title;
+            if(data.metaDetails.blog.desc) {
                 let metaDesc = document.querySelector('meta[name="description"]');
                 if (!metaDesc) { metaDesc = document.createElement('meta'); metaDesc.name = "description"; document.head.appendChild(metaDesc); }
                 metaDesc.content = data.metaDetails.blog.desc;
-              }
             }
+        }
 
-            if(data.blogPage) {
-                document.getElementById('bp-hero-title').innerText = data.blogPage.heroTitle || 'Our Blog';
-                document.getElementById('bp-section-heading').innerText = data.blogPage.sectionHeading || '';
+        // Apply Global Header Navigation logic (To match Services page)
+        if(data.detailedServices && Array.isArray(data.detailedServices)) {
+            const headMarketing = document.getElementById("nav-marketing-list");
+            const headPromote = document.getElementById("nav-promote-list");
+            const headDev = document.getElementById("nav-dev-list");
+            const footMarketing = document.getElementById("footer-marketing-list");
+            const footPromote = document.getElementById("footer-promote-list");
+            const footDev = document.getElementById("footer-dev-list");
+
+            if(headMarketing) headMarketing.innerHTML = '';
+            if(headPromote) headPromote.innerHTML = '';
+            if(headDev) headDev.innerHTML = '';
+            if(footMarketing) footMarketing.innerHTML = '';
+            if(footPromote) footPromote.innerHTML = '';
+            if(footDev) footDev.innerHTML = '';
+
+            data.detailedServices.forEach(s => {
+                let targetHead = s.category === 'Marketing' ? headMarketing : (s.category === 'Promote' ? headPromote : headDev);
+                if(targetHead) targetHead.innerHTML += `<li><a href="services.html#${s.id}"><i class="${s.navIcon}"></i>${s.title}</a></li>`;
+
+                let targetFoot = s.category === 'Marketing' ? footMarketing : (s.category === 'Promote' ? footPromote : footDev);
+                if(targetFoot) targetFoot.innerHTML += `<li><a href="services.html#${s.id}">${s.title}</a></li>`;
+            });
+        }
+
+        // Generate Quick Links
+        const quickLinksList = document.getElementById("quick-links-list");
+        if (quickLinksList && data.dynamicPages && Array.isArray(data.dynamicPages)) {
+            quickLinksList.innerHTML = `
+            <li><a href="index.html">Home</a></li>
+            <li><a href="aboutus.html">About Us</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            `;
+            data.dynamicPages.forEach(p => {
+                if (p && typeof p.title === 'string' && p.title.trim() !== '' && typeof p.slug === 'string' && p.slug.trim() !== '') {
+                    quickLinksList.innerHTML += `<li><a href="page.html?id=${encodeURIComponent(p.slug.trim())}">${p.title.trim()}</a></li>`;
+                }
+            });
+        }
+
+        // Populate Blog Content
+        if(data.blogPage) {
+            const mt = document.getElementById('main-hero-title');
+            const sh = document.getElementById('blog-section-heading');
+            if(mt && data.blogPage.heroTitle) mt.innerHTML = data.blogPage.heroTitle;
+            if(sh && data.blogPage.sectionHeading) sh.innerHTML = data.blogPage.sectionHeading;
+
+            if (data.blogPage.blogs && Array.isArray(data.blogPage.blogs)) {
+                window.pageBlogsMap = data.blogPage.blogs;
+                renderBlogGrid();
                 
-                const grid = document.getElementById('bp-cards-container');
-                grid.innerHTML = '';
-                if(data.blogPage.blogs) {
-                    data.blogPage.blogs.forEach(b => {
-                        grid.innerHTML += `
-                          <div class="blog-card">
-                            <img src="${b.image}" class="blog-img" alt="${b.title}">
-                            <div class="blog-content">
-                              <h3>${b.title}</h3>
-                              <p>${b.desc}</p>
-                              <a href="${b.link}" class="blog-btn">Read More</a>
-                            </div>
-                          </div>
-                        `;
-                    });
+                // Allow direct linking to specific articles via hash index
+                const requestedBlog = window.location.hash.substring(1); 
+                if (requestedBlog && !isNaN(requestedBlog) && window.pageBlogsMap[requestedBlog]) {
+                    renderBlogDetail(requestedBlog);
                 }
             }
-
-            // Navigation Headers & Footers
-            if(data.detailedServices && Array.isArray(data.detailedServices)) {
-                const gridMarketing = document.getElementById("nav-marketing-list");
-                const gridPromote = document.getElementById("nav-promote-list");
-                const gridDev = document.getElementById("nav-dev-list");
-                const footMarketing = document.getElementById("footer-marketing-list");
-                const footPromote = document.getElementById("footer-promote-list");
-                const footDev = document.getElementById("footer-dev-list");
-                
-                if(gridMarketing) gridMarketing.innerHTML = '';
-                if(gridPromote) gridPromote.innerHTML = '';
-                if(gridDev) gridDev.innerHTML = '';
-                if(footMarketing) footMarketing.innerHTML = '';
-                if(footPromote) footPromote.innerHTML = '';
-                if(footDev) footDev.innerHTML = '';
-
-                data.detailedServices.forEach(s => {
-                    let headTarget = s.category === 'Marketing' ? gridMarketing : (s.category === 'Promote' ? gridPromote : gridDev);
-                    if(headTarget) { headTarget.innerHTML += `<li><a href="services.html#${s.id}"><i class="${s.navIcon}"></i>${s.title}</a></li>`; }
-                    
-                    let footTarget = s.category === 'Marketing' ? footMarketing : (s.category === 'Promote' ? footPromote : footDev);
-                    if(footTarget) { footTarget.innerHTML += `<li><a href="services.html#${s.id}">${s.title}</a></li>`; }
-                });
-            }
-
-            // Dynamic Links
-            const quickLinksList = document.getElementById("quick-links-list");
-            if (quickLinksList && data.dynamicPages && Array.isArray(data.dynamicPages)) {
-                quickLinksList.innerHTML = `
-                  <li><a href="index.html">Home</a></li>
-                  <li><a href="aboutus.html">About Us</a></li>
-                  <li><a href="services.html">Services</a></li>
-                  <li><a href="contact.html">Contact</a></li>
-                `;
-                data.dynamicPages.forEach(p => {
-                    if (p && typeof p.title === 'string' && p.title.trim() !== '' && typeof p.slug === 'string' && p.slug.trim() !== '') {
-                        quickLinksList.innerHTML += `<li><a href="page.html?id=${encodeURIComponent(p.slug.trim())}">${p.title.trim()}</a></li>`;
-                    }
-                });
-            }
-        } catch(e) { console.error("CMS Load Error:", e); }
+        }
     });
+
+    function renderBlogGrid() {
+        document.getElementById('blog-detail-view').style.display = 'none';
+        document.getElementById('blog-grid-view').style.display = 'block';
+        window.location.hash = '';
+
+        const grid = document.getElementById('blog-grid-container');
+        grid.innerHTML = '';
+
+        if(window.pageBlogsMap.length === 0) {
+            grid.innerHTML = '<p style="text-align: center; color: #64748b; grid-column: 1 / -1;">No articles available at the moment. Check back soon!</p>';
+            return;
+        }
+
+        window.pageBlogsMap.forEach((b, index) => {
+            // Determine if clicking routes outward or internal (Detail View)
+            const clickAction = (b.link && b.link !== '#') ? `window.open('${b.link}', '_blank')` : `renderBlogDetail(${index})`;
+            
+            grid.innerHTML += `
+                <div class="subservice-card" onclick="${clickAction}">
+                    ${b.image ? `<img src="${b.image}" alt="" style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 20px;">` : ''}
+                    ${b.category ? `<span class="category-badge">${b.category}</span>` : ''}
+                    <h4>${b.title || 'Untitled Article'}</h4>
+                    <p>${b.shortDesc || b.desc || ''}</p>
+                    <span class="read-more">Read More <i class="fa-solid fa-arrow-right"></i></span>
+                </div>
+            `;
+        });
+        
+        if(navMenu.classList.contains("active")) {
+            navMenu.classList.remove("active");
+            menuToggle.classList.remove("active");
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderBlogDetail(index) {
+        const b = window.pageBlogsMap[index];
+        if(!b) return;
+
+        document.getElementById('blog-grid-view').style.display = 'none';
+        document.getElementById('blog-detail-view').style.display = 'block';
+        window.location.hash = index;
+
+        if(b.metaTitle) document.title = b.metaTitle;
+        if(b.metaDesc) {
+            let metaDesc = document.querySelector('meta[name="description"]');
+            if (!metaDesc) { metaDesc = document.createElement('meta'); metaDesc.name = "description"; document.head.appendChild(metaDesc); }
+            metaDesc.content = b.metaDesc;
+        }
+
+        document.getElementById('detail-title').innerText = b.title || 'Article';
+        
+        const detailImg = document.getElementById('detail-image');
+        if(b.image) {
+            detailImg.src = b.image;
+            detailImg.style.display = 'block';
+        } else {
+            detailImg.style.display = 'none';
+        }
+
+        // Render full rich-text content securely
+        document.getElementById('detail-content').innerHTML = b.content || b.shortDesc || b.desc || '<p>No content available.</p>';
+        
+        if(navMenu.classList.contains("active")) {
+            navMenu.classList.remove("active");
+            menuToggle.classList.remove("active");
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Scroll Logic
+    let lastScrollTop = 0;
+    const header = document.getElementById("main-header");
+    const backToTopBtn = document.getElementById("backToTop");
+
+    window.addEventListener("scroll", function() {
+        let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        if (header) {
+            if (scrollTop > lastScrollTop && scrollTop > 100) header.style.transform = "translateY(-100%)";
+            else header.style.transform = "translateY(0)";
+        }
+        lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        if (backToTopBtn) {
+            if (scrollTop > 300) backToTopBtn.classList.add("show");
+            else backToTopBtn.classList.remove("show");
+        }
+    });
+
+    if (backToTopBtn) backToTopBtn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
   </script>
 
+  <!-- FIREBASE CONNECTION -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
     import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
@@ -292,6 +495,9 @@
           window.firebaseSiteData = globalData;
           document.dispatchEvent(new CustomEvent('firebaseDataLoaded', { detail: globalData }));
         }
+        setTimeout(() => {
+            if (typeof AOS !== 'undefined') AOS.refresh();
+        }, 300);
       }, (err) => console.error("CMS Sync Error:", err));
     };
 
