@@ -1009,14 +1009,30 @@
                         <div><label class="label-modern">Meta Description</label><input type="text" class="input-modern" value="${(s.metaDesc || '').replace(/"/g, '&quot;')}" oninput="siteData.detailedServices[${i}].metaDesc=this.value"></div>
                     </div>
 
-                    <div class="md:col-span-3 border-t border-gray-100 pt-4 mt-2"><span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Header Section</span></div>
-                    <div class="md:col-span-3"><label class="label-modern">Service Main Title</label><input type="text" class="input-modern font-bold text-lg" value="${s.title}" oninput="siteData.detailedServices[${i}].title=this.value"></div>
+                    <div class="md:col-span-3 border-t border-gray-100 pt-4 mt-2"><span class="text-xs font-bold text-gray-500 uppercase tracking-wider">1. Hero Section</span></div>
+                    <div class="md:col-span-3"><label class="label-modern">Main Title</label><input type="text" class="input-modern font-bold text-lg" value="${s.title}" oninput="siteData.detailedServices[${i}].title=this.value"></div>
                     <div class="md:col-span-3"><label class="label-modern">Short Description / Subtitle</label><textarea class="input-modern" rows="2" oninput="siteData.detailedServices[${i}].shortDesc=this.value">${s.shortDesc}</textarea></div>
+                    <div class="md:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="label-modern">Hero Background Image</label>
+                            <div class="flex gap-2">
+                                <input type="text" class="input-modern flex-1" placeholder="Image URL" value="${s.heroImage||''}" oninput="siteData.detailedServices[${i}].heroImage=this.value">
+                                <label class="bg-gray-200 hover:bg-gray-300 px-3 py-2 rounded cursor-pointer text-xs font-semibold whitespace-nowrap"><i class="fas fa-upload"></i> Upload<input type="file" class="hidden" accept="image/*" onchange="handleImageUpload(this)"></label>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <div class="flex-1"><label class="label-modern">Hero CTA Text</label><input type="text" class="input-modern" value="${s.heroCta?.text||''}" oninput="siteData.detailedServices[${i}].heroCta.text=this.value"></div>
+                            <div class="flex-1"><label class="label-modern">Hero CTA Link</label><input type="text" class="input-modern" value="${s.heroCta?.link||''}" oninput="siteData.detailedServices[${i}].heroCta.link=this.value"></div>
+                        </div>
+                    </div>
 
-                    <!-- FEATURE SET 1 -->
-                    <div class="md:col-span-3 border-t border-gray-200 pt-5 mt-4 flex items-center justify-between">
-                        <span class="text-sm font-bold text-black uppercase tracking-wider bg-gray-100 px-3 py-1 rounded">Feature Set 1 (Max 6)</span>
-                        <button onclick="addServiceFeatureSet(${i}, 1)" class="text-xs font-bold text-white bg-blue-600 px-3 py-1.5 rounded shadow-sm">+ Add Item</button>
+                    <!-- 2. TYPES OF SERVICES -->
+                    <div class="md:col-span-3 border-t border-gray-200 pt-5 mt-4 flex flex-col gap-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-bold text-black uppercase tracking-wider bg-gray-100 px-3 py-1 rounded">2. Types of Services (Grid)</span>
+                            <button onclick="addServiceFeatureSet(${i}, 1)" class="text-xs font-bold text-white bg-blue-600 px-3 py-1.5 rounded shadow-sm">+ Add Item</button>
+                        </div>
+                        <div><label class="label-modern">Section Heading</label><input type="text" class="input-modern" value="${s.section1Heading||'Types of Social Media Marketing Services'}" oninput="siteData.detailedServices[${i}].section1Heading=this.value"></div>
                     </div>
                     <div class="md:col-span-3 grid grid-cols-1 gap-3">
                         ${(s.features1 || []).map((f, j) => `
@@ -1025,24 +1041,28 @@
                                 <input type="text" class="input-modern font-semibold pr-8" placeholder="Title" value="${(f.title||'').replace(/"/g, '&quot;')}" oninput="siteData.detailedServices[${i}].features1[${j}].title=this.value">
                                 <textarea class="input-modern text-sm text-gray-600" rows="2" placeholder="Description" oninput="siteData.detailedServices[${i}].features1[${j}].desc=this.value">${f.desc||''}</textarea>
                                 <div class="flex gap-2 items-center mt-1">
-                                    <input type="text" class="input-modern flex-1 text-xs" placeholder="Image URL (Required for Box)" value="${f.image||''}" oninput="siteData.detailedServices[${i}].features1[${j}].image=this.value">
+                                    <input type="text" class="input-modern flex-1 text-xs" placeholder="Image URL" value="${f.image||''}" oninput="siteData.detailedServices[${i}].features1[${j}].image=this.value">
                                     <label class="bg-gray-200 hover:bg-gray-300 px-3 py-2 rounded cursor-pointer text-xs font-semibold whitespace-nowrap"><i class="fas fa-upload"></i> Upload<input type="file" class="hidden" accept="image/*" onchange="handleImageUpload(this)"></label>
                                 </div>
+                                <input type="text" class="input-modern text-xs mt-1" placeholder="Clickable Link URL (Optional)" value="${f.link||''}" oninput="siteData.detailedServices[${i}].features1[${j}].link=this.value">
                             </div>
                         `).join('')}
                     </div>
                     <div class="md:col-span-3 bg-blue-50 p-3 rounded border border-blue-100 mt-2">
-                        <label class="label-modern text-blue-800">CTA Button 1 (Placed after Feature Set 1)</label>
+                        <label class="label-modern text-blue-800">CTA Button 1 (Placed after this grid)</label>
                         <div class="flex gap-2">
                             <input type="text" class="input-modern w-1/3" placeholder="Button Text" value="${(s.cta1?.text||'').replace(/"/g, '&quot;')}" oninput="siteData.detailedServices[${i}].cta1.text=this.value">
                             <input type="text" class="input-modern flex-1" placeholder="Link URL" value="${s.cta1?.link||''}" oninput="siteData.detailedServices[${i}].cta1.link=this.value">
                         </div>
                     </div>
 
-                    <!-- FEATURE SET 2 -->
-                    <div class="md:col-span-3 border-t border-gray-200 pt-5 mt-4 flex items-center justify-between">
-                        <span class="text-sm font-bold text-black uppercase tracking-wider bg-gray-100 px-3 py-1 rounded">Feature Set 2 (Max 6)</span>
-                        <button onclick="addServiceFeatureSet(${i}, 2)" class="text-xs font-bold text-white bg-blue-600 px-3 py-1.5 rounded shadow-sm">+ Add Item</button>
+                    <!-- 3. WHY CHOOSE THIS SERVICE -->
+                    <div class="md:col-span-3 border-t border-gray-200 pt-5 mt-4 flex flex-col gap-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-bold text-black uppercase tracking-wider bg-gray-100 px-3 py-1 rounded">3. Why Choose This Service? (Benefits)</span>
+                            <button onclick="addServiceFeatureSet(${i}, 2)" class="text-xs font-bold text-white bg-blue-600 px-3 py-1.5 rounded shadow-sm">+ Add Item</button>
+                        </div>
+                        <div><label class="label-modern">Section Heading</label><input type="text" class="input-modern" value="${s.section2Heading||'Why Choose This Service?'}" oninput="siteData.detailedServices[${i}].section2Heading=this.value"></div>
                     </div>
                     <div class="md:col-span-3 grid grid-cols-1 gap-3">
                         ${(s.features2 || []).map((f, j) => `
@@ -1058,17 +1078,20 @@
                         `).join('')}
                     </div>
                     <div class="md:col-span-3 bg-blue-50 p-3 rounded border border-blue-100 mt-2">
-                        <label class="label-modern text-blue-800">CTA Button 2 (Placed after Feature Set 2)</label>
+                        <label class="label-modern text-blue-800">CTA Button 2</label>
                         <div class="flex gap-2">
                             <input type="text" class="input-modern w-1/3" placeholder="Button Text" value="${(s.cta2?.text||'').replace(/"/g, '&quot;')}" oninput="siteData.detailedServices[${i}].cta2.text=this.value">
                             <input type="text" class="input-modern flex-1" placeholder="Link URL" value="${s.cta2?.link||''}" oninput="siteData.detailedServices[${i}].cta2.link=this.value">
                         </div>
                     </div>
 
-                    <!-- FEATURE SET 3 (NO BORDERS) -->
-                    <div class="md:col-span-3 border-t border-gray-200 pt-5 mt-4 flex items-center justify-between">
-                        <span class="text-sm font-bold text-black uppercase tracking-wider bg-gray-100 px-3 py-1 rounded">Feature Set 3 (Borderless - Max 6)</span>
-                        <button onclick="addServiceFeatureSet(${i}, 3)" class="text-xs font-bold text-white bg-blue-600 px-3 py-1.5 rounded shadow-sm">+ Add Item</button>
+                    <!-- 4. COMPANY WORKFLOW -->
+                    <div class="md:col-span-3 border-t border-gray-200 pt-5 mt-4 flex flex-col gap-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-bold text-black uppercase tracking-wider bg-gray-100 px-3 py-1 rounded">4. Company Workflow (Steps)</span>
+                            <button onclick="addServiceFeatureSet(${i}, 3)" class="text-xs font-bold text-white bg-blue-600 px-3 py-1.5 rounded shadow-sm">+ Add Item</button>
+                        </div>
+                        <div><label class="label-modern">Section Heading</label><input type="text" class="input-modern" value="${s.section3Heading||'Company Workflow'}" oninput="siteData.detailedServices[${i}].section3Heading=this.value"></div>
                     </div>
                     <div class="md:col-span-3 grid grid-cols-1 gap-3">
                         ${(s.features3 || []).map((f, j) => `
@@ -1084,52 +1107,52 @@
                         `).join('')}
                     </div>
                     <div class="md:col-span-3 bg-blue-50 p-3 rounded border border-blue-100 mt-2">
-                        <label class="label-modern text-blue-800">CTA Button 3 (Placed after Feature Set 3)</label>
+                        <label class="label-modern text-blue-800">CTA Button 3</label>
                         <div class="flex gap-2">
                             <input type="text" class="input-modern w-1/3" placeholder="Button Text" value="${(s.cta3?.text||'').replace(/"/g, '&quot;')}" oninput="siteData.detailedServices[${i}].cta3.text=this.value">
                             <input type="text" class="input-modern flex-1" placeholder="Link URL" value="${s.cta3?.link||''}" oninput="siteData.detailedServices[${i}].cta3.link=this.value">
                         </div>
                     </div>
 
-                    <!-- IMAGE + HEADING SECTION -->
+                    <!-- 5. WHY WE ARE BEST SECTION -->
                     <div class="md:col-span-3 border-t border-gray-200 pt-5 mt-4">
-                        <span class="text-sm font-bold text-black uppercase tracking-wider bg-gray-100 px-3 py-1 rounded block w-fit mb-3">Heading + Image (Aligned Right)</span>
+                        <span class="text-sm font-bold text-black uppercase tracking-wider bg-gray-100 px-3 py-1 rounded block w-fit mb-3">5. Why We Are Best Section</span>
                         <div class="grid grid-cols-1 gap-3 bg-gray-50 p-4 border border-gray-200 rounded">
-                            <div><label class="label-modern">Heading Text</label><input type="text" class="input-modern font-semibold" value="${(s.headingImageSection?.heading||'').replace(/"/g, '&quot;')}" oninput="siteData.detailedServices[${i}].headingImageSection.heading=this.value"></div>
+                            <div><label class="label-modern">Heading Text</label><input type="text" class="input-modern font-semibold" value="${(s.whyBestSection?.heading || s.headingImageSection?.heading || '').replace(/"/g, '&quot;')}" oninput="siteData.detailedServices[${i}].whyBestSection.heading=this.value"></div>
+                            <div><label class="label-modern">Description Text</label><textarea class="input-modern text-sm" rows="3" oninput="siteData.detailedServices[${i}].whyBestSection.desc=this.value">${s.whyBestSection?.desc || ''}</textarea></div>
+                            <div><label class="label-modern">Highlights (One per line)</label><textarea class="input-modern text-sm" rows="3" placeholder="Highlight 1\nHighlight 2" oninput="siteData.detailedServices[${i}].whyBestSection.highlights=this.value">${s.whyBestSection?.highlights || ''}</textarea></div>
+                            <div class="flex gap-2">
+                                <div class="flex-1"><label class="label-modern">CTA Text</label><input type="text" class="input-modern" value="${s.whyBestSection?.cta?.text||''}" oninput="siteData.detailedServices[${i}].whyBestSection.cta.text=this.value"></div>
+                                <div class="flex-1"><label class="label-modern">CTA Link</label><input type="text" class="input-modern" value="${s.whyBestSection?.cta?.link||''}" oninput="siteData.detailedServices[${i}].whyBestSection.cta.link=this.value"></div>
+                            </div>
                             <div>
-                                <label class="label-modern">Right Aligned Image URL</label>
+                                <label class="label-modern">Illustration/Image URL</label>
                                 <div class="flex gap-2">
-                                    <input type="text" class="input-modern flex-1" placeholder="Image URL" value="${s.headingImageSection?.image||''}" oninput="siteData.detailedServices[${i}].headingImageSection.image=this.value">
+                                    <input type="text" class="input-modern flex-1" placeholder="Image URL" value="${s.whyBestSection?.image || s.headingImageSection?.image || ''}" oninput="siteData.detailedServices[${i}].whyBestSection.image=this.value">
                                     <label class="bg-gray-200 hover:bg-gray-300 px-3 py-2 rounded cursor-pointer text-xs font-semibold whitespace-nowrap"><i class="fas fa-upload"></i> Upload<input type="file" class="hidden" accept="image/*" onchange="handleImageUpload(this)"></label>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- SERVICE FAQs -->
+                    <!-- 6. SERVICE FAQs -->
                     <div class="md:col-span-3 mt-5 border-t border-gray-200 pt-5 flex justify-between items-center">
-                        <span class="text-sm font-bold text-black uppercase tracking-wider bg-gray-100 px-3 py-1 rounded">Service FAQs</span>
+                        <span class="text-sm font-bold text-black uppercase tracking-wider bg-gray-100 px-3 py-1 rounded">6. Frequently Asked Questions (FAQ)</span>
                         <button onclick="addServiceFaq(${i})" class="text-xs font-bold text-white bg-blue-600 px-3 py-1.5 rounded shadow-sm">+ Add FAQ</button>
                     </div>
                     <div class="md:col-span-3 grid grid-cols-1 gap-3">
                         ${(s.serviceFaqs || []).map((faq, j) => `
                             <div class="border border-gray-200 p-4 rounded bg-gray-50 relative pr-10">
-                                <button onclick="removeServiceFaq(${i}, ${j})" class="absolute top-3 right-3 text-gray-400 hover:text-red-500"><i class="fas fa-trash"></i></button>
+                                <button onclick="removeServiceFaq(${i}, ${j})" class="absolute top-3 right-3 text-gray-400 hover:text-red-600"><i class="fas fa-trash"></i></button>
                                 <input type="text" class="input-modern mb-2 font-semibold text-gray-900" placeholder="Question" value="${(faq.q || '').replace(/"/g, '&quot;')}" oninput="siteData.detailedServices[${i}].serviceFaqs[${j}].q=this.value">
                                 <textarea class="input-modern text-sm text-gray-700" placeholder="Answer (HTML Allowed)" rows="3" oninput="siteData.detailedServices[${i}].serviceFaqs[${j}].a=this.value">${faq.a || ''}</textarea>
                             </div>
                         `).join('')}
                     </div>
 
-                    <!-- RELATED BLOGS FILTER -->
+                    <!-- 7. RELATED BLOGS FILTER -->
                     <div class="md:col-span-3 border-t border-gray-200 pt-5 mt-4">
-                        <span class="text-sm font-bold text-black uppercase tracking-wider bg-gray-100 px-3 py-1 rounded block w-fit mb-3">Related Blogs Filter</span>
-                        <div class="bg-gray-50 p-4 border border-gray-200 rounded">
-                            <label class="label-modern text-gray-600">Enter the Blog Category exactly as it appears in the Blog Posts to show the latest 3 related articles at the bottom of this service page.</label>
-                            <input type="text" class="input-modern font-semibold" placeholder="e.g. SEO, Social Media" value="${(s.relatedBlogCategory||'').replace(/"/g, '&quot;')}" oninput="siteData.detailedServices[${i}].relatedBlogCategory=this.value">
-                        </div>
-                    </div>
-
+                        <span class="text-sm font-bold text-black uppercase tracking-wider bg-gray-100 px-3 py-1 rounded block w-fit mb-3">7. Latest Articles & Insights Filter</span>
                 </div>
             </div>
         `).join('');
@@ -1349,10 +1372,11 @@
         siteData.detailedServices.push({ 
             id: "new-service", category: "Marketing", navIcon: "fa-solid fa-star", title: "New Service", shortDesc: "", 
             metaTitle: "", metaDesc: "",
-            features1: [], cta1: {text: '', link: ''},
-            features2: [], cta2: {text: '', link: ''},
-            features3: [], cta3: {text: '', link: ''},
-            headingImageSection: {heading: '', image: ''},
+            heroImage: "", heroCta: {text: '', link: ''},
+            section1Heading: "Types of Social Media Marketing Services", features1: [], cta1: {text: '', link: ''},
+            section2Heading: "Why Choose This Service?", features2: [], cta2: {text: '', link: ''},
+            section3Heading: "Company Workflow", features3: [], cta3: {text: '', link: ''},
+            whyBestSection: {heading: '', desc: '', image: '', cta: {text: '', link: ''}, highlights: ''},
             serviceFaqs: [], relatedBlogCategory: ''
         }); 
         window.renderDetailedServices(); 
@@ -1506,8 +1530,15 @@
                      s.cta1 = s.ctas[0];
                 }
 
-                if (!s.headingImageSection) s.headingImageSection = {heading: '', image: ''};
+                 if (!s.headingImageSection) s.headingImageSection = {heading: '', image: ''};
+                if (!s.whyBestSection) s.whyBestSection = {heading: s.headingImageSection.heading || '', desc: '', image: s.headingImageSection.image || '', cta: {text: '', link: ''}, highlights: ''};
+                if (!s.section1Heading) s.section1Heading = "Types of Social Media Marketing Services";
+                if (!s.section2Heading) s.section2Heading = "Why Choose This Service?";
+                if (!s.section3Heading) s.section3Heading = "Company Workflow";
+                if (!s.heroImage) s.heroImage = "";
+                if (!s.heroCta) s.heroCta = {text: '', link: ''};
                 if (!s.relatedBlogCategory) s.relatedBlogCategory = '';
+
 
                 if (!s.serviceFaqs) s.serviceFaqs = [];
                 if (!s.metaTitle) s.metaTitle = '';
