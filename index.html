@@ -1046,25 +1046,49 @@
           }
       } catch (err) { console.error("CMS Error (Offers):", err); }
 
-      // 5. UPDATE FOOTER SERVICE LINKS DYNAMICALLY
+      // 5. UPDATE HEADER AND FOOTER SERVICE LINKS DYNAMICALLY
       try {
           if (data.detailedServices && Array.isArray(data.detailedServices)) {
+            // Get Footer Elements
             const footMarketing = document.getElementById("footer-marketing-list");
             const footPromote = document.getElementById("footer-promote-list");
             const footDev = document.getElementById("footer-dev-list");
+            
+            // Get Header Navigation Elements
+            const navMarketing = document.getElementById("nav-marketing-list");
+            const navPromote = document.getElementById("nav-promote-list");
+            const navDev = document.getElementById("nav-dev-list");
+
+            // Clear existing
             if (footMarketing) footMarketing.innerHTML = '';
             if (footPromote) footPromote.innerHTML = '';
             if (footDev) footDev.innerHTML = '';
+            
+            if (navMarketing) navMarketing.innerHTML = '';
+            if (navPromote) navPromote.innerHTML = '';
+            if (navDev) navDev.innerHTML = '';
 
             data.detailedServices.forEach(s => {
+              // Create link element
+              const createLinkItem = () => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = `services.html#${s.id}`;
+                a.textContent = s.title;
+                li.appendChild(a);
+                return li;
+              };
+
+              // Inject into Footer
               let targetFoot = s.category === 'Marketing' ? footMarketing : (s.category === 'Promote' ? footPromote : footDev);
               if (targetFoot) {
-                  const li = document.createElement('li');
-                  const a = document.createElement('a');
-                  a.href = `services.html#${s.id}`;
-                  a.textContent = s.title;
-                  li.appendChild(a);
-                  targetFoot.appendChild(li);
+                  targetFoot.appendChild(createLinkItem());
+              }
+
+              // Inject into Header Navbar
+              let targetNav = s.category === 'Marketing' ? navMarketing : (s.category === 'Promote' ? navPromote : navDev);
+              if (targetNav) {
+                  targetNav.appendChild(createLinkItem());
               }
             });
           }
