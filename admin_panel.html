@@ -9,6 +9,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   
+  <!-- Quill Rich Text Editor -->
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+  <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+
   <script>
     tailwind.config = {
       theme: { 
@@ -95,6 +99,10 @@
 
     #sidebar-overlay { display: none; }
     #sidebar-overlay.active { display: block; animation: fadeIn 0.3s ease-out forwards; }
+
+    /* Quill Overrides for Admin Panel */
+    .ql-toolbar.ql-snow { border-radius: 0.5rem 0.5rem 0 0; border-color: #e4e4e7; background: #fafafa; }
+    .ql-container.ql-snow { border-radius: 0 0 0.5rem 0.5rem; border-color: #e4e4e7; background: #fff; min-height: 150px; font-family: 'Inter', sans-serif; font-size: 0.875rem;}
   </style>
 
   <script>
@@ -492,13 +500,14 @@
                 <div id="servicepages-settings" class="tab-content">
                     <div class="bg-white border border-gray-200 rounded-xl p-4 md:p-6 shadow-sm mb-6 flex items-start gap-4">
                         <div class="text-blue-500 mt-1"><i class="fas fa-info-circle"></i></div>
-                        <p class="text-sm text-gray-600 leading-relaxed">Changes made here automatically update the <strong>Service Catalog</strong> on the frontend, as well as the dynamic links in the main navigation dropdowns and footer columns. Each service can have custom Meta Tags, Features, CTAs, and FAQs.</p>
+                        <p class="text-sm text-gray-600 leading-relaxed">Manage individual service pages. Follows the required structural layout: Features Set 1 &rarr; CTA 1 &rarr; Features Set 2 &rarr; CTA 2 &rarr; Features Set 3 (No Borders) &rarr; CTA 3 &rarr; Image Section &rarr; FAQs &rarr; Related Blogs.</p>
                     </div>
                     <div class="flex justify-between items-center mb-4 mt-2">
                         <h3 class="font-semibold text-gray-900 truncate">Detailed Services Catalog</h3>
                         <button onclick="addDetailedService()" class="text-xs font-medium text-white bg-black hover:bg-gray-800 px-3 py-2 rounded shadow-sm whitespace-nowrap">+ New Service</button>
                     </div>
-                    <div id="detailed-services-container" class="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-8"></div>
+                    <!-- Detailed services container -->
+                    <div id="detailed-services-container" class="grid grid-cols-1 gap-8 mb-8"></div>
                 </div>
 
                 <!-- INNER: ABOUT US PAGE -->
@@ -550,7 +559,8 @@
                         <h3 class="font-semibold text-gray-900">Articles</h3>
                         <button onclick="addBlogCard()" class="text-xs font-medium text-black bg-white border border-gray-200 px-3 py-2 rounded hover:bg-gray-50 shadow-sm">+ Add Article</button>
                     </div>
-                    <div id="bp-cards-container" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 3xl:grid-cols-4 gap-6 mb-8"></div>
+                    <!-- Using grid for blogs -->
+                    <div id="bp-cards-container" class="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-8"></div>
                 </div>
 
                 <!-- INNER: CONTACT PAGE -->
@@ -654,156 +664,30 @@
         }
     };
 
-    // 1) Define Data Schema (Exactly as provided)
+    // 1) Define Data Schema (Emptied manual data, leaving only default schema)
     const defaultSiteData = {
       metaDetails: {
-        home: {title: "Movictel", desc: ""},
-        about: {title: "About Us - Movictel", desc: ""},
-        services: {title: "Movictel - Services", desc: ""},
-        blog: {title: "Blog - Movictel", desc: ""},
-        contact: {title: "Contact - Movictel", desc: ""}
+        home: {title: "", desc: ""},
+        about: {title: "", desc: ""},
+        services: {title: "", desc: ""},
+        blog: {title: "", desc: ""},
+        contact: {title: "", desc: ""}
       },
-      servicesPage: {
-        heroTitle: "OUR SERVICES",
-        heroDesc: "Our marketing solutions are designed to help businesses build visibility, establish trust, and convert audiences through consistent and data-driven strategies."
-      },
-      contactPage: {
-        address: "OFFICE 21, TAGORE NAGAR, NEAR CMGORA HOSPITAL, 200FT, AJMER ROAD, JAIPUR, RAJASTHAN 302021",
-        phone: "+919001955232",
-        email: "info.movictel@gmail.com",
-        mapEmbed: "" 
-      },
-      hero: [
-        { title: "Boost Your Online <span>Presence</span>", desc: "Grow your business with professional SEO services in India.", image: "images/homeImg.png" },
-        { title: "Grow Your Business <span>Digitally</span>", desc: "Expert digital marketing services including SEO, PPC, and Social Media Marketing.", image: "images/homeImg.png" },
-        { title: "Web & App <span>Development</span>", desc: "Responsive websites, landing pages, and scalable applications for your business.", image: "images/homeImg.png" }
-      ],
-      about: {
-        title: "Who We Are", 
-        text: "We are a Digital Marketing & IVR Solutions Agency helping brands grow smarter. From IVR, Bulk SMS, RCS & WhatsApp Messaging to Web & App Development, we deliver powerful tools that connect you with your audience. <br>\n        🚀 Experts in Real Estate Lead Generation — turning campaigns into conversions!", 
-        image: "images/h1-whowe.png"
-      },
-      offersHeading: "🎊 Festival Special Offers",
-      offersSubtext: "Celebrate with us & enjoy exclusive service discounts!",
-      offers: [
-        { title: "✨ Happy Diwali ✨", text: "Light up your business growth with <strong>20% OFF</strong> on IVR Services.", link: "services.html", bgImage: "images/19483797.jpg" },
-        { title: "✨ Happy Diwali ✨", text: "Light up your business growth with <strong>20% OFF</strong> on IVR Services.", link: "services.html", bgImage: "images/19483797.jpg" },
-        { title: "✨ Happy Diwali ✨", text: "Light up your business growth with <strong>20% OFF</strong> on IVR Services.", link: "services.html", bgImage: "images/19483797.jpg" }
-      ],
-      homeAbout: {
-        badge: "About Us",
-        title: "Smart Digital Communication<br>\n<span>For Growing Businesses</span>",
-        p1: "We are a leading provider of digital communication and marketing solutions, helping businesses connect with their customers more effectively.",
-        p2: "With expertise in <strong>IVR, SMS, WhatsApp, RCS</strong> and <strong>Digital Marketing</strong>, we deliver innovative, result-driven strategies across industries.",
-        btnText: "Discover More",
-        btnLink: "about.html",
-        image: "images/8597911.jpg"
-      },
-      clientsHeading: "Trusted by Leading Companies",
-      clients: [
-        { name: "Apple", image: "https://upload.wikimedia.org/wikipedia/commons/a/ab/Apple-logo.png" },
-        { name: "Microsoft", image: "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" },
-        { name: "Google", image: "https://upload.wikimedia.org/wikipedia/commons/a/ae/Google_2015_logo.svg" },
-        { name: "Netflix", image: "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" },
-        { name: "IBM", image: "https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg" }
-      ],
-      aboutPage: {
-        heroTitle: "About Us",
-        whoWeAreTitle: "Who We Are",
-        whoWeAreText: "We are a creative marketing agency driven by innovation, passion, and technology. With years of experience in branding, digital marketing, and strategy development, we help businesses stand out and scale to new heights. Our approach is human-centered, blending creativity with data-driven insights to deliver impactful solutions.",
-        whoWeAreImage: "images/8597911.jpg",
-        valuesHeading: "Our Mission, Vision & Values",
-        values: [
-          { title: "Our Mission", text: "To empower businesses with innovative marketing strategies that create measurable growth and long-term success." },
-          { title: "Our Vision", text: "To become the most trusted and creative marketing partner for global brands across industries." },
-          { title: "Our Values", text: "Integrity, innovation, teamwork, and client success are at the heart of everything we do." }
-        ],
-        teamHeading: "Meet Our Team",
-        team: [
-          { name: "Rahul Sharma", role: "CEO & Founder", image: "https://picsum.photos/200" },
-          { name: "Anita Verma", role: "Creative Director", image: "https://picsum.photos/201" },
-          { name: "Vikas Mehta", role: "Marketing Strategist", image: "https://picsum.photos/202" },
-          { name: "Priya Singh", role: "Digital Manager", image: "https://picsum.photos/203" }
-        ]
-      },
-      blogPage: {
-        heroTitle: "Our Blog",
-        sectionHeading: "Latest Articles & Insights",
-        blogs: [
-          { title: "How to Build a Strong Brand Identity", desc: "Discover the essential elements of building a powerful brand identity that resonates with your target audience...", image: "https://picsum.photos/400/250?random=1", link: "#", metaTitle: "", metaDesc: "" },
-          { title: "Top Digital Marketing Trends 2025", desc: "From AI-driven campaigns to immersive experiences – explore the latest digital marketing trends shaping the future...", image: "https://picsum.photos/400/250?random=2", link: "#", metaTitle: "", metaDesc: "" },
-          { title: "Boost Your Online Presence in 5 Steps", desc: "Learn how to strengthen your online visibility and connect with your ideal customers effectively in today’s digital age...", image: "https://picsum.photos/400/250?random=3", link: "#", metaTitle: "", metaDesc: "" },
-          { title: "The Future of E-commerce", desc: "Explore how AI, AR, and mobile-first shopping experiences are shaping the future of online stores worldwide...", image: "https://picsum.photos/400/250?random=4", link: "#", metaTitle: "", metaDesc: "" }
-        ]
-      },
-      detailedServices: [
-        { id: "social-media-marketing", category: "Marketing", navIcon: "fa-solid fa-hashtag", title: "Social Media Marketing", shortDesc: "We manage and grow your brand presence across social platforms with content planning, engagement strategies, and performance tracking.", longDesc: "We manage and grow your brand presence across social platforms with content planning, engagement strategies, and performance tracking.", features: [{title:"Engaging Content", desc:"We craft visually appealing and highly engaging content tailored to your target audience."}, {title:"Community Management", desc:"We actively monitor, reply, and engage with your followers to build brand loyalty."}, {title:"Analytics & Reporting", desc:"Track your growth with comprehensive monthly performance reports and insights."}], ctas: [], serviceFaqs: [], metaTitle: "", metaDesc: "" },
-        { id: "google-meta-ads", category: "Marketing", navIcon: "fa-solid fa-chart-line", title: "Google & Meta Ads", shortDesc: "High-performing paid advertising campaigns optimized for reach, leads, and ROI across Google, Facebook, and Instagram.", longDesc: "High-performing paid advertising campaigns optimized for reach, leads, and ROI across Google, Facebook, and Instagram.", features: [{title:"Targeted Reach", desc:"Laser-focused audience targeting to ensure your ads are seen by potential buyers."}, {title:"High ROI Optimization", desc:"Continuous monitoring and A/B testing to lower cost-per-click and boost conversions."}, {title:"Cross-Platform Strategy", desc:"Unified campaigns across Google Search, Facebook feeds, and Instagram stories."}], ctas: [], serviceFaqs: [], metaTitle: "", metaDesc: "" },
-        { id: "brand-awareness", category: "Marketing", navIcon: "fa-solid fa-eye", title: "Brand Awareness Campaigns", shortDesc: "Strategic campaigns focused on improving brand recall, credibility, and audience trust across digital channels.", longDesc: "Strategic campaigns focused on improving brand recall, credibility, and audience trust across digital channels.", features: [{title:"Strategic Positioning", desc:"Crafting a unique voice and visual identity that stands out in the market."}, {title:"Maximum Exposure", desc:"Utilizing multiple digital touchpoints to keep your brand top-of-mind."}, {title:"Trust Building", desc:"Establishing credibility through consistent, high-quality messaging and PR."}], ctas: [], serviceFaqs: [], metaTitle: "", metaDesc: "" },
-        { id: "seo-online-visibility", category: "Marketing", navIcon: "fa-solid fa-magnifying-glass", title: "SEO & Online Visibility", shortDesc: "Improve organic rankings, website traffic, and long-term online presence through ethical white-hat SEO strategies.", longDesc: "Improve organic rankings, website traffic, and long-term online presence through ethical white-hat SEO strategies.", features: [{title:"Keyword Research", desc:"Identifying the high-intent search terms your customers are actively using."}, {title:"On-Page Optimization", desc:"Optimizing website structure, meta tags, and content for search engines."}, {title:"Quality Link Building", desc:"Acquiring authoritative backlinks to boost your domain authority."}], ctas: [], serviceFaqs: [], metaTitle: "", metaDesc: "" },
-        { id: "content-writing", category: "Marketing", navIcon: "fa-solid fa-pen-nib", title: "Content Writing", shortDesc: "High-quality content tailored for websites, ads, blogs, and social media to support brand messaging and conversions.", longDesc: "High-quality content tailored for websites, ads, blogs, and social media to support brand messaging and conversions.", features: [{title:"SEO Blog Posts", desc:"Informative, keyword-rich articles that drive organic traffic to your site."}, {title:"Compelling Ad Copy", desc:"Persuasive writing designed specifically to maximize ad click-through rates."}, {title:"Website Copywriting", desc:"Clear, conversion-focused messaging for landing pages and corporate sites."}], ctas: [], serviceFaqs: [], metaTitle: "", metaDesc: "" },
-        { id: "bulk-sms", category: "Promote", navIcon: "fa-solid fa-message", title: "Bulk SMS", shortDesc: "Promotional and transactional SMS solutions with high delivery rates for alerts, offers, and notifications.", longDesc: "Promotional and transactional SMS solutions with high delivery rates for alerts, offers, and notifications.", features: [{title:"High Delivery Rates", desc:"Direct carrier connections ensure your messages reach the inbox instantly."}, {title:"Cost Effective", desc:"Reach thousands of customers simultaneously without breaking your marketing budget."}, {title:"Automated Triggers", desc:"Schedule messages or trigger them via API based on customer actions."}], ctas: [], serviceFaqs: [], metaTitle: "", metaDesc: "" },
-        { id: "rcs-sms", category: "Promote", navIcon: "fa-solid fa-comments", title: "RCS Messaging", shortDesc: "Rich Communication Services with branded messages, images, buttons, and interactive customer engagement.", longDesc: "Rich Communication Services enable interactive messaging with images, buttons, and branding.", features: [{title:"Fast Delivery", desc:"Messages delivered instantly with high reliability and read receipts."}, {title:"Detailed Reports", desc:"Track campaign performance, delivery rates, and user interactions."}, {title:"Easy Integration", desc:"Robust API integration for your existing apps, websites, and CRMs."}], ctas: [], serviceFaqs: [], metaTitle: "", metaDesc: "" },
-        { id: "voice-sms", category: "Promote", navIcon: "fa-solid fa-microphone", title: "Voice SMS", shortDesc: "Automated voice messages for alerts, reminders, and campaigns, ideal for reaching users instantly.", longDesc: "Automated voice messages for alerts, reminders, and campaigns, ideal for reaching users instantly.", features: [{title:"Instant Reach", desc:"Deliver pre-recorded voice messages to thousands of phones at once."}, {title:"Personalized Touch", desc:"Add a human element to your automated broadcasts and alerts."}, {title:"Easy Scheduling", desc:"Set up voice campaigns in advance for optimal delivery times."}], ctas: [], serviceFaqs: [], metaTitle: "", metaDesc: "" },
-        { id: "whatsapp-api", category: "Promote", navIcon: "fa-brands fa-whatsapp", title: "WhatsApp Business API", shortDesc: "Meta-verified WhatsApp messaging for customer support, notifications, and conversational commerce.", longDesc: "Meta-verified WhatsApp messaging for customer support, notifications, and conversational commerce.", features: [{title:"Verified Badge", desc:"Build trust with a verified green tick next to your business name."}, {title:"Automated Chatbots", desc:"Provide 24/7 customer support with intelligent automated replies."}, {title:"Rich Media Broadcasts", desc:"Send documents, videos, and interactive buttons directly to WhatsApp."}], ctas: [], serviceFaqs: [], metaTitle: "", metaDesc: "" },
-        { id: "website-development", category: "Development", navIcon: "fa-solid fa-globe", title: "Website Design & Development", shortDesc: "Modern, responsive, and SEO-friendly websites designed to convert visitors into customers.", longDesc: "Modern, responsive, and SEO-friendly websites designed to convert visitors into customers.", features: [{title:"Custom Design", desc:"Tailor-made visual layouts that perfectly match your brand identity."}, {title:"Mobile Responsive", desc:"Flawless performance and aesthetics on desktops, tablets, and smartphones."}, {title:"Fast Loading", desc:"Optimized code and assets for lightning-fast page load speeds."}], ctas: [], serviceFaqs: [], metaTitle: "", metaDesc: "" },
-        { id: "app-development", category: "Development", navIcon: "fa-solid fa-mobile-screen", title: "Mobile App Development", shortDesc: "Custom mobile applications built for performance, scalability, and seamless user experience.", longDesc: "Custom mobile applications built for performance, scalability, and seamless user experience.", features: [{title:"iOS & Android", desc:"Cross-platform or native development to reach users on any device."}, {title:"Scalable Architecture", desc:"Built with a robust backend to support thousands of concurrent users."}, {title:"Intuitive UI/UX", desc:"User-centric design focused on ease of use and high retention."}], ctas: [], serviceFaqs: [], metaTitle: "", metaDesc: "" },
-        { id: "landing-pages", category: "Development", navIcon: "fa-solid fa-layer-group", title: "Landing Pages", shortDesc: "High-converting landing pages optimized for ads, campaigns, and lead generation.", longDesc: "Targeted landing pages optimized specifically for ad campaigns, lead generation, and quick sales.", features: [{title:"A/B Testing Ready", desc:"Built to easily test different headlines and layouts to maximize conversions."}, {title:"Lead Capture Forms", desc:"Seamless integration with your CRM or email marketing software."}, {title:"Laser-Focused Content", desc:"Stripped of distractions to guide the user straight to the call-to-action."}], ctas: [], serviceFaqs: [], metaTitle: "", metaDesc: "" }
-      ],
-      servicesHeading: "Our Services",
-      services: [
-        { title: "Marketing", desc: "Build visibility, trust, and conversions with strategic marketing.", link: "social-media-marketing.html" },
-        { title: "Promote", desc: "Engage customers instantly with powerful messaging solutions.", link: "bulk-sms.html" },
-        { title: "Development", desc: "Design and develop high-performing digital platforms.", link: "website-development.html" }
-      ],
-      casesHeading: "FEATURED CASE STUDIES",
-      casesHighlight: "Customizable For All Industries",
-      casesSubtext: "We Work On These Industries.",
-      cases: [
-        {
-          tag: "Real Estate", title: "Real Estate", cardDesc: "Drive property sales and customer engagement with tailored tools.", image: "images/4334329.jpg",
-          popupIntro: "Helping real estate businesses convert leads faster and build long-term buyer trust through intelligent communication.",
-          challenge: "Managing high lead volumes, delayed follow-ups, and poor buyer engagement often results in lost sales opportunities.",
-          solution: "We provide automated messaging, CRM integration, instant follow-ups, and personalized buyer journeys.",
-          benefits: "Faster lead response time\nHigher property inquiry conversions\nAutomated site-visit reminders\nImproved customer trust"
-        },
-        {
-          tag: "Education", title: "Education", cardDesc: "Empower institutions with smart communication tools for students.", image: "images/5836.jpg",
-          popupIntro: "Connecting institutions, students, and parents with reliable, scalable communication solutions.",
-          challenge: "Manual communication causes delays in admissions, updates, and student engagement.",
-          solution: "Smart notification systems, admission alerts, and student engagement workflows.",
-          benefits: "Streamlined admissions\nImproved student communication\nAutomated alerts & reminders\nBetter parent engagement"
-        },
-        {
-          tag: "Healthcare", title: "Healthcare", cardDesc: "Engage patients with secure and effective communication solutions.", image: "images/4885941.jpg",
-          popupIntro: "Secure, timely, and reliable patient communication that enhances care delivery.",
-          challenge: "Missed appointments, delayed updates, and lack of patient follow-ups.",
-          solution: "Automated appointment reminders, secure alerts, and real-time patient notifications.",
-          benefits: "Reduced no-shows\nImproved patient experience\nSecure communication\nOperational efficiency"
-        },
-        {
-          tag: "Automobile", title: "Automobile", cardDesc: "Accelerate business with customer-focused communication solutions.", image: "images/car_showroom_04.jpg",
-          popupIntro: "Driving sales and after-sales engagement through customer-centric communication.",
-          challenge: "Low test-drive conversions and weak after-sales follow-ups.",
-          solution: "Lead automation, service reminders, and customer lifecycle messaging.",
-          benefits: "Higher test-drive bookings\nImproved service retention\nCustomer loyalty growth\nSales process automation"
-        }
-      ],
-      faqsHeading: "Frequently Asked Questions",
-      faqsSubHeading: "Cloud Communication Platform – FAQ’s",
-      faqs: [
-        { q: "What cloud-based IVR service would you recommend?", a: "<b>Ans:-</b> When it comes to cloud-based IVR services, one that stands out is Movictel. With its flexible and scalable platform, it offers advanced features like speech recognition and natural language processing. Its user-friendly interface and robust analytics make it an ideal choice for businesses of all sizes." },
-        { q: "What is IVR full form and IVR for call center?", a: "<b>Ans:-</b> IVR full form is Interactive Voice Response. It is a technology used in call centers and telephony systems to automate interactions with callers. IVR systems use pre-recorded voice prompts and menus to provide callers with options and gather input through their telephone keypad or voice recognition.<br>In a call center setting, IVR serves as an automated receptionist that helps direct and assist callers.." },
-        { q: "What are the advantages and disadvantages of bulk SMS?", a: "<b>Ans:- Advantages of Bulk SMS:</b> <br><br><b>1:- Wide Reach:</b> Bulk SMS allows you to reach a large number of recipients instantly. It is an effective way to communicate with a large audience, whether it's customers, employees, or members of an organization. <br><b>2:- Cost-Effective:</b> Bulk SMS is generally more cost-effective compared to other marketing and communication channels such as print media or phone calls. It offers a lower cost per message, especially when sending messages in large volumes. <br><b>3:- High Open Rates:</b> SMS messages typically have high open rates since most people have their mobile phones within close proximity. This makes bulk SMS an effective way to ensure that your messages are seen and read by the recipients.<br><br><b>Ans:- Disadvantages of Bulk SMS:</b> <br><br><b>1:- Character Limitations:</b> SMS messages are limited to a specific number of characters (usually 160 characters). This can restrict the amount of information you can convey in a single message and may require you to be concise and precise in your communication. <br><b>2:- No Multimedia Support:</b> SMS messages are text-based and do not support multimedia content such as images, videos, or audio files. If you need to deliver rich media content, bulk SMS may not be suitable. <br><b>3:- Opt-Out Requests:</b> Sending bulk SMS messages to recipients who have not explicitly consented or opted-in can lead to compliance issues. It is important to have proper consent mechanisms in place and provide recipients with an option to opt-out if they no longer wish to receive messages." },
-        { q: "What is bulk SMS marketing?", a: "<b>Ans:-</b> Bulk SMS Marketing is a powerful communication tool that allows businesses to send promotional, transactional, or informational text messages to a large number of customers at once. It is widely used for marketing campaigns, customer engagement, reminders, and instant alerts because of its high open rates and instant delivery. <br><br>1. With Bulk SMS, you can: <br><br>2. Reach thousands of customers in seconds <br><br>3. Share offers, discounts, and updates instantly <br><br>4. Ensure 99% delivery rate with measurable reports <br><br>5. Personalize messages for better engagement <br><br>👉 In short, Bulk SMS Marketing helps businesses connect with their audience quickly, effectively, and at a very low cost." }
-      ],
-      testimonialsHeading: "MOVICTEL THROUGH CLIENT'S EYES",
-      testimonialsText: "Authentic stories from businesses who chose Movictel and scaled faster. See what they have to say about our innovative services.",
-      testimonials: [
-        { name: "Rahul Sharma", role: "E-commerce Marketing Head", quote: "The project and the team associated with it are incredibly helpful. Movictel's IVR and bulk SMS transformed our customer communication. Engagement and satisfaction increased instantly. Hope they continue this association in future." },
-        { name: "Pooja Verma", role: "CEO, Healthcare Startup", quote: "It is one of the most wonderful experiences working with Movictel. Their WhatsApp automation helped us build direct customer relationships. Reliable, fast, and extremely effective. Great team to work with." },
-        { name: "Arjun Mehta", role: "Operations Manager", quote: "Their cloud communication platform scales effortlessly. Support quality is world-class. After switching to Movictel, we saw an incredible boost in operational efficiency. Will definitely be using them again for our next project." }
-      ],
+      servicesPage: { heroTitle: "", heroDesc: "" },
+      contactPage: { address: "", phone: "", email: "", mapEmbed: "" },
+      hero: [],
+      about: { title: "", text: "", image: "" },
+      offersHeading: "", offersSubtext: "", offers: [],
+      homeAbout: { badge: "", title: "", p1: "", p2: "", btnText: "", btnLink: "", image: "" },
+      clientsHeading: "", clients: [],
+      aboutPage: { heroTitle: "", whoWeAreTitle: "", whoWeAreText: "", whoWeAreImage: "", valuesHeading: "", values: [], teamHeading: "", team: [] },
+      blogPage: { heroTitle: "", sectionHeading: "", blogs: [] },
+      detailedServices: [],
+      servicesHeading: "", services: [],
+      casesHeading: "", casesHighlight: "", casesSubtext: "", cases: [],
+      faqsHeading: "", faqsSubHeading: "", faqs: [],
+      testimonialsHeading: "", testimonialsText: "", testimonials: [],
+      dynamicPages: [],
       sections: { 
         hero: true, about: true, offers: true, services: true, cases: true, aboutUs: true, clients: true, faq: true, testimonials: true,
         aboutPageHero: true, aboutPageWho: true, aboutPageValues: true, aboutPageTeam: true,
@@ -813,164 +697,169 @@
 
     let siteData = {};
 
+    // For Quill Instances Tracking
+    let quillBlogInstances = {};
+
     // 2) Render Logic
     window.renderAllForms = function() {
-    const visGroups = [
-        {
-        title: "Home Page Elements",
-        keys: [
-            { k: 'hero', l: 'Hero Slider' }, { k: 'about', l: 'Who We Are' }, { k: 'offers', l: 'Festival Offers' },
-            { k: 'services', l: 'Services Section' }, { k: 'cases', l: 'Case Studies' }, { k: 'aboutUs', l: 'About Us Section' },
-            { k: 'clients', l: 'Clients Strip' }, { k: 'faq', l: 'FAQs' }, { k: 'testimonials', l: 'Testimonials' }
-        ]
-        },
-        {
-        title: "About Us Elements",
-        keys: [
-            { k: 'aboutPageHero', l: 'Hero Section' }, { k: 'aboutPageWho', l: 'Who We Are' }, 
-            { k: 'aboutPageValues', l: 'Mission & Values' }, { k: 'aboutPageTeam', l: 'Team Section' }
-        ]
-        },
-        {
-        title: "Blog Elements",
-        keys: [
-            { k: 'blogPageHero', l: 'Hero Section' }, { k: 'blogPageGrid', l: 'Blog Grid' }
-        ]
-        }
-    ];
+        const visGroups = [
+            {
+            title: "Home Page Elements",
+            keys: [
+                { k: 'hero', l: 'Hero Slider' }, { k: 'about', l: 'Who We Are' }, { k: 'offers', l: 'Festival Offers' },
+                { k: 'services', l: 'Services Section' }, { k: 'cases', l: 'Case Studies' }, { k: 'aboutUs', l: 'About Us Section' },
+                { k: 'clients', l: 'Clients Strip' }, { k: 'faq', l: 'FAQs' }, { k: 'testimonials', l: 'Testimonials' }
+            ]
+            },
+            {
+            title: "About Us Elements",
+            keys: [
+                { k: 'aboutPageHero', l: 'Hero Section' }, { k: 'aboutPageWho', l: 'Who We Are' }, 
+                { k: 'aboutPageValues', l: 'Mission & Values' }, { k: 'aboutPageTeam', l: 'Team Section' }
+            ]
+            },
+            {
+            title: "Blog Elements",
+            keys: [
+                { k: 'blogPageHero', l: 'Hero Section' }, { k: 'blogPageGrid', l: 'Blog Grid' }
+            ]
+            }
+        ];
 
-    let visibilityHtml = '';
-    visGroups.forEach((g, index) => {
-        visibilityHtml += `<div class="col-span-1 md:col-span-2 3xl:col-span-3 text-xs font-semibold text-gray-400 uppercase tracking-wider ${index !== 0 ? 'mt-4 md:mt-6' : ''} mb-1 border-b border-gray-100 pb-2">${g.title}</div>`;
-        g.keys.forEach(v => {
-            visibilityHtml += `
-            <div class="flex justify-between items-center bg-gray-50/50 px-4 py-3 md:py-3 rounded-lg border border-gray-100">
-                <span class="text-sm font-medium text-gray-700">${v.l}</span>
-                <label class="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" class="sr-only peer toggle-checkbox" ${siteData.sections[v.k] ? 'checked' : ''} onchange="updateVis('${v.k}', this.checked)">
-                <div class="w-10 h-5 bg-gray-200 rounded-full peer peer-focus:ring-2 transition-colors duration-200 toggle-label after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-[20px] peer-checked:after:border-white shadow-sm"></div>
-                </label>
-            </div>`;
+        let visibilityHtml = '';
+        visGroups.forEach((g, index) => {
+            visibilityHtml += `<div class="col-span-1 md:col-span-2 3xl:col-span-3 text-xs font-semibold text-gray-400 uppercase tracking-wider ${index !== 0 ? 'mt-4 md:mt-6' : ''} mb-1 border-b border-gray-100 pb-2">${g.title}</div>`;
+            g.keys.forEach(v => {
+                visibilityHtml += `
+                <div class="flex justify-between items-center bg-gray-50/50 px-4 py-3 md:py-3 rounded-lg border border-gray-100">
+                    <span class="text-sm font-medium text-gray-700">${v.l}</span>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" class="sr-only peer toggle-checkbox" ${siteData.sections[v.k] ? 'checked' : ''} onchange="updateVis('${v.k}', this.checked)">
+                    <div class="w-10 h-5 bg-gray-200 rounded-full peer peer-focus:ring-2 transition-colors duration-200 toggle-label after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:after:translate-x-[20px] peer-checked:after:border-white shadow-sm"></div>
+                    </label>
+                </div>`;
+            });
         });
-    });
-    document.getElementById('visibility-toggles').innerHTML = visibilityHtml;
+        document.getElementById('visibility-toggles').innerHTML = visibilityHtml;
 
-    window.renderHeroForms();
-    
-    // Global SEO
-    ['home', 'about', 'services', 'blog', 'contact'].forEach(page => {
-        let titleEl = document.getElementById(`seo-${page}-title`);
-        let descEl = document.getElementById(`seo-${page}-desc`);
-        titleEl.value = siteData.metaDetails[page]?.title || '';
-        descEl.value = siteData.metaDetails[page]?.desc || '';
+        window.renderHeroForms();
         
-        titleEl.oninput = e => { 
-            if(!siteData.metaDetails[page]) siteData.metaDetails[page] = {};
-            siteData.metaDetails[page].title = e.target.value; 
-        };
-        descEl.oninput = e => { 
-            if(!siteData.metaDetails[page]) siteData.metaDetails[page] = {};
-            siteData.metaDetails[page].desc = e.target.value; 
-        };
-    });
+        // Global SEO
+        ['home', 'about', 'services', 'blog', 'contact'].forEach(page => {
+            let titleEl = document.getElementById(`seo-${page}-title`);
+            let descEl = document.getElementById(`seo-${page}-desc`);
+            if(titleEl) titleEl.value = siteData.metaDetails[page]?.title || '';
+            if(descEl) descEl.value = siteData.metaDetails[page]?.desc || '';
+            
+            if(titleEl) titleEl.oninput = e => { 
+                if(!siteData.metaDetails[page]) siteData.metaDetails[page] = {};
+                siteData.metaDetails[page].title = e.target.value; 
+            };
+            if(descEl) descEl.oninput = e => { 
+                if(!siteData.metaDetails[page]) siteData.metaDetails[page] = {};
+                siteData.metaDetails[page].desc = e.target.value; 
+            };
+        });
 
-    document.getElementById('about-title').value = siteData.about.title || '';
-    document.getElementById('about-title').oninput = e => siteData.about.title = e.target.value;
-    document.getElementById('about-text').value = siteData.about.text || '';
-    document.getElementById('about-text').oninput = e => siteData.about.text = e.target.value;
-    document.getElementById('about-image').value = siteData.about.image || '';
-    document.getElementById('about-image').oninput = e => siteData.about.image = e.target.value;
+        document.getElementById('about-title').value = siteData.about?.title || '';
+        document.getElementById('about-title').oninput = e => siteData.about.title = e.target.value;
+        document.getElementById('about-text').value = siteData.about?.text || '';
+        document.getElementById('about-text').oninput = e => siteData.about.text = e.target.value;
+        document.getElementById('about-image').value = siteData.about?.image || '';
+        document.getElementById('about-image').oninput = e => siteData.about.image = e.target.value;
 
-    document.getElementById('offers-heading').value = siteData.offersHeading || '';
-    document.getElementById('offers-heading').oninput = e => siteData.offersHeading = e.target.value;
-    document.getElementById('offers-subtext').value = siteData.offersSubtext || '';
-    document.getElementById('offers-subtext').oninput = e => siteData.offersSubtext = e.target.value;
-    window.renderOffers();
+        document.getElementById('offers-heading').value = siteData.offersHeading || '';
+        document.getElementById('offers-heading').oninput = e => siteData.offersHeading = e.target.value;
+        document.getElementById('offers-subtext').value = siteData.offersSubtext || '';
+        document.getElementById('offers-subtext').oninput = e => siteData.offersSubtext = e.target.value;
+        window.renderOffers();
 
-    document.getElementById('ha-badge').value = siteData.homeAbout.badge || '';
-    document.getElementById('ha-badge').oninput = e => siteData.homeAbout.badge = e.target.value;
-    document.getElementById('ha-title').value = siteData.homeAbout.title || '';
-    document.getElementById('ha-title').oninput = e => siteData.homeAbout.title = e.target.value;
-    document.getElementById('ha-p1').value = siteData.homeAbout.p1 || '';
-    document.getElementById('ha-p1').oninput = e => siteData.homeAbout.p1 = e.target.value;
-    document.getElementById('ha-p2').value = siteData.homeAbout.p2 || '';
-    document.getElementById('ha-p2').oninput = e => siteData.homeAbout.p2 = e.target.value;
-    document.getElementById('ha-btnText').value = siteData.homeAbout.btnText || '';
-    document.getElementById('ha-btnText').oninput = e => siteData.homeAbout.btnText = e.target.value;
-    document.getElementById('ha-btnLink').value = siteData.homeAbout.btnLink || '';
-    document.getElementById('ha-btnLink').oninput = e => siteData.homeAbout.btnLink = e.target.value;
-    document.getElementById('ha-image').value = siteData.homeAbout.image || '';
-    document.getElementById('ha-image').oninput = e => siteData.homeAbout.image = e.target.value;
+        document.getElementById('ha-badge').value = siteData.homeAbout?.badge || '';
+        document.getElementById('ha-badge').oninput = e => siteData.homeAbout.badge = e.target.value;
+        document.getElementById('ha-title').value = siteData.homeAbout?.title || '';
+        document.getElementById('ha-title').oninput = e => siteData.homeAbout.title = e.target.value;
+        document.getElementById('ha-p1').value = siteData.homeAbout?.p1 || '';
+        document.getElementById('ha-p1').oninput = e => siteData.homeAbout.p1 = e.target.value;
+        document.getElementById('ha-p2').value = siteData.homeAbout?.p2 || '';
+        document.getElementById('ha-p2').oninput = e => siteData.homeAbout.p2 = e.target.value;
+        document.getElementById('ha-btnText').value = siteData.homeAbout?.btnText || '';
+        document.getElementById('ha-btnText').oninput = e => siteData.homeAbout.btnText = e.target.value;
+        document.getElementById('ha-btnLink').value = siteData.homeAbout?.btnLink || '';
+        document.getElementById('ha-btnLink').oninput = e => siteData.homeAbout.btnLink = e.target.value;
+        document.getElementById('ha-image').value = siteData.homeAbout?.image || '';
+        document.getElementById('ha-image').oninput = e => siteData.homeAbout.image = e.target.value;
 
-    document.getElementById('clients-heading').value = siteData.clientsHeading || '';
-    document.getElementById('clients-heading').oninput = e => siteData.clientsHeading = e.target.value;
-    window.renderClients();
+        document.getElementById('clients-heading').value = siteData.clientsHeading || '';
+        document.getElementById('clients-heading').oninput = e => siteData.clientsHeading = e.target.value;
+        window.renderClients();
 
-    window.renderDetailedServices();
-    
-    if (siteData.dynamicPages) {
-        window.renderDynamicPages();
-    }
+        window.renderDetailedServices();
+        
+        if (siteData.dynamicPages) {
+            window.renderDynamicPages();
+        }
 
-    // Main Services Page
-    document.getElementById('sm-hero-title').value = siteData.servicesPage.heroTitle || '';
-    document.getElementById('sm-hero-title').oninput = e => siteData.servicesPage.heroTitle = e.target.value;
-    document.getElementById('sm-hero-desc').value = siteData.servicesPage.heroDesc || '';
-    document.getElementById('sm-hero-desc').oninput = e => siteData.servicesPage.heroDesc = e.target.value;
+        // Main Services Page
+        document.getElementById('sm-hero-title').value = siteData.servicesPage?.heroTitle || '';
+        document.getElementById('sm-hero-title').oninput = e => siteData.servicesPage.heroTitle = e.target.value;
+        document.getElementById('sm-hero-desc').value = siteData.servicesPage?.heroDesc || '';
+        document.getElementById('sm-hero-desc').oninput = e => siteData.servicesPage.heroDesc = e.target.value;
 
-    // Contact Page
-    ['address', 'phone', 'email'].forEach(f => {
-        const el = document.getElementById(`cp-${f}`);
-        el.value = siteData.contactPage[f] || '';
-        el.oninput = e => siteData.contactPage[f] = e.target.value;
-    });
-    document.getElementById('cp-map').value = siteData.contactPage.mapEmbed || '';
-    document.getElementById('cp-map').oninput = e => siteData.contactPage.mapEmbed = e.target.value;
+        // Contact Page
+        ['address', 'phone', 'email'].forEach(f => {
+            const el = document.getElementById(`cp-${f}`);
+            if(el) {
+                el.value = siteData.contactPage[f] || '';
+                el.oninput = e => siteData.contactPage[f] = e.target.value;
+            }
+        });
+        document.getElementById('cp-map').value = siteData.contactPage?.mapEmbed || '';
+        document.getElementById('cp-map').oninput = e => siteData.contactPage.mapEmbed = e.target.value;
 
-    document.getElementById('ap-hero-title').value = siteData.aboutPage.heroTitle || '';
-    document.getElementById('ap-hero-title').oninput = e => siteData.aboutPage.heroTitle = e.target.value;
-    document.getElementById('ap-who-title').value = siteData.aboutPage.whoWeAreTitle || '';
-    document.getElementById('ap-who-title').oninput = e => siteData.aboutPage.whoWeAreTitle = e.target.value;
-    document.getElementById('ap-who-text').value = siteData.aboutPage.whoWeAreText || '';
-    document.getElementById('ap-who-text').oninput = e => siteData.aboutPage.whoWeAreText = e.target.value;
-    document.getElementById('ap-who-image').value = siteData.aboutPage.whoWeAreImage || '';
-    document.getElementById('ap-who-image').oninput = e => siteData.aboutPage.whoWeAreImage = e.target.value;
-    document.getElementById('ap-values-heading').value = siteData.aboutPage.valuesHeading || '';
-    document.getElementById('ap-values-heading').oninput = e => siteData.aboutPage.valuesHeading = e.target.value;
-    document.getElementById('ap-team-heading').value = siteData.aboutPage.teamHeading || '';
-    document.getElementById('ap-team-heading').oninput = e => siteData.aboutPage.teamHeading = e.target.value;
-    window.renderAboutPageValues();
-    window.renderAboutPageTeam();
+        document.getElementById('ap-hero-title').value = siteData.aboutPage?.heroTitle || '';
+        document.getElementById('ap-hero-title').oninput = e => siteData.aboutPage.heroTitle = e.target.value;
+        document.getElementById('ap-who-title').value = siteData.aboutPage?.whoWeAreTitle || '';
+        document.getElementById('ap-who-title').oninput = e => siteData.aboutPage.whoWeAreTitle = e.target.value;
+        document.getElementById('ap-who-text').value = siteData.aboutPage?.whoWeAreText || '';
+        document.getElementById('ap-who-text').oninput = e => siteData.aboutPage.whoWeAreText = e.target.value;
+        document.getElementById('ap-who-image').value = siteData.aboutPage?.whoWeAreImage || '';
+        document.getElementById('ap-who-image').oninput = e => siteData.aboutPage.whoWeAreImage = e.target.value;
+        document.getElementById('ap-values-heading').value = siteData.aboutPage?.valuesHeading || '';
+        document.getElementById('ap-values-heading').oninput = e => siteData.aboutPage.valuesHeading = e.target.value;
+        document.getElementById('ap-team-heading').value = siteData.aboutPage?.teamHeading || '';
+        document.getElementById('ap-team-heading').oninput = e => siteData.aboutPage.teamHeading = e.target.value;
+        window.renderAboutPageValues();
+        window.renderAboutPageTeam();
 
-    document.getElementById('bp-hero-title').value = siteData.blogPage.heroTitle || '';
-    document.getElementById('bp-hero-title').oninput = e => siteData.blogPage.heroTitle = e.target.value;
-    document.getElementById('bp-section-heading').value = siteData.blogPage.sectionHeading || '';
-    document.getElementById('bp-section-heading').oninput = e => siteData.blogPage.sectionHeading = e.target.value;
-    window.renderBlogCards();
+        document.getElementById('bp-hero-title').value = siteData.blogPage?.heroTitle || '';
+        document.getElementById('bp-hero-title').oninput = e => siteData.blogPage.heroTitle = e.target.value;
+        document.getElementById('bp-section-heading').value = siteData.blogPage?.sectionHeading || '';
+        document.getElementById('bp-section-heading').oninput = e => siteData.blogPage.sectionHeading = e.target.value;
+        window.renderBlogCards();
 
-    document.getElementById('services-heading').value = siteData.servicesHeading || '';
-    document.getElementById('services-heading').oninput = e => siteData.servicesHeading = e.target.value;
-    window.renderServices();
+        document.getElementById('services-heading').value = siteData.servicesHeading || '';
+        document.getElementById('services-heading').oninput = e => siteData.servicesHeading = e.target.value;
+        window.renderServices();
 
-    document.getElementById('cases-heading').value = siteData.casesHeading || '';
-    document.getElementById('cases-heading').oninput = e => siteData.casesHeading = e.target.value;
-    document.getElementById('cases-highlight').value = siteData.casesHighlight || '';
-    document.getElementById('cases-highlight').oninput = e => siteData.casesHighlight = e.target.value;
-    document.getElementById('cases-subtext').value = siteData.casesSubtext || '';
-    document.getElementById('cases-subtext').oninput = e => siteData.casesSubtext = e.target.value;
-    window.renderCases();
+        document.getElementById('cases-heading').value = siteData.casesHeading || '';
+        document.getElementById('cases-heading').oninput = e => siteData.casesHeading = e.target.value;
+        document.getElementById('cases-highlight').value = siteData.casesHighlight || '';
+        document.getElementById('cases-highlight').oninput = e => siteData.casesHighlight = e.target.value;
+        document.getElementById('cases-subtext').value = siteData.casesSubtext || '';
+        document.getElementById('cases-subtext').oninput = e => siteData.casesSubtext = e.target.value;
+        window.renderCases();
 
-    document.getElementById('testi-heading').value = siteData.testimonialsHeading || '';
-    document.getElementById('testi-heading').oninput = e => siteData.testimonialsHeading = e.target.value;
-    document.getElementById('testi-text').value = siteData.testimonialsText || '';
-    document.getElementById('testi-text').oninput = e => siteData.testimonialsText = e.target.value;
-    window.renderTestimonials();
+        document.getElementById('testi-heading').value = siteData.testimonialsHeading || '';
+        document.getElementById('testi-heading').oninput = e => siteData.testimonialsHeading = e.target.value;
+        document.getElementById('testi-text').value = siteData.testimonialsText || '';
+        document.getElementById('testi-text').oninput = e => siteData.testimonialsText = e.target.value;
+        window.renderTestimonials();
 
-    document.getElementById('faq-heading').value = siteData.faqsHeading || '';
-    document.getElementById('faq-heading').oninput = e => siteData.faqsHeading = e.target.value;
-    document.getElementById('faq-subheading').value = siteData.faqsSubHeading || '';
-    document.getElementById('faq-subheading').oninput = e => siteData.faqsSubHeading = e.target.value;
-    window.renderFaqs();
+        document.getElementById('faq-heading').value = siteData.faqsHeading || '';
+        document.getElementById('faq-heading').oninput = e => siteData.faqsHeading = e.target.value;
+        document.getElementById('faq-subheading').value = siteData.faqsSubHeading || '';
+        document.getElementById('faq-subheading').oninput = e => siteData.faqsSubHeading = e.target.value;
+        window.renderFaqs();
     }
 
     // 3) Sub-Render Lists
@@ -981,7 +870,7 @@
             <button onclick="addHeroSlide()" class="text-xs font-medium text-black bg-white border border-gray-200 px-3 py-2 rounded hover:bg-gray-50 shadow-sm">+ Add Slide</button>
         </div>
         <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
-            ${siteData.hero.map((slide, i) => `
+            ${(siteData.hero || []).map((slide, i) => `
                 <div class="bg-white border border-gray-200 rounded-xl p-5 relative group hover:border-gray-300 transition-colors animate-fade-in-up h-full flex flex-col">
                     <button onclick="removeHeroSlide(${i})" class="absolute top-2 right-2 p-2 text-gray-400 hover:text-red-500 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all z-10"><i class="fas fa-trash-alt text-lg md:text-base"></i></button>
                     <h4 class="text-xs font-bold text-gray-400 uppercase mb-4 pr-8">Banner Slide ${i + 1}</h4>
@@ -1052,7 +941,7 @@
     }
 
     window.renderOffers = function() {
-    document.getElementById('offers-container').innerHTML = siteData.offers.map((o, i) => `
+    document.getElementById('offers-container').innerHTML = (siteData.offers || []).map((o, i) => `
         <div class="bg-white border border-gray-200 rounded-xl p-5 relative group hover:border-gray-300 transition-colors animate-fade-in-up h-full">
         <button onclick="removeOffer(${i})" class="absolute top-2 right-2 p-2 text-gray-400 hover:text-red-500 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all z-10"><i class="fas fa-trash-alt text-lg md:text-base"></i></button>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pr-2 md:pr-6 mt-4 md:mt-0">
@@ -1075,7 +964,7 @@
     }
 
     window.renderClients = function() {
-    document.getElementById('clients-container').innerHTML = siteData.clients.map((c, i) => `
+    document.getElementById('clients-container').innerHTML = (siteData.clients || []).map((c, i) => `
         <div class="bg-white border border-gray-200 rounded-xl p-5 relative group hover:border-gray-300 transition-colors animate-fade-in-up h-full">
         <button onclick="removeClient(${i})" class="absolute top-2 right-2 p-2 text-gray-400 hover:text-red-500 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all z-10"><i class="fas fa-trash-alt text-lg md:text-base"></i></button>
         <div class="grid grid-cols-1 gap-4 pr-2 md:pr-6 mt-4 md:mt-0">
@@ -1095,84 +984,159 @@
     `).join('');
     }
     
+    // NEW DETAILED SERVICES SCHEMA RENDER
     window.renderDetailedServices = function() {
-    document.getElementById('detailed-services-container').innerHTML = siteData.detailedServices.map((s, i) => `
-        <div class="bg-white border border-gray-200 rounded-xl p-5 relative group hover:border-gray-300 transition-colors animate-fade-in-up h-full">
-            <button onclick="removeDetailedService(${i})" class="absolute top-2 right-2 p-2 text-gray-400 hover:text-red-500 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all z-10"><i class="fas fa-trash-alt text-lg md:text-base"></i></button>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pr-2 md:pr-6 mt-4 md:mt-0">
-                <div><label class="label-modern text-gray-800">URL Slug (ID)</label><input type="text" class="input-modern bg-gray-100 font-mono" value="${s.id}" oninput="siteData.detailedServices[${i}].id=this.value"></div>
-                <div>
-                    <label class="label-modern">Category</label>
-                    <select class="input-modern" onchange="siteData.detailedServices[${i}].category=this.value">
-                        <option value="Marketing" ${s.category==='Marketing'?'selected':''}>Marketing</option>
-                        <option value="Promote" ${s.category==='Promote'?'selected':''}>Promote</option>
-                        <option value="Development" ${s.category==='Development'?'selected':''}>Development</option>
-                    </select>
-                </div>
-                <div><label class="label-modern">Icon (FontAwesome)</label><input type="text" class="input-modern" value="${s.navIcon}" oninput="siteData.detailedServices[${i}].navIcon=this.value"></div>
-                
-                <div class="md:col-span-3 border-t border-gray-100 pt-3 mt-1"><span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">SEO Details</span></div>
-                <div class="md:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div><label class="label-modern">Meta Title</label><input type="text" class="input-modern" value="${(s.metaTitle || '').replace(/"/g, '&quot;')}" oninput="siteData.detailedServices[${i}].metaTitle=this.value"></div>
-                    <div><label class="label-modern">Meta Description</label><input type="text" class="input-modern" value="${(s.metaDesc || '').replace(/"/g, '&quot;')}" oninput="siteData.detailedServices[${i}].metaDesc=this.value"></div>
-                </div>
+        document.getElementById('detailed-services-container').innerHTML = (siteData.detailedServices || []).map((s, i) => `
+            <div class="bg-white border border-gray-300 rounded-xl p-6 relative group h-full shadow-sm">
+                <button onclick="removeDetailedService(${i})" class="absolute top-3 right-3 p-2 text-gray-400 hover:text-red-500 transition-all z-10 bg-white rounded-full shadow-sm border border-gray-100"><i class="fas fa-trash-alt"></i></button>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5 pr-2 md:pr-8 mt-4 md:mt-0">
+                    
+                    <!-- Basic Info -->
+                    <div><label class="label-modern text-gray-800">URL Slug (ID)</label><input type="text" class="input-modern bg-gray-100 font-mono" value="${s.id}" oninput="siteData.detailedServices[${i}].id=this.value"></div>
+                    <div>
+                        <label class="label-modern">Category</label>
+                        <select class="input-modern" onchange="siteData.detailedServices[${i}].category=this.value">
+                            <option value="Marketing" ${s.category==='Marketing'?'selected':''}>Marketing</option>
+                            <option value="Promote" ${s.category==='Promote'?'selected':''}>Promote</option>
+                            <option value="Development" ${s.category==='Development'?'selected':''}>Development</option>
+                        </select>
+                    </div>
+                    <div><label class="label-modern">Icon (FontAwesome)</label><input type="text" class="input-modern" value="${s.navIcon}" oninput="siteData.detailedServices[${i}].navIcon=this.value"></div>
+                    
+                    <div class="md:col-span-3 border-t border-gray-100 pt-4 mt-2"><span class="text-xs font-bold text-gray-500 uppercase tracking-wider">SEO & Meta</span></div>
+                    <div class="md:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div><label class="label-modern">Meta Title</label><input type="text" class="input-modern" value="${(s.metaTitle || '').replace(/"/g, '&quot;')}" oninput="siteData.detailedServices[${i}].metaTitle=this.value"></div>
+                        <div><label class="label-modern">Meta Description</label><input type="text" class="input-modern" value="${(s.metaDesc || '').replace(/"/g, '&quot;')}" oninput="siteData.detailedServices[${i}].metaDesc=this.value"></div>
+                    </div>
 
-                <div class="md:col-span-3 border-t border-gray-100 pt-3 mt-1"><span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Page Content</span></div>
-                <div class="md:col-span-3"><label class="label-modern">Service Title</label><input type="text" class="input-modern font-semibold" value="${s.title}" oninput="siteData.detailedServices[${i}].title=this.value"></div>
-                <div class="md:col-span-3"><label class="label-modern">Short Description</label><textarea class="input-modern" rows="2" oninput="siteData.detailedServices[${i}].shortDesc=this.value">${s.shortDesc}</textarea></div>
-                <div class="md:col-span-3"><label class="label-modern">Long Description</label><textarea class="input-modern" rows="3" oninput="siteData.detailedServices[${i}].longDesc=this.value">${s.longDesc}</textarea></div>
+                    <div class="md:col-span-3 border-t border-gray-100 pt-4 mt-2"><span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Header Section</span></div>
+                    <div class="md:col-span-3"><label class="label-modern">Service Main Title</label><input type="text" class="input-modern font-bold text-lg" value="${s.title}" oninput="siteData.detailedServices[${i}].title=this.value"></div>
+                    <div class="md:col-span-3"><label class="label-modern">Short Description / Subtitle</label><textarea class="input-modern" rows="2" oninput="siteData.detailedServices[${i}].shortDesc=this.value">${s.shortDesc}</textarea></div>
 
-                <div class="md:col-span-3 mt-4 border-t border-gray-100 pt-4 flex items-center justify-between">
-                    <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Features List</span>
-                    <button onclick="addServiceFeature(${i})" class="text-xs font-medium text-black bg-white border border-gray-200 px-2 py-1 rounded hover:bg-gray-50 shadow-sm">+ Add Feature</button>
-                </div>
-                
-                <div class="md:col-span-3 grid grid-cols-1 gap-3">
-                    ${(s.features || []).map((f, j) => `
-                        <div class="flex gap-2 relative border border-gray-100 p-3 rounded bg-gray-50/50">
-                            <button onclick="removeServiceFeature(${i}, ${j})" class="absolute top-3 right-3 text-gray-400 hover:text-red-600 transition-colors"><i class="fas fa-times"></i></button>
-                            <div class="flex-1 space-y-2 pr-6">
-                                <input type="text" class="input-modern" placeholder="Feature Title" value="${(f.title||'').replace(/"/g, '&quot;')}" oninput="siteData.detailedServices[${i}].features[${j}].title=this.value">
-                                <input type="text" class="input-modern text-gray-600" placeholder="Feature Description" value="${(f.desc||'').replace(/"/g, '&quot;')}" oninput="siteData.detailedServices[${i}].features[${j}].desc=this.value">
+                    <!-- FEATURE SET 1 -->
+                    <div class="md:col-span-3 border-t border-gray-200 pt-5 mt-4 flex items-center justify-between">
+                        <span class="text-sm font-bold text-black uppercase tracking-wider bg-gray-100 px-3 py-1 rounded">Feature Set 1 (Max 6)</span>
+                        <button onclick="addServiceFeatureSet(${i}, 1)" class="text-xs font-bold text-white bg-blue-600 px-3 py-1.5 rounded shadow-sm">+ Add Item</button>
+                    </div>
+                    <div class="md:col-span-3 grid grid-cols-1 gap-3">
+                        ${(s.features1 || []).map((f, j) => `
+                            <div class="flex flex-col gap-2 relative border border-gray-200 p-4 rounded bg-gray-50">
+                                <button onclick="removeServiceFeatureSet(${i}, 1, ${j})" class="absolute top-3 right-3 text-gray-400 hover:text-red-600"><i class="fas fa-times"></i></button>
+                                <input type="text" class="input-modern font-semibold pr-8" placeholder="Title" value="${(f.title||'').replace(/"/g, '&quot;')}" oninput="siteData.detailedServices[${i}].features1[${j}].title=this.value">
+                                <textarea class="input-modern text-sm text-gray-600" rows="2" placeholder="Description" oninput="siteData.detailedServices[${i}].features1[${j}].desc=this.value">${f.desc||''}</textarea>
+                                <div class="flex gap-2 items-center mt-1">
+                                    <input type="text" class="input-modern flex-1 text-xs" placeholder="Image URL (Required for Box)" value="${f.image||''}" oninput="siteData.detailedServices[${i}].features1[${j}].image=this.value">
+                                    <label class="bg-gray-200 hover:bg-gray-300 px-3 py-2 rounded cursor-pointer text-xs font-semibold whitespace-nowrap"><i class="fas fa-upload"></i> Upload<input type="file" class="hidden" accept="image/*" onchange="handleImageUpload(this)"></label>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="md:col-span-3 bg-blue-50 p-3 rounded border border-blue-100 mt-2">
+                        <label class="label-modern text-blue-800">CTA Button 1 (Placed after Feature Set 1)</label>
+                        <div class="flex gap-2">
+                            <input type="text" class="input-modern w-1/3" placeholder="Button Text" value="${(s.cta1?.text||'').replace(/"/g, '&quot;')}" oninput="siteData.detailedServices[${i}].cta1.text=this.value">
+                            <input type="text" class="input-modern flex-1" placeholder="Link URL" value="${s.cta1?.link||''}" oninput="siteData.detailedServices[${i}].cta1.link=this.value">
+                        </div>
+                    </div>
+
+                    <!-- FEATURE SET 2 -->
+                    <div class="md:col-span-3 border-t border-gray-200 pt-5 mt-4 flex items-center justify-between">
+                        <span class="text-sm font-bold text-black uppercase tracking-wider bg-gray-100 px-3 py-1 rounded">Feature Set 2 (Max 6)</span>
+                        <button onclick="addServiceFeatureSet(${i}, 2)" class="text-xs font-bold text-white bg-blue-600 px-3 py-1.5 rounded shadow-sm">+ Add Item</button>
+                    </div>
+                    <div class="md:col-span-3 grid grid-cols-1 gap-3">
+                        ${(s.features2 || []).map((f, j) => `
+                            <div class="flex flex-col gap-2 relative border border-gray-200 p-4 rounded bg-gray-50">
+                                <button onclick="removeServiceFeatureSet(${i}, 2, ${j})" class="absolute top-3 right-3 text-gray-400 hover:text-red-600"><i class="fas fa-times"></i></button>
+                                <input type="text" class="input-modern font-semibold pr-8" placeholder="Title" value="${(f.title||'').replace(/"/g, '&quot;')}" oninput="siteData.detailedServices[${i}].features2[${j}].title=this.value">
+                                <textarea class="input-modern text-sm text-gray-600" rows="2" placeholder="Description" oninput="siteData.detailedServices[${i}].features2[${j}].desc=this.value">${f.desc||''}</textarea>
+                                <div class="flex gap-2 items-center mt-1">
+                                    <input type="text" class="input-modern flex-1 text-xs" placeholder="Image/Icon URL" value="${f.image||''}" oninput="siteData.detailedServices[${i}].features2[${j}].image=this.value">
+                                    <label class="bg-gray-200 hover:bg-gray-300 px-3 py-2 rounded cursor-pointer text-xs font-semibold whitespace-nowrap"><i class="fas fa-upload"></i> Upload<input type="file" class="hidden" accept="image/*" onchange="handleImageUpload(this)"></label>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="md:col-span-3 bg-blue-50 p-3 rounded border border-blue-100 mt-2">
+                        <label class="label-modern text-blue-800">CTA Button 2 (Placed after Feature Set 2)</label>
+                        <div class="flex gap-2">
+                            <input type="text" class="input-modern w-1/3" placeholder="Button Text" value="${(s.cta2?.text||'').replace(/"/g, '&quot;')}" oninput="siteData.detailedServices[${i}].cta2.text=this.value">
+                            <input type="text" class="input-modern flex-1" placeholder="Link URL" value="${s.cta2?.link||''}" oninput="siteData.detailedServices[${i}].cta2.link=this.value">
+                        </div>
+                    </div>
+
+                    <!-- FEATURE SET 3 (NO BORDERS) -->
+                    <div class="md:col-span-3 border-t border-gray-200 pt-5 mt-4 flex items-center justify-between">
+                        <span class="text-sm font-bold text-black uppercase tracking-wider bg-gray-100 px-3 py-1 rounded">Feature Set 3 (Borderless - Max 6)</span>
+                        <button onclick="addServiceFeatureSet(${i}, 3)" class="text-xs font-bold text-white bg-blue-600 px-3 py-1.5 rounded shadow-sm">+ Add Item</button>
+                    </div>
+                    <div class="md:col-span-3 grid grid-cols-1 gap-3">
+                        ${(s.features3 || []).map((f, j) => `
+                            <div class="flex flex-col gap-2 relative border border-gray-200 p-4 rounded bg-gray-50">
+                                <button onclick="removeServiceFeatureSet(${i}, 3, ${j})" class="absolute top-3 right-3 text-gray-400 hover:text-red-600"><i class="fas fa-times"></i></button>
+                                <input type="text" class="input-modern font-semibold pr-8" placeholder="Title" value="${(f.title||'').replace(/"/g, '&quot;')}" oninput="siteData.detailedServices[${i}].features3[${j}].title=this.value">
+                                <textarea class="input-modern text-sm text-gray-600" rows="2" placeholder="Description" oninput="siteData.detailedServices[${i}].features3[${j}].desc=this.value">${f.desc||''}</textarea>
+                                <div class="flex gap-2 items-center mt-1">
+                                    <input type="text" class="input-modern flex-1 text-xs" placeholder="Image/Icon URL" value="${f.image||''}" oninput="siteData.detailedServices[${i}].features3[${j}].image=this.value">
+                                    <label class="bg-gray-200 hover:bg-gray-300 px-3 py-2 rounded cursor-pointer text-xs font-semibold whitespace-nowrap"><i class="fas fa-upload"></i> Upload<input type="file" class="hidden" accept="image/*" onchange="handleImageUpload(this)"></label>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="md:col-span-3 bg-blue-50 p-3 rounded border border-blue-100 mt-2">
+                        <label class="label-modern text-blue-800">CTA Button 3 (Placed after Feature Set 3)</label>
+                        <div class="flex gap-2">
+                            <input type="text" class="input-modern w-1/3" placeholder="Button Text" value="${(s.cta3?.text||'').replace(/"/g, '&quot;')}" oninput="siteData.detailedServices[${i}].cta3.text=this.value">
+                            <input type="text" class="input-modern flex-1" placeholder="Link URL" value="${s.cta3?.link||''}" oninput="siteData.detailedServices[${i}].cta3.link=this.value">
+                        </div>
+                    </div>
+
+                    <!-- IMAGE + HEADING SECTION -->
+                    <div class="md:col-span-3 border-t border-gray-200 pt-5 mt-4">
+                        <span class="text-sm font-bold text-black uppercase tracking-wider bg-gray-100 px-3 py-1 rounded block w-fit mb-3">Heading + Image (Aligned Right)</span>
+                        <div class="grid grid-cols-1 gap-3 bg-gray-50 p-4 border border-gray-200 rounded">
+                            <div><label class="label-modern">Heading Text</label><input type="text" class="input-modern font-semibold" value="${(s.headingImageSection?.heading||'').replace(/"/g, '&quot;')}" oninput="siteData.detailedServices[${i}].headingImageSection.heading=this.value"></div>
+                            <div>
+                                <label class="label-modern">Right Aligned Image URL</label>
+                                <div class="flex gap-2">
+                                    <input type="text" class="input-modern flex-1" placeholder="Image URL" value="${s.headingImageSection?.image||''}" oninput="siteData.detailedServices[${i}].headingImageSection.image=this.value">
+                                    <label class="bg-gray-200 hover:bg-gray-300 px-3 py-2 rounded cursor-pointer text-xs font-semibold whitespace-nowrap"><i class="fas fa-upload"></i> Upload<input type="file" class="hidden" accept="image/*" onchange="handleImageUpload(this)"></label>
+                                </div>
                             </div>
                         </div>
-                    `).join('')}
-                </div>
+                    </div>
 
-                <div class="md:col-span-3 mt-4 border-t border-gray-100 pt-4 flex justify-between items-center">
-                    <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">CTA Buttons</span>
-                    <button onclick="addServiceCta(${i})" class="text-xs font-medium text-black bg-white border border-gray-200 px-2 py-1 rounded hover:bg-gray-50 shadow-sm">+ Add CTA</button>
-                </div>
-                <div class="md:col-span-3 grid grid-cols-1 gap-2">
-                    ${(s.ctas || []).map((cta, j) => `
-                        <div class="flex gap-2 items-center bg-gray-50/50 p-2 rounded border border-gray-100">
-                            <input type="text" class="input-modern w-1/3" placeholder="Button Text" value="${(cta.text || '').replace(/"/g, '&quot;')}" oninput="siteData.detailedServices[${i}].ctas[${j}].text=this.value">
-                            <input type="text" class="input-modern flex-1" placeholder="Link (URL / mailto: / tel:)" value="${cta.link || ''}" oninput="siteData.detailedServices[${i}].ctas[${j}].link=this.value">
-                            <button onclick="removeServiceCta(${i}, ${j})" class="text-gray-400 hover:text-red-500 p-2"><i class="fas fa-trash"></i></button>
-                        </div>
-                    `).join('')}
-                </div>
+                    <!-- SERVICE FAQs -->
+                    <div class="md:col-span-3 mt-5 border-t border-gray-200 pt-5 flex justify-between items-center">
+                        <span class="text-sm font-bold text-black uppercase tracking-wider bg-gray-100 px-3 py-1 rounded">Service FAQs</span>
+                        <button onclick="addServiceFaq(${i})" class="text-xs font-bold text-white bg-blue-600 px-3 py-1.5 rounded shadow-sm">+ Add FAQ</button>
+                    </div>
+                    <div class="md:col-span-3 grid grid-cols-1 gap-3">
+                        ${(s.serviceFaqs || []).map((faq, j) => `
+                            <div class="border border-gray-200 p-4 rounded bg-gray-50 relative pr-10">
+                                <button onclick="removeServiceFaq(${i}, ${j})" class="absolute top-3 right-3 text-gray-400 hover:text-red-500"><i class="fas fa-trash"></i></button>
+                                <input type="text" class="input-modern mb-2 font-semibold text-gray-900" placeholder="Question" value="${(faq.q || '').replace(/"/g, '&quot;')}" oninput="siteData.detailedServices[${i}].serviceFaqs[${j}].q=this.value">
+                                <textarea class="input-modern text-sm text-gray-700" placeholder="Answer (HTML Allowed)" rows="3" oninput="siteData.detailedServices[${i}].serviceFaqs[${j}].a=this.value">${faq.a || ''}</textarea>
+                            </div>
+                        `).join('')}
+                    </div>
 
-                <div class="md:col-span-3 mt-4 border-t border-gray-100 pt-4 flex justify-between items-center">
-                    <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Service FAQs</span>
-                    <button onclick="addServiceFaq(${i})" class="text-xs font-medium text-black bg-white border border-gray-200 px-2 py-1 rounded hover:bg-gray-50 shadow-sm">+ Add FAQ</button>
-                </div>
-                <div class="md:col-span-3 grid grid-cols-1 gap-3">
-                    ${(s.serviceFaqs || []).map((faq, j) => `
-                        <div class="border border-gray-100 p-3 rounded bg-gray-50/50 relative pr-10">
-                            <button onclick="removeServiceFaq(${i}, ${j})" class="absolute top-3 right-3 text-gray-400 hover:text-red-500"><i class="fas fa-trash"></i></button>
-                            <input type="text" class="input-modern mb-2 font-medium" placeholder="Question" value="${(faq.q || '').replace(/"/g, '&quot;')}" oninput="siteData.detailedServices[${i}].serviceFaqs[${j}].q=this.value">
-                            <textarea class="input-modern text-sm" placeholder="Answer (HTML Allowed)" rows="3" oninput="siteData.detailedServices[${i}].serviceFaqs[${j}].a=this.value">${faq.a || ''}</textarea>
+                    <!-- RELATED BLOGS FILTER -->
+                    <div class="md:col-span-3 border-t border-gray-200 pt-5 mt-4">
+                        <span class="text-sm font-bold text-black uppercase tracking-wider bg-gray-100 px-3 py-1 rounded block w-fit mb-3">Related Blogs Filter</span>
+                        <div class="bg-gray-50 p-4 border border-gray-200 rounded">
+                            <label class="label-modern text-gray-600">Enter the Blog Category exactly as it appears in the Blog Posts to show the latest 3 related articles at the bottom of this service page.</label>
+                            <input type="text" class="input-modern font-semibold" placeholder="e.g. SEO, Social Media" value="${(s.relatedBlogCategory||'').replace(/"/g, '&quot;')}" oninput="siteData.detailedServices[${i}].relatedBlogCategory=this.value">
                         </div>
-                    `).join('')}
+                    </div>
+
                 </div>
             </div>
-        </div>
-    `).join('');
+        `).join('');
     }
 
     window.renderAboutPageValues = function() {
-    document.getElementById('ap-values-container').innerHTML = siteData.aboutPage.values.map((v, i) => `
+    document.getElementById('ap-values-container').innerHTML = (siteData.aboutPage?.values || []).map((v, i) => `
         <div class="bg-white border border-gray-200 rounded-xl p-5 relative group hover:border-gray-300 transition-colors animate-fade-in-up h-full">
         <button onclick="removeAboutValue(${i})" class="absolute top-2 right-2 p-2 text-gray-400 hover:text-red-500 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all z-10"><i class="fas fa-trash-alt text-lg md:text-base"></i></button>
         <div class="grid grid-cols-1 gap-4 pr-2 md:pr-6 mt-4 md:mt-0">
@@ -1184,7 +1148,7 @@
     }
 
     window.renderAboutPageTeam = function() {
-    document.getElementById('ap-team-container').innerHTML = siteData.aboutPage.team.map((t, i) => `
+    document.getElementById('ap-team-container').innerHTML = (siteData.aboutPage?.team || []).map((t, i) => `
         <div class="bg-white border border-gray-200 rounded-xl p-5 relative group hover:border-gray-300 transition-colors animate-fade-in-up h-full">
         <button onclick="removeAboutTeam(${i})" class="absolute top-2 right-2 p-2 text-gray-400 hover:text-red-500 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all z-10"><i class="fas fa-trash-alt text-lg md:text-base"></i></button>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pr-2 md:pr-6 mt-4 md:mt-0">
@@ -1205,37 +1169,93 @@
     `).join('');
     }
 
+    // NEW BLOG RENDER LOGIC WITH RICH TEXT
     window.renderBlogCards = function() {
-    document.getElementById('bp-cards-container').innerHTML = siteData.blogPage.blogs.map((b, i) => `
-        <div class="bg-white border border-gray-200 rounded-xl p-5 relative group hover:border-gray-300 transition-colors animate-fade-in-up h-full">
-        <button onclick="removeBlogCard(${i})" class="absolute top-2 right-2 p-2 text-gray-400 hover:text-red-500 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all z-10"><i class="fas fa-trash-alt text-lg md:text-base"></i></button>
-        <div class="grid grid-cols-1 gap-4 pr-2 md:pr-6 mt-4 md:mt-0">
-            <div><label class="label-modern">Title</label><input type="text" class="input-modern font-semibold" value="${(b.title || '').replace(/"/g, '&quot;')}" oninput="siteData.blogPage.blogs[${i}].title=this.value"></div>
-            <div><label class="label-modern">Link URL</label><input type="text" class="input-modern" value="${(b.link || '').replace(/"/g, '&quot;')}" oninput="siteData.blogPage.blogs[${i}].link=this.value"></div>
-            
-            <div class="border-t border-gray-100 pt-3 mt-1"><label class="label-modern text-gray-800 font-semibold mb-2">SEO Meta</label></div>
-            <div><label class="label-modern">Meta Title</label><input type="text" class="input-modern" value="${(b.metaTitle || '').replace(/"/g, '&quot;')}" oninput="siteData.blogPage.blogs[${i}].metaTitle=this.value"></div>
-            <div><label class="label-modern">Meta Description</label><input type="text" class="input-modern" value="${(b.metaDesc || '').replace(/"/g, '&quot;')}" oninput="siteData.blogPage.blogs[${i}].metaDesc=this.value"></div>
-            
-            <div class="md:col-span-2 border-t border-gray-100 pt-3 mt-1"><label class="label-modern text-gray-800 font-semibold mb-2">Content</label></div>
-            <div class="md:col-span-2"><label class="label-modern">Description</label><textarea class="input-modern" rows="3" oninput="siteData.blogPage.blogs[${i}].desc=this.value">${b.desc}</textarea></div>
-            <div>
-                <label class="label-modern">Image URL</label>
-                <div class="flex flex-col md:flex-row gap-2">
-                    <input type="text" class="input-modern flex-1" placeholder="Paste URL or click Upload ➔" value="${(b.image || '').replace(/"/g, '&quot;')}" oninput="siteData.blogPage.blogs[${i}].image=this.value">
-                    <label class="bg-gray-100 hover:bg-gray-200 border border-gray-200 text-gray-700 px-3 py-2.5 md:py-1 rounded cursor-pointer text-sm md:text-xs font-medium flex items-center justify-center gap-1 w-full md:w-auto">
-                        <i class="fas fa-upload"></i> Upload
-                        <input type="file" class="hidden" accept="image/*" onchange="handleImageUpload(this)">
-                    </label>
+        // Build the raw HTML structure first
+        const htmlString = (siteData.blogPage?.blogs || []).map((b, i) => `
+            <div class="bg-white border border-gray-300 rounded-xl p-6 relative group h-full shadow-sm">
+            <button onclick="removeBlogCard(${i})" class="absolute top-3 right-3 p-2 text-gray-400 hover:text-red-500 transition-all z-10 bg-white rounded-full border border-gray-100"><i class="fas fa-trash-alt"></i></button>
+            <div class="grid grid-cols-1 gap-4 pr-2 md:pr-8 mt-4 md:mt-0">
+                <div><label class="label-modern text-gray-800 font-bold">Article Title</label><input type="text" class="input-modern font-semibold" value="${(b.title || '').replace(/"/g, '&quot;')}" oninput="siteData.blogPage.blogs[${i}].title=this.value"></div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div><label class="label-modern text-gray-800">Category Filter</label><input type="text" class="input-modern" placeholder="e.g. SEO" value="${(b.category || '').replace(/"/g, '&quot;')}" oninput="siteData.blogPage.blogs[${i}].category=this.value"></div>
+                    <div><label class="label-modern">Link URL</label><input type="text" class="input-modern" value="${(b.link || '').replace(/"/g, '&quot;')}" oninput="siteData.blogPage.blogs[${i}].link=this.value"></div>
+                </div>
+                
+                <div class="border-t border-gray-100 pt-3 mt-1"><label class="label-modern text-gray-800 font-bold mb-2">SEO Meta</label></div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div><label class="label-modern">Meta Title</label><input type="text" class="input-modern" value="${(b.metaTitle || '').replace(/"/g, '&quot;')}" oninput="siteData.blogPage.blogs[${i}].metaTitle=this.value"></div>
+                    <div><label class="label-modern">Meta Description</label><input type="text" class="input-modern" value="${(b.metaDesc || '').replace(/"/g, '&quot;')}" oninput="siteData.blogPage.blogs[${i}].metaDesc=this.value"></div>
+                </div>
+                
+                <div class="border-t border-gray-100 pt-3 mt-1"><label class="label-modern text-gray-800 font-bold mb-2">Preview & Content</label></div>
+                
+                <div>
+                    <label class="label-modern">Short Preview / Summary (Shown in grids)</label>
+                    <textarea class="input-modern bg-gray-50 text-gray-700" rows="2" oninput="siteData.blogPage.blogs[${i}].shortDesc=this.value">${b.shortDesc || ''}</textarea>
+                </div>
+                
+                <div>
+                    <label class="label-modern text-blue-600 font-bold">Full Article Content (Rich Text Editor)</label>
+                    <!-- Container for Quill Editor -->
+                    <div id="quill-editor-blog-${i}" class="bg-white"></div>
+                </div>
+
+                <div class="mt-2">
+                    <label class="label-modern">Feature Image URL</label>
+                    <div class="flex flex-col md:flex-row gap-2">
+                        <input type="text" class="input-modern flex-1" placeholder="Paste URL or click Upload ➔" value="${(b.image || '').replace(/"/g, '&quot;')}" oninput="siteData.blogPage.blogs[${i}].image=this.value">
+                        <label class="bg-gray-200 hover:bg-gray-300 px-3 py-2 rounded cursor-pointer text-xs font-semibold flex items-center justify-center gap-1 w-full md:w-auto">
+                            <i class="fas fa-upload"></i> Upload
+                            <input type="file" class="hidden" accept="image/*" onchange="handleImageUpload(this)">
+                        </label>
+                    </div>
                 </div>
             </div>
-        </div>
-        </div>
-    `).join('');
+            </div>
+        `).join('');
+
+        document.getElementById('bp-cards-container').innerHTML = htmlString;
+
+        // Initialize Quill editors after elements are placed in the DOM
+        setTimeout(() => {
+            (siteData.blogPage?.blogs || []).forEach((b, i) => {
+                const editorId = `quill-editor-blog-${i}`;
+                const el = document.getElementById(editorId);
+                
+                if (el) {
+                    const quill = new Quill(el, {
+                        theme: 'snow',
+                        placeholder: 'Write your full blog post here...',
+                        modules: {
+                            toolbar: [
+                                [{ 'header': [1, 2, 3, false] }],
+                                ['bold', 'italic', 'underline', 'strike'],
+                                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                                ['link', 'image', 'video'],
+                                ['clean']
+                            ]
+                        }
+                    });
+
+                    // Set initial content securely
+                    quill.root.innerHTML = b.content || '';
+
+                    // Listen for changes and update main data object
+                    quill.on('text-change', function() {
+                        siteData.blogPage.blogs[i].content = quill.root.innerHTML;
+                    });
+                    
+                    // Track instance
+                    quillBlogInstances[i] = quill;
+                }
+            });
+        }, 100); // Slight delay ensures DOM is fully painted
     }
 
     window.renderCases = function() {
-    document.getElementById('cases-container').innerHTML = siteData.cases.map((c, i) => `
+    document.getElementById('cases-container').innerHTML = (siteData.cases || []).map((c, i) => `
         <div class="bg-white border border-gray-200 rounded-xl p-5 relative group hover:border-gray-300 transition-colors animate-fade-in-up h-full">
         <button onclick="removeCase(${i})" class="absolute top-2 right-2 p-2 text-gray-400 hover:text-red-500 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all z-10"><i class="fas fa-trash-alt text-lg md:text-base"></i></button>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pr-2 md:pr-6 mt-4 md:mt-0">
@@ -1263,7 +1283,7 @@
     }
 
     window.renderServices = function() {
-    document.getElementById('services-container').innerHTML = siteData.services.map((s, i) => `
+    document.getElementById('services-container').innerHTML = (siteData.services || []).map((s, i) => `
         <div class="bg-white border border-gray-200 rounded-xl p-5 relative group hover:border-gray-300 transition-colors animate-fade-in-up h-full">
         <button onclick="removeService(${i})" class="absolute top-2 right-2 p-2 text-gray-400 hover:text-red-500 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all z-10"><i class="fas fa-trash-alt text-lg md:text-base"></i></button>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pr-2 md:pr-6 mt-4 md:mt-0">
@@ -1276,7 +1296,7 @@
     }
 
     window.renderTestimonials = function() {
-    document.getElementById('testimonials-container').innerHTML = siteData.testimonials.map((t, i) => `
+    document.getElementById('testimonials-container').innerHTML = (siteData.testimonials || []).map((t, i) => `
         <div class="bg-white border border-gray-200 rounded-xl p-5 relative group hover:border-gray-300 transition-colors animate-fade-in-up h-full">
         <button onclick="removeTestimonial(${i})" class="absolute top-2 right-2 p-2 text-gray-400 hover:text-red-500 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all z-10"><i class="fas fa-trash-alt text-lg md:text-base"></i></button>
         <div class="grid grid-cols-1 gap-4 pr-2 md:pr-6 mt-4 md:mt-0">
@@ -1289,7 +1309,7 @@
     }
 
     window.renderFaqs = function() {
-    document.getElementById('faqs-container').innerHTML = siteData.faqs.map((f, i) => `
+    document.getElementById('faqs-container').innerHTML = (siteData.faqs || []).map((f, i) => `
         <div class="bg-white border border-gray-200 rounded-xl p-5 md:p-6 relative group hover:border-gray-300 transition-colors animate-fade-in-up h-full">
         <button onclick="removeFaq(${i})" class="absolute top-2 right-2 p-2 text-gray-400 hover:text-red-500 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all z-10"><i class="fas fa-trash-alt text-lg md:text-base"></i></button>
         <div class="grid grid-cols-1 gap-4 pr-2 md:pr-6 mt-4 md:mt-0">
@@ -1303,14 +1323,6 @@
     // 4) Array Operations
     window.addHeroSlide = function() { siteData.hero.push({ title: 'New Slide', desc: '', image: '', imageMobile: '' }); window.renderHeroForms(); }
     window.removeHeroSlide = function(i) { siteData.hero.splice(i, 1); window.renderHeroForms(); }
-    window.addDetailedService = function() { siteData.detailedServices.push({ id: "new-service", category: "Marketing", title: "New Service", shortDesc: "", features: [], ctas: [], serviceFaqs: [] }); window.renderDetailedServices(); }
-    window.removeDetailedService = function(i) { siteData.detailedServices.splice(i, 1); window.renderDetailedServices(); }
-    window.addServiceFeature = function(i) { siteData.detailedServices[i].features.push({ title: '', desc: '' }); window.renderDetailedServices(); };
-    window.removeServiceFeature = function(i, j) { siteData.detailedServices[i].features.splice(j, 1); window.renderDetailedServices(); };
-    window.addServiceCta = function(i) { siteData.detailedServices[i].ctas.push({ text: 'Button Text', link: '#' }); window.renderDetailedServices(); };
-    window.removeServiceCta = function(i, j) { siteData.detailedServices[i].ctas.splice(j, 1); window.renderDetailedServices(); };
-    window.addServiceFaq = function(i) { siteData.detailedServices[i].serviceFaqs.push({ q: 'Question?', a: 'Answer...' }); window.renderDetailedServices(); };
-    window.removeServiceFaq = function(i, j) { siteData.detailedServices[i].serviceFaqs.splice(j, 1); window.renderDetailedServices(); };
     window.addDynamicPage = function() { siteData.dynamicPages.push({ slug: "new-page", title: "New Page", heading: "", subTitle: "", image: "", content: "", metaTitle: "", metaDesc: "" }); window.renderDynamicPages(); }
     window.removeDynamicPage = function(i) { siteData.dynamicPages.splice(i, 1); window.renderDynamicPages(); }
     window.addOffer = function() { siteData.offers.push({ title: 'New Offer', text: '', link: '#', bgImage: '' }); window.renderOffers(); }
@@ -1321,7 +1333,7 @@
     window.removeAboutValue = function(i) { siteData.aboutPage.values.splice(i, 1); window.renderAboutPageValues(); }
     window.addAboutTeam = function() { siteData.aboutPage.team.push({ name: 'Name', role: 'Role', image: '' }); window.renderAboutPageTeam(); }
     window.removeAboutTeam = function(i) { siteData.aboutPage.team.splice(i, 1); window.renderAboutPageTeam(); }
-    window.addBlogCard = function() { siteData.blogPage.blogs.push({ title: 'Title', desc: '', image: '', link: '#', metaTitle: "", metaDesc: "" }); window.renderBlogCards(); }
+    window.addBlogCard = function() { siteData.blogPage.blogs.push({ title: 'Title', category: '', shortDesc: '', content: '', image: '', link: '#', metaTitle: "", metaDesc: "" }); window.renderBlogCards(); }
     window.removeBlogCard = function(i) { siteData.blogPage.blogs.splice(i, 1); window.renderBlogCards(); }
     window.addCase = function() { siteData.cases.push({ tag: 'Tag', title: 'Case', cardDesc: '', image: '' }); window.renderCases(); }
     window.removeCase = function(i) { siteData.cases.splice(i, 1); window.renderCases(); }
@@ -1332,24 +1344,57 @@
     window.addFaq = function() { siteData.faqs.push({ q: 'Question?', a: 'Answer...' }); window.renderFaqs(); }
     window.removeFaq = function(i) { siteData.faqs.splice(i, 1); window.renderFaqs(); }
 
+    // Service Explicit Schema Ops
+    window.addDetailedService = function() { 
+        siteData.detailedServices.push({ 
+            id: "new-service", category: "Marketing", navIcon: "fa-solid fa-star", title: "New Service", shortDesc: "", 
+            metaTitle: "", metaDesc: "",
+            features1: [], cta1: {text: '', link: ''},
+            features2: [], cta2: {text: '', link: ''},
+            features3: [], cta3: {text: '', link: ''},
+            headingImageSection: {heading: '', image: ''},
+            serviceFaqs: [], relatedBlogCategory: ''
+        }); 
+        window.renderDetailedServices(); 
+    }
+    window.removeDetailedService = function(i) { siteData.detailedServices.splice(i, 1); window.renderDetailedServices(); }
+    window.addServiceFaq = function(i) { siteData.detailedServices[i].serviceFaqs.push({ q: 'Question?', a: 'Answer...' }); window.renderDetailedServices(); };
+    window.removeServiceFaq = function(i, j) { siteData.detailedServices[i].serviceFaqs.splice(j, 1); window.renderDetailedServices(); };
+    
+    // Dynamic Sub-Feature Ops
+    window.addServiceFeatureSet = function(serviceIndex, setNumber) {
+        let arrayName = 'features' + setNumber;
+        if(siteData.detailedServices[serviceIndex][arrayName].length < 6) {
+            siteData.detailedServices[serviceIndex][arrayName].push({title: 'New Feature', desc: '', image: ''});
+            window.renderDetailedServices();
+        } else {
+            window.showModal('Notice', `Maximum 6 items allowed in Feature Set ${setNumber}.`);
+        }
+    }
+    window.removeServiceFeatureSet = function(serviceIndex, setNumber, featureIndex) {
+        let arrayName = 'features' + setNumber;
+        siteData.detailedServices[serviceIndex][arrayName].splice(featureIndex, 1);
+        window.renderDetailedServices();
+    }
+
     window.updateVis = function(key, val) { siteData.sections[key] = val; }
 
     window.switchTab = function(id) {
-    document.querySelectorAll('.tab-content').forEach(e => e.classList.remove('active'));
-    document.querySelectorAll('.nav-link').forEach(e => {
-        e.classList.remove('bg-gray-100', 'text-black', 'active-nav');
-        e.classList.add('text-gray-600', 'hover:bg-gray-50', 'hover:text-black');
-        e.querySelector('i').classList.replace('text-gray-500', 'text-gray-400');
-    });
-    document.getElementById(id).classList.add('active');
-    const nav = document.querySelector(`.nav-link[data-tab="${id}"]`);
-    if(nav) {
-        nav.classList.add('bg-gray-100', 'text-black', 'active-nav');
-        nav.classList.remove('text-gray-600', 'hover:bg-gray-50');
-        nav.querySelector('i').classList.replace('text-gray-400', 'text-gray-500');
-        document.getElementById('current-tab-title').innerHTML = nav.innerText.trim();
-    }
-    window.closeSidebarOnMobile();
+        document.querySelectorAll('.tab-content').forEach(e => e.classList.remove('active'));
+        document.querySelectorAll('.nav-link').forEach(e => {
+            e.classList.remove('bg-gray-100', 'text-black', 'active-nav');
+            e.classList.add('text-gray-600', 'hover:bg-gray-50', 'hover:text-black');
+            e.querySelector('i').classList.replace('text-gray-500', 'text-gray-400');
+        });
+        document.getElementById(id).classList.add('active');
+        const nav = document.querySelector(`.nav-link[data-tab="${id}"]`);
+        if(nav) {
+            nav.classList.add('bg-gray-100', 'text-black', 'active-nav');
+            nav.classList.remove('text-gray-600', 'hover:bg-gray-50');
+            nav.querySelector('i').classList.replace('text-gray-400', 'text-gray-500');
+            document.getElementById('current-tab-title').innerHTML = nav.innerText.trim();
+        }
+        window.closeSidebarOnMobile();
     }
   </script>
 
@@ -1411,20 +1456,19 @@
                 siteData = fetchedData;
                 console.log("Firebase data loaded successfully.");
             } else {
-                console.log("No global config found in Firebase. Creating one now from defaultSiteData...");
+                console.log("No global config found in Firebase. Creating one now from empty default schema...");
                 siteData = JSON.parse(JSON.stringify(defaultSiteData));
             }
 
-            // --- DATA MIGRATION & SANITIZATION ---
-            // Ensure critical structure to avoid UI crashes
+            // --- DATA MIGRATION & SANITIZATION (Safety Fallbacks) ---
             if (!siteData.sections) siteData.sections = {};
             if (!siteData.about) siteData.about = {};
             if (!siteData.homeAbout) siteData.homeAbout = {};
             if (!siteData.aboutPage) siteData.aboutPage = {};
             if (!siteData.blogPage) siteData.blogPage = {};
             if (!siteData.metaDetails) siteData.metaDetails = { home: {}, about: {}, services: {}, blog: {}, contact: {} };
-            if (!siteData.servicesPage) siteData.servicesPage = { heroTitle: "OUR SERVICES", heroDesc: "Our marketing solutions are designed to help businesses build visibility, establish trust, and convert audiences through consistent and data-driven strategies." };
-            if (!siteData.contactPage) siteData.contactPage = { address: "OFFICE 21, TAGORE NAGAR, JAIPUR", phone: "+919001955232", email: "info.movictel@gmail.com", mapEmbed: "" };
+            if (!siteData.servicesPage) siteData.servicesPage = { heroTitle: "", heroDesc: "" };
+            if (!siteData.contactPage) siteData.contactPage = { address: "", phone: "", email: "", mapEmbed: "" };
 
             if (!Array.isArray(siteData.aboutPage.values)) siteData.aboutPage.values = [];
             if (!Array.isArray(siteData.aboutPage.team)) siteData.aboutPage.team = [];
@@ -1437,15 +1481,34 @@
                 }
             });
 
-            // Deep Migration for Legacy "detailedServices" Arrays
+            // Deep Migration for Legacy "detailedServices" Arrays to New Schema
             siteData.detailedServices.forEach(s => {
-                if (!s.features) {
-                    s.features = [];
-                    if (s.f1T || s.f1D) s.features.push({ title: s.f1T || '', desc: s.f1D || '' });
-                    if (s.f2T || s.f2D) s.features.push({ title: s.f2T || '', desc: s.f2D || '' });
-                    if (s.f3T || s.f3D) s.features.push({ title: s.f3T || '', desc: s.f3D || '' });
+                // Migrate old generic features to features1
+                if (!s.features1) {
+                    s.features1 = s.features && Array.isArray(s.features) ? [...s.features] : [];
+                    // Handle very old hardcoded object properties if present
+                    if(s.features1.length === 0) {
+                        if (s.f1T || s.f1D) s.features1.push({ title: s.f1T || '', desc: s.f1D || '', image: '' });
+                        if (s.f2T || s.f2D) s.features1.push({ title: s.f2T || '', desc: s.f2D || '', image: '' });
+                        if (s.f3T || s.f3D) s.features1.push({ title: s.f3T || '', desc: s.f3D || '', image: '' });
+                    }
                 }
-                if (!s.ctas) s.ctas = [];
+                
+                // Initialize required new schema keys
+                if (!s.features2) s.features2 = [];
+                if (!s.features3) s.features3 = [];
+                
+                // Migrate old generic CTA array to explicit CTA objects
+                if (!s.cta1) s.cta1 = {text: '', link: ''};
+                if (!s.cta2) s.cta2 = {text: '', link: ''};
+                if (!s.cta3) s.cta3 = {text: '', link: ''};
+                if (s.ctas && Array.isArray(s.ctas) && s.ctas.length > 0 && s.cta1.text === '') {
+                     s.cta1 = s.ctas[0];
+                }
+
+                if (!s.headingImageSection) s.headingImageSection = {heading: '', image: ''};
+                if (!s.relatedBlogCategory) s.relatedBlogCategory = '';
+
                 if (!s.serviceFaqs) s.serviceFaqs = [];
                 if (!s.metaTitle) s.metaTitle = '';
                 if (!s.metaDesc) s.metaDesc = '';
@@ -1459,9 +1522,12 @@
             siteData.blogPage.blogs.forEach(b => {
                 if (!b.metaTitle) b.metaTitle = '';
                 if (!b.metaDesc) b.metaDesc = '';
+                if (!b.shortDesc) b.shortDesc = b.desc || '';
+                if (!b.content) b.content = b.desc || '';
+                if (!b.category) b.category = '';
             });
 
-            // Save the populated default schema back to Firestore if it was missing
+            // Save the populated schema back to Firestore if it was newly created
             if (!docSnap.exists()) {
                 await setDoc(docRef, siteData);
             }
