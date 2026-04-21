@@ -3842,3 +3842,47 @@ nav ul.dropdown-menu li a, nav ul.submenu li a {
 }
 
 
+/* ... existing code ... */
+
+/* ==========================================
+   FAQ SECTION TRUNCATION FIX
+   ========================================== */
+.faq-item {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+}
+
+.faq-answer,
+.faq-answer p,
+.faq-answer div {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    text-overflow: clip !important;
+    -webkit-line-clamp: unset !important;
+    -webkit-box-orient: unset !important;
+    display: block; /* Allows natural block expansion */
+}
+
+.carousel-track { 
+  display: flex !important; 
+  flex-wrap: nowrap !important; 
+  overflow-x: auto !important; /* Changed from visible to auto to allow JS scrolling */
+  scroll-behavior: smooth !important; 
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch; 
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
+  width: 100%;
+  gap: 20px; /* Added gap to prevent cards from overlapping */
+}
+.carousel-track::-webkit-scrollbar { display: none; }
+.carousel-track .case-item { 
+  flex: 0 0 350px !important; /* Forced exact width so cards never squish */
+  max-width: 85vw !important; /* Keeps it responsive on mobile */
+  scroll-snap-align: start; 
+}
