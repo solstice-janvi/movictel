@@ -418,9 +418,10 @@
   
   <!-- ==================== DYNAMIC INDIVIDUAL DETAIL VIEW ==================== -->
   <div id="detail-view">
-    <section class="service-hero">
+  <section class="service-hero" id="dynamic-service-hero">
       <h1 id="detail-title">Service Name</h1>
       <p id="detail-description">Service description goes here.</p>
+      <div id="detail-hero-cta"></div>
     </section>
 
     <section class="service-content">
@@ -428,35 +429,41 @@
           <a href="javascript:void(0)" onclick="renderCatalogView()" class="back-btn"><i class="fa-solid fa-arrow-left-long"></i> Back to All Services</a>
       </div>
       
-      <!-- Feature Set 1 -->
+      <!-- 2. Types of Social Media Marketing Services -->
       <div id="detail-set-1-wrapper">
-          <h2 id="detail-set-1-title" style="display:none;">Why Choose This Service?</h2>
+          <h2 id="detail-set-1-title" style="display:none; text-align: center; margin-bottom: 40px; color: var(--black);"></h2>
           <div class="features" id="detail-features-1"></div>
           <div class="dynamic-ctas-container" id="detail-cta-1"></div>
       </div>
 
-      <!-- Feature Set 2 -->
+      <!-- 3. Why Choose This Service? -->
       <div id="detail-set-2-wrapper" style="margin-top: 80px; display: none;">
+          <h2 id="detail-set-2-title" style="text-align: center; margin-bottom: 40px; color: var(--black);"></h2>
           <div class="features" id="detail-features-2"></div>
           <div class="dynamic-ctas-container" id="detail-cta-2"></div>
       </div>
 
-      <!-- Feature Set 3 (Borderless) -->
+      <!-- 4. Company Workflow -->
       <div id="detail-set-3-wrapper" style="margin-top: 80px; display: none;">
+          <h2 id="detail-set-3-title" style="text-align: center; margin-bottom: 40px; color: var(--black);"></h2>
           <div class="features" id="detail-features-3"></div>
           <div class="dynamic-ctas-container" id="detail-cta-3"></div>
       </div>
 
-      <!-- Heading + Image Section -->
+      <!-- 5. Why We Are Best Section -->
       <div id="detail-image-section-wrapper" style="margin-top: 80px; display: none; flex-wrap: wrap; gap: 40px; align-items: center;">
           <div style="flex: 1; min-width: 300px;">
               <h2 id="detail-section-heading" style="text-align: left; margin-bottom: 20px; color: var(--black);"></h2>
+              <p id="detail-section-desc" style="color: #475569; line-height: 1.7; margin-bottom: 20px;"></p>
+              <ul id="detail-section-highlights" style="list-style: none; padding: 0; margin-bottom: 30px; color: #475569; line-height: 1.8;"></ul>
+              <div id="detail-section-cta"></div>
           </div>
           <div style="flex: 1; min-width: 300px; text-align: center;">
               <img id="detail-section-img" src="" alt="Service Display" style="max-width: 100%; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
           </div>
       </div>
     </section>
+
 
     <!-- Service Specific FAQs -->
     <section class="service-faq-section" id="service-faq-wrapper">
@@ -631,7 +638,12 @@
                       features3: s.features3 || [],
                       cta3: s.cta3 || null,
                       
-                      headingImageSection: s.headingImageSection || {heading: '', image: ''},
+                      heroImage: s.heroImage || "",
+                      heroCta: s.heroCta || null,
+                      section1Heading: s.section1Heading || "Types of Social Media Marketing Services",
+                      section2Heading: s.section2Heading || "Why Choose This Service?",
+                      section3Heading: s.section3Heading || "Company Workflow",
+                      whyBestSection: s.whyBestSection || s.headingImageSection || {heading: '', desc: '', image: '', cta: {text:'', link:''}, highlights: ''},
                       relatedBlogCategory: s.relatedBlogCategory || '',
 
                       serviceFaqs: s.serviceFaqs || [],
@@ -743,93 +755,189 @@
     document.getElementById('catalog-view').style.display = 'none';
     document.getElementById('detail-view').style.display = 'block';
 
-    document.getElementById('detail-title').innerText = data.title;
-    document.getElementById('detail-description').innerText = data.description;
-    document.getElementById('form-service-type').value = data.title;
+    document.getElementById('detail-title').innerText = data.title || '';
+    document.getElementById('detail-description').innerText = data.description || '';
+    document.getElementById('form-service-type').value = data.title || 'General Service Request';
 
-    /* ---- 1. FEATURES SET 1 & CTA ---- */
+    // Set dynamic Hero Background & CTA
+    const heroSection = document.getElementById('dynamic-service-hero');
+    if (data.heroImage) {
+        heroSection.style.backgroundImage = `linear-gradient(to bottom, rgba(1, 142, 236, 0.8), rgba(1, 95, 168, 0.9)), url("${data.heroImage}")`;
+    } else {
+        heroSection.style.backgroundImage = `linear-gradient(to bottom, rgba(1, 142, 236, 0.8), rgba(1, 95, 168, 0.9)), url("images/3048207.jpg")`;
+    }
+    
+    const heroCtaContainer = document.getElementById('detail-hero-cta');
+    if (data.heroCta && data.heroCta.text) {
+        heroCtaContainer.innerHTML = `<a href="${data.heroCta.link || '#'}" class="btn-custom-cta" style="margin-top: 25px; display: inline-block;">${data.heroCta.text}</a>`;
+    } else {
+        heroCtaContainer.innerHTML = '';
+    }
+
+    /* ---- 2. TYPES OF SERVICES (Feature Set 1) ---- */
     const wrapper1 = document.getElementById('detail-set-1-wrapper');
     const f1Container = document.getElementById('detail-features-1');
     const cta1Container = document.getElementById('detail-cta-1');
     f1Container.innerHTML = '';
     cta1Container.innerHTML = '';
 
-    if (data.features1 && data.features1.length > 0) {
+    const hasFeatures1 = data.features1 && data.features1.length > 0;
+    const hasCta1 = data.cta1 && data.cta1.text;
+    const hasHeading1 = data.section1Heading && data.section1Heading.trim() !== "";
+
+    if (hasFeatures1 || hasCta1 || hasHeading1) {
         wrapper1.style.display = 'block';
-        document.getElementById('detail-set-1-title').style.display = 'block';
-        data.features1.forEach(f => {
-            f1Container.innerHTML += `
-              <div class="feature-card">
-                ${f.image ? `<img src="${f.image}" alt="" style="max-width: 60px; margin-bottom: 20px; border-radius: 8px; display: block; margin-left: auto; margin-right: auto;">` : ''}
-                <h3>${f.title || ''}</h3>
-                <p>${f.desc || ''}</p>
-              </div>
-            `;
-        });
-        if (data.cta1 && data.cta1.text && data.cta1.link) {
-            cta1Container.innerHTML = `<a href="${data.cta1.link}" class="btn-custom-cta">${data.cta1.text}</a>`;
+        const titleEl1 = document.getElementById('detail-set-1-title');
+        
+        if (hasHeading1) {
+            titleEl1.style.display = 'block';
+            titleEl1.innerText = data.section1Heading;
+        } else {
+            titleEl1.style.display = 'none';
+        }
+
+        if (hasFeatures1) {
+            data.features1.forEach(f => {
+                f1Container.innerHTML += `
+                  <div class="feature-card" ${f.link ? `onclick="window.location.href='${f.link}'" style="cursor:pointer;"` : ''}>
+                    ${f.image ? `<img src="${f.image}" alt="" style="max-width: 60px; margin-bottom: 20px; border-radius: 8px; display: block; margin-left: auto; margin-right: auto;">` : ''}
+                    <h3>${f.title || ''}</h3>
+                    <p>${f.desc || ''}</p>
+                    ${f.link ? `<a href="${f.link}" style="color: var(--ig-blue); font-weight: 600; display: inline-block; margin-top: 15px;">Read More <i class="fa-solid fa-arrow-right"></i></a>` : ''}
+                  </div>
+                `;
+            });
+        }
+        
+        if (hasCta1) {
+            cta1Container.innerHTML = `<a href="${data.cta1.link || '#'}" class="btn-custom-cta">${data.cta1.text}</a>`;
         }
     } else {
         wrapper1.style.display = 'none';
-        document.getElementById('detail-set-1-title').style.display = 'none';
     }
 
-    /* ---- 2. FEATURES SET 2 & CTA ---- */
+    /* ---- 3. WHY CHOOSE THIS SERVICE (Feature Set 2) ---- */
     const wrapper2 = document.getElementById('detail-set-2-wrapper');
     const f2Container = document.getElementById('detail-features-2');
     const cta2Container = document.getElementById('detail-cta-2');
     f2Container.innerHTML = '';
     cta2Container.innerHTML = '';
 
-    if (data.features2 && data.features2.length > 0) {
+    const hasFeatures2 = data.features2 && data.features2.length > 0;
+    const hasCta2 = data.cta2 && data.cta2.text;
+    const hasHeading2 = data.section2Heading && data.section2Heading.trim() !== "";
+
+    if (hasFeatures2 || hasCta2 || hasHeading2) {
         wrapper2.style.display = 'block';
-        data.features2.forEach(f => {
-            f2Container.innerHTML += `
-              <div class="feature-card">
-                ${f.image ? `<img src="${f.image}" alt="" style="max-width: 60px; margin-bottom: 20px; border-radius: 8px; display: block; margin-left: auto; margin-right: auto;">` : ''}
-                <h3>${f.title || ''}</h3>
-                <p>${f.desc || ''}</p>
-              </div>
-            `;
-        });
-        if (data.cta2 && data.cta2.text && data.cta2.link) {
-            cta2Container.innerHTML = `<a href="${data.cta2.link}" class="btn-custom-cta">${data.cta2.text}</a>`;
+        const titleEl2 = document.getElementById('detail-set-2-title');
+        
+        if (hasHeading2) {
+            titleEl2.style.display = 'block';
+            titleEl2.innerText = data.section2Heading;
+        } else {
+            titleEl2.style.display = 'none';
+        }
+
+        if (hasFeatures2) {
+            data.features2.forEach(f => {
+                f2Container.innerHTML += `
+                  <div class="feature-card">
+                    ${f.image ? `<img src="${f.image}" alt="" style="max-width: 60px; margin-bottom: 20px; border-radius: 8px; display: block; margin-left: auto; margin-right: auto;">` : ''}
+                    <h3>${f.title || ''}</h3>
+                    <p>${f.desc || ''}</p>
+                  </div>
+                `;
+            });
+        }
+        
+        if (hasCta2) {
+            cta2Container.innerHTML = `<a href="${data.cta2.link || '#'}" class="btn-custom-cta">${data.cta2.text}</a>`;
         }
     } else {
         wrapper2.style.display = 'none';
     }
 
-    /* ---- 3. FEATURES SET 3 (BORDERLESS) & CTA ---- */
+    /* ---- 4. COMPANY WORKFLOW (Feature Set 3) ---- */
     const wrapper3 = document.getElementById('detail-set-3-wrapper');
     const f3Container = document.getElementById('detail-features-3');
     const cta3Container = document.getElementById('detail-cta-3');
     f3Container.innerHTML = '';
     cta3Container.innerHTML = '';
 
-    if (data.features3 && data.features3.length > 0) {
+    const hasFeatures3 = data.features3 && data.features3.length > 0;
+    const hasCta3 = data.cta3 && data.cta3.text;
+    const hasHeading3 = data.section3Heading && data.section3Heading.trim() !== "";
+
+    if (hasFeatures3 || hasCta3 || hasHeading3) {
         wrapper3.style.display = 'block';
-        data.features3.forEach(f => {
-            f3Container.innerHTML += `
-              <div class="feature-card borderless-card">
-                ${f.image ? `<img src="${f.image}" alt="" style="max-width: 60px; margin-bottom: 20px; border-radius: 8px; display: block; margin-left: auto; margin-right: auto;">` : ''}
-                <h3>${f.title || ''}</h3>
-                <p>${f.desc || ''}</p>
-              </div>
-            `;
-        });
-        if (data.cta3 && data.cta3.text && data.cta3.link) {
-            cta3Container.innerHTML = `<a href="${data.cta3.link}" class="btn-custom-cta">${data.cta3.text}</a>`;
+        const titleEl3 = document.getElementById('detail-set-3-title');
+        
+        if (hasHeading3) {
+            titleEl3.style.display = 'block';
+            titleEl3.innerText = data.section3Heading;
+        } else {
+            titleEl3.style.display = 'none';
+        }
+
+        if (hasFeatures3) {
+            data.features3.forEach(f => {
+                f3Container.innerHTML += `
+                  <div class="feature-card borderless-card">
+                    ${f.image ? `<img src="${f.image}" alt="" style="max-width: 60px; margin-bottom: 20px; border-radius: 8px; display: block; margin-left: auto; margin-right: auto;">` : ''}
+                    <h3>${f.title || ''}</h3>
+                    <p>${f.desc || ''}</p>
+                  </div>
+                `;
+            });
+        }
+        
+        if (hasCta3) {
+            cta3Container.innerHTML = `<a href="${data.cta3.link || '#'}" class="btn-custom-cta">${data.cta3.text}</a>`;
         }
     } else {
         wrapper3.style.display = 'none';
     }
 
-    /* ---- 4. HEADING + IMAGE SECTION ---- */
+    /* ---- 5. WHY WE ARE BEST SECTION ---- */
     const imgWrapper = document.getElementById('detail-image-section-wrapper');
-    if (data.headingImageSection && data.headingImageSection.heading && data.headingImageSection.image) {
+    const bestData = data.whyBestSection;
+    
+    const hasBestHeading = bestData && bestData.heading && bestData.heading.trim() !== '';
+    const hasBestDesc = bestData && bestData.desc && bestData.desc.trim() !== '';
+    const hasBestHighlights = bestData && bestData.highlights && bestData.highlights.trim() !== '';
+    const hasBestImage = bestData && bestData.image && bestData.image.trim() !== '';
+    const hasBestCta = bestData && bestData.cta && bestData.cta.text;
+
+    if (hasBestHeading || hasBestDesc || hasBestHighlights || hasBestImage || hasBestCta) {
         imgWrapper.style.display = 'flex';
-        document.getElementById('detail-section-heading').innerText = data.headingImageSection.heading;
-        document.getElementById('detail-section-img').src = data.headingImageSection.image;
+        
+        const headingEl = document.getElementById('detail-section-heading');
+        if (hasBestHeading) { headingEl.style.display = 'block'; headingEl.innerText = bestData.heading; } else { headingEl.style.display = 'none'; }
+        
+        const imgEl = document.getElementById('detail-section-img');
+        if (hasBestImage) { imgEl.style.display = 'block'; imgEl.src = bestData.image; } else { imgEl.style.display = 'none'; }
+        
+        const descEl = document.getElementById('detail-section-desc');
+        if (hasBestDesc) { descEl.style.display = 'block'; descEl.innerText = bestData.desc; } else { descEl.style.display = 'none'; }
+        
+        const hlContainer = document.getElementById('detail-section-highlights');
+        hlContainer.innerHTML = '';
+        if (hasBestHighlights) {
+            hlContainer.style.display = 'block';
+            const lines = bestData.highlights.split('\n').filter(l => l.trim() !== '');
+            lines.forEach(l => {
+                hlContainer.innerHTML += `<li style="margin-bottom:8px;"><i class="fa-solid fa-check-circle" style="color: var(--ig-blue); margin-right: 10px;"></i> ${l}</li>`;
+            });
+        } else {
+            hlContainer.style.display = 'none';
+        }
+        
+        const ctaContainer = document.getElementById('detail-section-cta');
+        if (hasBestCta) {
+            ctaContainer.innerHTML = `<a href="${bestData.cta.link || '#'}" class="btn-custom-cta">${bestData.cta.text}</a>`;
+        } else {
+            ctaContainer.innerHTML = '';
+        }
     } else {
         imgWrapper.style.display = 'none';
     }
