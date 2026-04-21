@@ -564,3 +564,49 @@ document.addEventListener("DOMContentLoaded", function () {
     setTimeout(updateCarousel, 500);
   });
 });
+
+
+    // ... existing code ...
+  // Clone buttons to strip old duplicate event listeners attached from index.html inline scripts
+  if (rightBtn) {
+    const newRight = rightBtn.cloneNode(true);
+    rightBtn.parentNode.replaceChild(newRight, rightBtn);
+    newRight.addEventListener("click", function (e) {
+      e.preventDefault();
+      const totalCards = Array.from(caseTrack.querySelectorAll(".case-item")).filter(el => el.style.display !== 'none').length;
+      if (totalCards > 0) {
+        currentIndex = (currentIndex + 1) % totalCards;
+        updateCarousel();
+      }
+
+       if (leftBtn) {
+    const newLeft = leftBtn.cloneNode(true);
+    leftBtn.parentNode.replaceChild(newLeft, leftBtn);
+    newLeft.addEventListener("click", function (e) {
+      e.preventDefault();
+      const totalCards = Array.from(caseTrack.querySelectorAll(".case-item")).filter(el => el.style.display !== 'none').length;
+      if (totalCards > 0) {
+        currentIndex = (currentIndex - 1 + totalCards) % totalCards;
+        updateCarousel();
+      }
+    });
+  }
+
+  // --- UPDATED FAQ LOGIC (Fixes Truncation) ---
+  const faqQuestions = document.querySelectorAll('.faq-question');
+  faqQuestions.forEach(question => {
+    question.addEventListener('click', () => {
+      question.classList.toggle('active');
+      const answer = question.nextElementSibling;
+      if (question.classList.contains('active')) {
+        // FIX: Allow full expansion instead of scrollHeight clipping
+        answer.style.maxHeight = "3000px"; 
+      } else {
+        answer.style.maxHeight = null;
+      }
+    });
+  });
+  
+});
+  }
+  // End of DOMContentLoaded
