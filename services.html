@@ -273,10 +273,25 @@
       display: none;
       color: #475569;
       line-height: 1.7;
+      /* FIX: Ensure answer content does not truncate */
+      height: auto !important;
+      max-height: none !important;
+      overflow: visible !important;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
     }
     .service-faq-question.active + .service-faq-answer { display: block; }
     .service-faq-question.active .icon { transform: rotate(45deg); color: var(--ig-blue); }
     .service-faq-question .icon { transition: transform 0.3s; font-size: 1.2rem; color: #94a3b8; }
+
+    /* Layout Specific Structural Classes (Maintains styling without CSS changes) */
+    .borderless-card {
+        border: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        padding-top: 15px !important;
+        padding-bottom: 15px !important;
+    }
 
     /* Footer Styles */
     .footer-collapsible-wrapper { display: block; width: 100%; }
@@ -320,7 +335,7 @@
       <ul class="menu">
         <li><a href="index.html">Home</a></li>
         <li class="dropdown">
-          <a href="javascript:void(0)" onclick="showCatalog()">Services</a>
+          <a href="javascript:void(0)" onclick="renderCatalogView()">Services</a>
           <ul class="dropdown-menu">
             <li class="has-submenu">
               <a href="#"><i class="fa-solid fa-bullhorn"></i>Marketing</a>
@@ -410,19 +425,51 @@
 
     <section class="service-content">
       <div style="text-align: left;">
-          <a href="javascript:void(0)" onclick="showCatalog()" class="back-btn"><i class="fa-solid fa-arrow-left-long"></i> Back to All Services</a>
+          <a href="javascript:void(0)" onclick="renderCatalogView()" class="back-btn"><i class="fa-solid fa-arrow-left-long"></i> Back to All Services</a>
       </div>
-      <h2>Why Choose This Service?</h2>
-      <div class="features" id="detail-features"></div>
+      
+      <!-- Feature Set 1 -->
+      <div id="detail-set-1-wrapper">
+          <h2 id="detail-set-1-title" style="display:none;">Why Choose This Service?</h2>
+          <div class="features" id="detail-features-1"></div>
+          <div class="dynamic-ctas-container" id="detail-cta-1"></div>
+      </div>
 
-      <!-- Multiple CTAs dynamically populate here -->
-      <div class="dynamic-ctas-container" id="detail-ctas"></div>
+      <!-- Feature Set 2 -->
+      <div id="detail-set-2-wrapper" style="margin-top: 80px; display: none;">
+          <div class="features" id="detail-features-2"></div>
+          <div class="dynamic-ctas-container" id="detail-cta-2"></div>
+      </div>
+
+      <!-- Feature Set 3 (Borderless) -->
+      <div id="detail-set-3-wrapper" style="margin-top: 80px; display: none;">
+          <div class="features" id="detail-features-3"></div>
+          <div class="dynamic-ctas-container" id="detail-cta-3"></div>
+      </div>
+
+      <!-- Heading + Image Section -->
+      <div id="detail-image-section-wrapper" style="margin-top: 80px; display: none; flex-wrap: wrap; gap: 40px; align-items: center;">
+          <div style="flex: 1; min-width: 300px;">
+              <h2 id="detail-section-heading" style="text-align: left; margin-bottom: 20px; color: var(--black);"></h2>
+          </div>
+          <div style="flex: 1; min-width: 300px; text-align: center;">
+              <img id="detail-section-img" src="" alt="Service Display" style="max-width: 100%; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+          </div>
+      </div>
     </section>
 
     <!-- Service Specific FAQs -->
     <section class="service-faq-section" id="service-faq-wrapper">
         <h2>Frequently Asked Questions</h2>
         <div id="detail-faqs"></div>
+    </section>
+
+    <!-- Related Blogs Section -->
+    <section class="service-section" id="related-blogs-wrapper" style="display: none; background: transparent; border-top: none; padding-top: 20px; max-width: 1200px; margin: auto;">
+        <div class="container">
+            <h2 style="font-size: 2.2rem; color: var(--black); text-align: center; margin-bottom: 40px;">Related Articles</h2>
+            <div class="subservice-grid" id="detail-related-blogs"></div>
+        </div>
     </section>
 
     <!-- New Horizontal Contact Form -->
@@ -516,7 +563,8 @@
   });
 
   // 1. SERVICES OBJECT (Populated Dynamically by Firebase)
-  let servicesData = {};
+  // Renamed from servicesData to window.pageServicesMap to prevent conflict with older local scripts
+  window.pageServicesMap = {};
 
   // 1.5 CMS DATA INJECTION
   document.addEventListener('firebaseDataLoaded', (e) => {
@@ -543,22 +591,49 @@
 
           if(data.detailedServices && Array.isArray(data.detailedServices)) {
               
-              servicesData = {};
+              window.pageServicesMap = {};
               
               data.detailedServices.forEach(s => {
-                  // Merge legacy features and unlimited array features
-                  let mergedFeatures = s.features ? [...s.features] : [];
-                  if(!s.features || s.features.length === 0) {
-                      if(s.f1T) mergedFeatures.push({title: s.f1T, desc: s.f1D});
-                      if(s.f2T) mergedFeatures.push({title: s.f2T, desc: s.f2D});
-                      if(s.f3T) mergedFeatures.push({title: s.f3T, desc: s.f3D});
+                  
+                  // Legacy data fallback construction
+                  let legacyFeatures = [];
+                  if (s.features1 && s.features1.length > 0) {
+                      legacyFeatures = s.features1;
+                  } else if (s.features && Array.isArray(s.features) && s.features.length > 0) {
+                      legacyFeatures = s.features;
+                  } else {
+                      if (s.f1T || s.f1D) legacyFeatures.push({ title: s.f1T || '', desc: s.f1D || '', image: '' });
+                      if (s.f2T || s.f2D) legacyFeatures.push({ title: s.f2T || '', desc: s.f2D || '', image: '' });
+                      if (s.f3T || s.f3D) legacyFeatures.push({ title: s.f3T || '', desc: s.f3D || '', image: '' });
+                      if (s.f4T || s.f4D) legacyFeatures.push({ title: s.f4T || '', desc: s.f4D || '', image: '' });
+                      if (s.f5T || s.f5D) legacyFeatures.push({ title: s.f5T || '', desc: s.f5D || '', image: '' });
+                      if (s.f6T || s.f6D) legacyFeatures.push({ title: s.f6T || '', desc: s.f6D || '', image: '' });
+                  }
+                  
+                  let legacyCta = s.cta1 || null;
+                  if (!legacyCta || (!legacyCta.text && !legacyCta.link)) {
+                      if (s.ctas && s.ctas.length > 0) {
+                          legacyCta = s.ctas[0];
+                      }
                   }
 
-                  servicesData[s.id] = {
-                      title: s.title,
-                      description: s.longDesc || s.shortDesc,
-                      features: mergedFeatures,
-                      ctas: s.ctas || [],
+                  // Map directly to Explicit New Schema (With Fallbacks for legacy CMS objects)
+                  window.pageServicesMap[s.id] = {
+                      title: s.title || '',
+                      description: s.longDesc || s.shortDesc || '',
+                      
+                      features1: legacyFeatures,
+                      cta1: legacyCta,
+                      
+                      features2: s.features2 || [],
+                      cta2: s.cta2 || null,
+                      
+                      features3: s.features3 || [],
+                      cta3: s.cta3 || null,
+                      
+                      headingImageSection: s.headingImageSection || {heading: '', image: ''},
+                      relatedBlogCategory: s.relatedBlogCategory || '',
+
                       serviceFaqs: s.serviceFaqs || [],
                       metaTitle: s.metaTitle || '',
                       metaDesc: s.metaDesc || ''
@@ -591,7 +666,7 @@
                   let targetGrid = s.category === 'Marketing' ? gridMarketing : (s.category === 'Promote' ? gridPromote : gridDev);
                   if(targetGrid) {
                       targetGrid.innerHTML += `
-                        <div class="subservice-card" onclick="loadService('${s.id}')">
+                        <div class="subservice-card" onclick="renderServiceDetail('${s.id}')">
                           <h4>${s.title}</h4>
                           <p>${s.shortDesc}</p>
                           <span>Learn More <i class="fa-solid fa-arrow-right"></i></span>
@@ -601,7 +676,7 @@
 
                   let targetHead = s.category === 'Marketing' ? headMarketing : (s.category === 'Promote' ? headPromote : headDev);
                   if(targetHead) {
-                      targetHead.innerHTML += `<li><a href="javascript:void(0)" onclick="loadService('${s.id}')"><i class="${s.navIcon}"></i>${s.title}</a></li>`;
+                      targetHead.innerHTML += `<li><a href="javascript:void(0)" onclick="renderServiceDetail('${s.id}')"><i class="${s.navIcon}"></i>${s.title}</a></li>`;
                   }
 
                   let targetFoot = s.category === 'Marketing' ? footMarketing : (s.category === 'Promote' ? footPromote : footDev);
@@ -611,7 +686,7 @@
                       a.href = "javascript:void(0)";
                       a.onclick = function(event) {
                           event.preventDefault();
-                          loadService(s.id);
+                          renderServiceDetail(s.id);
                       };
                       a.textContent = s.title;
                       li.appendChild(a);
@@ -620,8 +695,8 @@
               });
               
               const requestedService = window.location.hash.substring(1); 
-              if (requestedService && servicesData[requestedService]) {
-                  loadService(requestedService);
+              if (requestedService && window.pageServicesMap[requestedService]) {
+                  renderServiceDetail(requestedService);
               }
           }
 
@@ -653,8 +728,8 @@
 
 
   // 2. FUNCTION TO LOAD A SPECIFIC SERVICE DYNAMICALLY
-  function loadService(serviceId) {
-    const data = servicesData[serviceId];
+  function renderServiceDetail(serviceId) {
+    const data = window.pageServicesMap[serviceId];
     if (!data) return;
 
     // Apply Specific Meta tags for this service
@@ -672,33 +747,95 @@
     document.getElementById('detail-description').innerText = data.description;
     document.getElementById('form-service-type').value = data.title;
 
-    // Load Unlimited Features
-    const featuresContainer = document.getElementById('detail-features');
-    featuresContainer.innerHTML = ''; 
-    data.features.forEach(feature => {
-      const card = document.createElement('div');
-      card.className = 'feature-card';
-      card.innerHTML = `
-        <h3>${feature.title}</h3>
-        <p>${feature.desc}</p>
-      `;
-      featuresContainer.appendChild(card);
-    });
+    /* ---- 1. FEATURES SET 1 & CTA ---- */
+    const wrapper1 = document.getElementById('detail-set-1-wrapper');
+    const f1Container = document.getElementById('detail-features-1');
+    const cta1Container = document.getElementById('detail-cta-1');
+    f1Container.innerHTML = '';
+    cta1Container.innerHTML = '';
 
-    // Load Dynamic CTAs
-    const ctasContainer = document.getElementById('detail-ctas');
-    ctasContainer.innerHTML = '';
-    if(data.ctas && data.ctas.length > 0) {
-        data.ctas.forEach(cta => {
-            const a = document.createElement('a');
-            a.href = cta.link;
-            a.className = 'btn-custom-cta';
-            a.innerText = cta.text;
-            ctasContainer.appendChild(a);
+    if (data.features1 && data.features1.length > 0) {
+        wrapper1.style.display = 'block';
+        document.getElementById('detail-set-1-title').style.display = 'block';
+        data.features1.forEach(f => {
+            f1Container.innerHTML += `
+              <div class="feature-card">
+                ${f.image ? `<img src="${f.image}" alt="" style="max-width: 60px; margin-bottom: 20px; border-radius: 8px; display: block; margin-left: auto; margin-right: auto;">` : ''}
+                <h3>${f.title || ''}</h3>
+                <p>${f.desc || ''}</p>
+              </div>
+            `;
         });
+        if (data.cta1 && data.cta1.text && data.cta1.link) {
+            cta1Container.innerHTML = `<a href="${data.cta1.link}" class="btn-custom-cta">${data.cta1.text}</a>`;
+        }
+    } else {
+        wrapper1.style.display = 'none';
+        document.getElementById('detail-set-1-title').style.display = 'none';
     }
 
-    // Load Service FAQs
+    /* ---- 2. FEATURES SET 2 & CTA ---- */
+    const wrapper2 = document.getElementById('detail-set-2-wrapper');
+    const f2Container = document.getElementById('detail-features-2');
+    const cta2Container = document.getElementById('detail-cta-2');
+    f2Container.innerHTML = '';
+    cta2Container.innerHTML = '';
+
+    if (data.features2 && data.features2.length > 0) {
+        wrapper2.style.display = 'block';
+        data.features2.forEach(f => {
+            f2Container.innerHTML += `
+              <div class="feature-card">
+                ${f.image ? `<img src="${f.image}" alt="" style="max-width: 60px; margin-bottom: 20px; border-radius: 8px; display: block; margin-left: auto; margin-right: auto;">` : ''}
+                <h3>${f.title || ''}</h3>
+                <p>${f.desc || ''}</p>
+              </div>
+            `;
+        });
+        if (data.cta2 && data.cta2.text && data.cta2.link) {
+            cta2Container.innerHTML = `<a href="${data.cta2.link}" class="btn-custom-cta">${data.cta2.text}</a>`;
+        }
+    } else {
+        wrapper2.style.display = 'none';
+    }
+
+    /* ---- 3. FEATURES SET 3 (BORDERLESS) & CTA ---- */
+    const wrapper3 = document.getElementById('detail-set-3-wrapper');
+    const f3Container = document.getElementById('detail-features-3');
+    const cta3Container = document.getElementById('detail-cta-3');
+    f3Container.innerHTML = '';
+    cta3Container.innerHTML = '';
+
+    if (data.features3 && data.features3.length > 0) {
+        wrapper3.style.display = 'block';
+        data.features3.forEach(f => {
+            f3Container.innerHTML += `
+              <div class="feature-card borderless-card">
+                ${f.image ? `<img src="${f.image}" alt="" style="max-width: 60px; margin-bottom: 20px; border-radius: 8px; display: block; margin-left: auto; margin-right: auto;">` : ''}
+                <h3>${f.title || ''}</h3>
+                <p>${f.desc || ''}</p>
+              </div>
+            `;
+        });
+        if (data.cta3 && data.cta3.text && data.cta3.link) {
+            cta3Container.innerHTML = `<a href="${data.cta3.link}" class="btn-custom-cta">${data.cta3.text}</a>`;
+        }
+    } else {
+        wrapper3.style.display = 'none';
+    }
+
+    /* ---- 4. HEADING + IMAGE SECTION ---- */
+    const imgWrapper = document.getElementById('detail-image-section-wrapper');
+    if (data.headingImageSection && data.headingImageSection.heading && data.headingImageSection.image) {
+        imgWrapper.style.display = 'flex';
+        document.getElementById('detail-section-heading').innerText = data.headingImageSection.heading;
+        document.getElementById('detail-section-img').src = data.headingImageSection.image;
+    } else {
+        imgWrapper.style.display = 'none';
+    }
+
+
+    /* ---- 5. SERVICE FAQS ---- */
     const faqWrapper = document.getElementById('service-faq-wrapper');
     const faqsContainer = document.getElementById('detail-faqs');
     faqsContainer.innerHTML = '';
@@ -709,7 +846,7 @@
             div.className = 'service-faq-item';
             div.innerHTML = `
                 <button class="service-faq-question">${faq.q} <span class="icon">+</span></button>
-                <div class="service-faq-answer"><p>${faq.a}</p></div>
+                <div class="service-faq-answer"><div>${faq.a}</div></div>
             `;
             faqsContainer.appendChild(div);
         });
@@ -724,16 +861,48 @@
         faqWrapper.style.display = 'none';
     }
 
+    /* ---- 6. RELATED BLOGS FILTER ---- */
+    const blogWrapper = document.getElementById('related-blogs-wrapper');
+    const blogContainer = document.getElementById('detail-related-blogs');
+    blogContainer.innerHTML = '';
+
+    if (data.relatedBlogCategory && window.firebaseSiteData && window.firebaseSiteData.blogPage && window.firebaseSiteData.blogPage.blogs) {
+        const allBlogs = window.firebaseSiteData.blogPage.blogs;
+        const searchCategory = data.relatedBlogCategory.trim().toLowerCase();
+        
+        // Filter items that match the category, limit to latest 3
+        const matchedBlogs = allBlogs.filter(b => (b.category || '').trim().toLowerCase() === searchCategory).slice(0, 3);
+        
+        if (matchedBlogs.length > 0) {
+            blogWrapper.style.display = 'block';
+            matchedBlogs.forEach((b, idx) => {
+                // Re-using the subservice-card styling so it perfectly matches grid constraints
+                blogContainer.innerHTML += `
+                    <div class="subservice-card" onclick="window.location.href='blog.html'">
+                        ${b.image ? `<img src="${b.image}" alt="" style="width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 20px;">` : ''}
+                        <h4>${b.title}</h4>
+                        <p style="margin-bottom: 10px;">${b.shortDesc || b.desc || ''}</p>
+                        <span>Read More <i class="fa-solid fa-arrow-right"></i></span>
+                    </div>
+                `;
+            });
+        } else {
+            blogWrapper.style.display = 'none';
+        }
+    } else {
+        blogWrapper.style.display = 'none';
+    }
+
+    // Scroll & cleanup UI states
     if(navMenu.classList.contains("active")) {
         navMenu.classList.remove("active");
         menuToggle.classList.remove("active");
     }
-
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   // 3. FUNCTION TO GO BACK TO THE MAIN CATALOG GRID
-  function showCatalog() {
+  function renderCatalogView() {
     document.getElementById('detail-view').style.display = 'none';
     document.getElementById('catalog-view').style.display = 'block';
     
