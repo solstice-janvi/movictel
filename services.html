@@ -432,6 +432,7 @@
       <!-- 2. Types of Social Media Marketing Services -->
       <div id="detail-set-1-wrapper">
           <h2 id="detail-set-1-title" style="display:none; text-align: center; margin-bottom: 40px; color: var(--black);"></h2>
+          <p id="detail-set-1-subtitle" style="display:none; text-align: center; color: #64748b; font-size: 1.15rem; max-width: 700px; margin: -25px auto 40px auto; line-height: 1.8;"></p>
           <div class="features" id="detail-features-1"></div>
           <div class="dynamic-ctas-container" id="detail-cta-1"></div>
       </div>
@@ -439,6 +440,7 @@
       <!-- 3. Why Choose This Service? -->
       <div id="detail-set-2-wrapper" style="margin-top: 80px; display: none;">
           <h2 id="detail-set-2-title" style="text-align: center; margin-bottom: 40px; color: var(--black);"></h2>
+          <p id="detail-set-2-subtitle" style="display:none; text-align: center; color: #64748b; font-size: 1.15rem; max-width: 700px; margin: -25px auto 40px auto; line-height: 1.8;"></p>
           <div class="features" id="detail-features-2"></div>
           <div class="dynamic-ctas-container" id="detail-cta-2"></div>
       </div>
@@ -446,6 +448,7 @@
       <!-- 4. Company Workflow -->
       <div id="detail-set-3-wrapper" style="margin-top: 80px; display: none;">
           <h2 id="detail-set-3-title" style="text-align: center; margin-bottom: 40px; color: var(--black);"></h2>
+          <p id="detail-set-3-subtitle" style="display:none; text-align: center; color: #64748b; font-size: 1.15rem; max-width: 700px; margin: -25px auto 40px auto; line-height: 1.8;"></p>
           <div class="features" id="detail-features-3"></div>
           <div class="dynamic-ctas-container" id="detail-cta-3"></div>
       </div>
@@ -641,14 +644,19 @@
                       heroImage: s.heroImage || "",
                       heroCta: s.heroCta || null,
                       section1Heading: s.section1Heading || "Types of Social Media Marketing Services",
+                      section1SubHeading: s.section1SubHeading || "",
                       section2Heading: s.section2Heading || "Why Choose This Service?",
+                      section2SubHeading: s.section2SubHeading || "",
                       section3Heading: s.section3Heading || "Company Workflow",
+                      section3SubHeading: s.section3SubHeading || "",
                       whyBestSection: s.whyBestSection || s.headingImageSection || {heading: '', desc: '', image: '', cta: {text:'', link:''}, highlights: ''},
                       relatedBlogCategory: s.relatedBlogCategory || '',
 
                       serviceFaqs: s.serviceFaqs || [],
                       metaTitle: s.metaTitle || '',
                       metaDesc: s.metaDesc || ''
+
+                      
                   };
               });
 
@@ -789,12 +797,23 @@
         wrapper1.style.display = 'block';
         const titleEl1 = document.getElementById('detail-set-1-title');
         
-        if (hasHeading1) {
-            titleEl1.style.display = 'block';
-            titleEl1.innerText = data.section1Heading;
-        } else {
-            titleEl1.style.display = 'none';
-        }
+       const subtitleEl1 = document.getElementById('detail-set-1-subtitle');
+if (hasHeading1) {
+    titleEl1.style.display = 'block';
+    titleEl1.innerText = data.section1Heading;
+    
+    if (data.section1SubHeading && data.section1SubHeading.trim() !== "") {
+        subtitleEl1.style.display = 'block';
+        subtitleEl1.innerText = data.section1SubHeading;
+        titleEl1.style.marginBottom = '15px'; // tighten gap if subtitle exists
+    } else {
+        subtitleEl1.style.display = 'none';
+        titleEl1.style.marginBottom = '40px';
+    }
+} else {
+    titleEl1.style.display = 'none';
+    subtitleEl1.style.display = 'none';
+}
 
         if (hasFeatures1) {
             data.features1.forEach(f => {
@@ -831,12 +850,23 @@
         wrapper2.style.display = 'block';
         const titleEl2 = document.getElementById('detail-set-2-title');
         
-        if (hasHeading2) {
-            titleEl2.style.display = 'block';
-            titleEl2.innerText = data.section2Heading;
-        } else {
-            titleEl2.style.display = 'none';
-        }
+       const subtitleEl2 = document.getElementById('detail-set-2-subtitle');
+if (hasHeading2) {
+    titleEl2.style.display = 'block';
+    titleEl2.innerText = data.section2Heading;
+    
+    if (data.section2SubHeading && data.section2SubHeading.trim() !== "") {
+        subtitleEl2.style.display = 'block';
+        subtitleEl2.innerText = data.section2SubHeading;
+        titleEl2.style.marginBottom = '15px';
+    } else {
+        subtitleEl2.style.display = 'none';
+        titleEl2.style.marginBottom = '40px';
+    }
+} else {
+    titleEl2.style.display = 'none';
+    subtitleEl2.style.display = 'none';
+}
 
         if (hasFeatures2) {
             data.features2.forEach(f => {
@@ -872,12 +902,23 @@
         wrapper3.style.display = 'block';
         const titleEl3 = document.getElementById('detail-set-3-title');
         
-        if (hasHeading3) {
-            titleEl3.style.display = 'block';
-            titleEl3.innerText = data.section3Heading;
-        } else {
-            titleEl3.style.display = 'none';
-        }
+       const subtitleEl3 = document.getElementById('detail-set-3-subtitle');
+if (hasHeading3) {
+    titleEl3.style.display = 'block';
+    titleEl3.innerText = data.section3Heading;
+    
+    if (data.section3SubHeading && data.section3SubHeading.trim() !== "") {
+        subtitleEl3.style.display = 'block';
+        subtitleEl3.innerText = data.section3SubHeading;
+        titleEl3.style.marginBottom = '15px';
+    } else {
+        subtitleEl3.style.display = 'none';
+        titleEl3.style.marginBottom = '40px';
+    }
+} else {
+    titleEl3.style.display = 'none';
+    subtitleEl3.style.display = 'none';
+}
 
         if (hasFeatures3) {
             data.features3.forEach(f => {
