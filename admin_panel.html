@@ -1011,7 +1011,7 @@
 
                     <div class="md:col-span-3 border-t border-gray-100 pt-4 mt-2"><span class="text-xs font-bold text-gray-500 uppercase tracking-wider">1. Hero Section</span></div>
                     <div class="md:col-span-3"><label class="label-modern">Main Title</label><input type="text" class="input-modern font-bold text-lg" value="${s.title}" oninput="siteData.detailedServices[${i}].title=this.value"></div>
-                    <div class="md:col-span-3"><label class="label-modern">Short Description / Subtitle</label><textarea class="input-modern" rows="2" oninput="siteData.detailedServices[${i}].shortDesc=this.value">${s.shortDesc}</textarea></div>
+                    <div class="md:col-span-3"><label class="label-modern">Short Description / Subtitle (HTML Allowed)</label><textarea class="input-modern" rows="2" oninput="siteData.detailedServices[${i}].shortDesc=this.value">${s.shortDesc}</textarea></div>
                     <div class="md:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="label-modern">Hero Background Image</label>
@@ -1033,16 +1033,16 @@
                             <button onclick="addServiceFeatureSet(${i}, 1)" class="text-xs font-bold text-white bg-blue-600 px-3 py-1.5 rounded shadow-sm">+ Add Item</button>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <div><label class="label-modern">Section Heading</label><input type="text" class="input-modern" value="${s.section1Heading||'Types of Social Media Marketing Services'}" oninput="siteData.detailedServices[${i}].section1Heading=this.value"></div>
-    <div><label class="label-modern">Section Subheading</label><input type="text" class="input-modern" placeholder="Optional subtext..." value="${(s.section1SubHeading||'').replace(/"/g, '&quot;')}" oninput="siteData.detailedServices[${i}].section1SubHeading=this.value"></div>
-</div>
+                            <div><label class="label-modern">Section Heading</label><input type="text" class="input-modern" value="${s.section1Heading||'Types of Social Media Marketing Services'}" oninput="siteData.detailedServices[${i}].section1Heading=this.value"></div>
+                            <div><label class="label-modern">Section Subheading</label><input type="text" class="input-modern" placeholder="Optional subtext..." value="${(s.section1SubHeading||'').replace(/"/g, '&quot;')}" oninput="siteData.detailedServices[${i}].section1SubHeading=this.value"></div>
+                        </div>
                     </div>
                     <div class="md:col-span-3 grid grid-cols-1 gap-3">
                         ${(s.features1 || []).map((f, j) => `
                             <div class="flex flex-col gap-2 relative border border-gray-200 p-4 rounded bg-gray-50">
                                 <button onclick="removeServiceFeatureSet(${i}, 1, ${j})" class="absolute top-3 right-3 text-gray-400 hover:text-red-600"><i class="fas fa-times"></i></button>
                                 <input type="text" class="input-modern font-semibold pr-8" placeholder="Title" value="${(f.title||'').replace(/"/g, '&quot;')}" oninput="siteData.detailedServices[${i}].features1[${j}].title=this.value">
-                                <textarea class="input-modern text-sm text-gray-600" rows="2" placeholder="Description" oninput="siteData.detailedServices[${i}].features1[${j}].desc=this.value">${f.desc||''}</textarea>
+                                <textarea class="input-modern text-sm text-gray-600" rows="2" placeholder="Description (HTML Allowed. e.g. <a href='URL' style='color:blue'>Link</a>)" oninput="siteData.detailedServices[${i}].features1[${j}].desc=this.value">${f.desc||''}</textarea>
                                 <div class="flex gap-2 items-center mt-1">
                                     <input type="text" class="input-modern flex-1 text-xs" placeholder="Image URL" value="${f.image||''}" oninput="siteData.detailedServices[${i}].features1[${j}].image=this.value">
                                     <label class="bg-gray-200 hover:bg-gray-300 px-3 py-2 rounded cursor-pointer text-xs font-semibold whitespace-nowrap"><i class="fas fa-upload"></i> Upload<input type="file" class="hidden" accept="image/*" onchange="handleImageUpload(this)"></label>
@@ -1066,16 +1066,16 @@
                             <button onclick="addServiceFeatureSet(${i}, 2)" class="text-xs font-bold text-white bg-blue-600 px-3 py-1.5 rounded shadow-sm">+ Add Item</button>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <div><label class="label-modern">Section Heading</label><input type="text" class="input-modern" value="${s.section2Heading||'Why Choose This Service?'}" oninput="siteData.detailedServices[${i}].section2Heading=this.value"></div>
-    <div><label class="label-modern">Section Subheading</label><input type="text" class="input-modern" placeholder="Optional subtext..." value="${(s.section2SubHeading||'').replace(/"/g, '&quot;')}" oninput="siteData.detailedServices[${i}].section2SubHeading=this.value"></div>
-</div>
+                            <div><label class="label-modern">Section Heading</label><input type="text" class="input-modern" value="${s.section2Heading||'Why Choose This Service?'}" oninput="siteData.detailedServices[${i}].section2Heading=this.value"></div>
+                            <div><label class="label-modern">Section Subheading</label><input type="text" class="input-modern" placeholder="Optional subtext..." value="${(s.section2SubHeading||'').replace(/"/g, '&quot;')}" oninput="siteData.detailedServices[${i}].section2SubHeading=this.value"></div>
+                        </div>
                     </div>
                     <div class="md:col-span-3 grid grid-cols-1 gap-3">
                         ${(s.features2 || []).map((f, j) => `
                             <div class="flex flex-col gap-2 relative border border-gray-200 p-4 rounded bg-gray-50">
                                 <button onclick="removeServiceFeatureSet(${i}, 2, ${j})" class="absolute top-3 right-3 text-gray-400 hover:text-red-600"><i class="fas fa-times"></i></button>
                                 <input type="text" class="input-modern font-semibold pr-8" placeholder="Title" value="${(f.title||'').replace(/"/g, '&quot;')}" oninput="siteData.detailedServices[${i}].features2[${j}].title=this.value">
-                                <textarea class="input-modern text-sm text-gray-600" rows="2" placeholder="Description" oninput="siteData.detailedServices[${i}].features2[${j}].desc=this.value">${f.desc||''}</textarea>
+                                <textarea class="input-modern text-sm text-gray-600" rows="2" placeholder="Description (HTML Allowed. e.g. <a href='URL' style='color:blue'>Link</a>)" oninput="siteData.detailedServices[${i}].features2[${j}].desc=this.value">${f.desc||''}</textarea>
                                 <div class="flex gap-2 items-center mt-1">
                                     <input type="text" class="input-modern flex-1 text-xs" placeholder="Image/Icon URL" value="${f.image||''}" oninput="siteData.detailedServices[${i}].features2[${j}].image=this.value">
                                     <label class="bg-gray-200 hover:bg-gray-300 px-3 py-2 rounded cursor-pointer text-xs font-semibold whitespace-nowrap"><i class="fas fa-upload"></i> Upload<input type="file" class="hidden" accept="image/*" onchange="handleImageUpload(this)"></label>
@@ -1098,16 +1098,16 @@
                             <button onclick="addServiceFeatureSet(${i}, 3)" class="text-xs font-bold text-white bg-blue-600 px-3 py-1.5 rounded shadow-sm">+ Add Item</button>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <div><label class="label-modern">Section Heading</label><input type="text" class="input-modern" value="${s.section3Heading||'Company Workflow'}" oninput="siteData.detailedServices[${i}].section3Heading=this.value"></div>
-    <div><label class="label-modern">Section Subheading</label><input type="text" class="input-modern" placeholder="Optional subtext..." value="${(s.section3SubHeading||'').replace(/"/g, '&quot;')}" oninput="siteData.detailedServices[${i}].section3SubHeading=this.value"></div>
-</div>
+                            <div><label class="label-modern">Section Heading</label><input type="text" class="input-modern" value="${s.section3Heading||'Company Workflow'}" oninput="siteData.detailedServices[${i}].section3Heading=this.value"></div>
+                            <div><label class="label-modern">Section Subheading</label><input type="text" class="input-modern" placeholder="Optional subtext..." value="${(s.section3SubHeading||'').replace(/"/g, '&quot;')}" oninput="siteData.detailedServices[${i}].section3SubHeading=this.value"></div>
+                        </div>
                     </div>
                     <div class="md:col-span-3 grid grid-cols-1 gap-3">
                         ${(s.features3 || []).map((f, j) => ` 
                             <div class="flex flex-col gap-2 relative border border-gray-200 p-4 rounded bg-gray-50">
                                 <button onclick="removeServiceFeatureSet(${i}, 3, ${j})" class="absolute top-3 right-3 text-gray-400 hover:text-red-600"><i class="fas fa-times"></i></button>
                                 <input type="text" class="input-modern font-semibold pr-8" placeholder="Title" value="${(f.title||'').replace(/"/g, '&quot;')}" oninput="siteData.detailedServices[${i}].features3[${j}].title=this.value">
-                                <textarea class="input-modern text-sm text-gray-600" rows="2" placeholder="Description" oninput="siteData.detailedServices[${i}].features3[${j}].desc=this.value">${f.desc||''}</textarea>
+                               <textarea class="input-modern text-sm text-gray-600" rows="2" placeholder="Description (HTML Allowed. e.g. <a href='URL' style='color:blue'>Link</a>)" oninput="siteData.detailedServices[${i}].features3[${j}].desc=this.value">${f.desc||''}</textarea>
                                 <div class="flex gap-2 items-center mt-1">
                                     <input type="text" class="input-modern flex-1 text-xs" placeholder="Image/Icon URL" value="${f.image||''}" oninput="siteData.detailedServices[${i}].features3[${j}].image=this.value">
                                     <label class="bg-gray-200 hover:bg-gray-300 px-3 py-2 rounded cursor-pointer text-xs font-semibold whitespace-nowrap"><i class="fas fa-upload"></i> Upload<input type="file" class="hidden" accept="image/*" onchange="handleImageUpload(this)"></label>
@@ -1382,9 +1382,9 @@
             id: "new-service", category: "Marketing", navIcon: "fa-solid fa-star", title: "New Service", shortDesc: "", 
             metaTitle: "", metaDesc: "",
             heroImage: "", heroCta: {text: '', link: ''},
-           section1Heading: "Types of Social Media Marketing Services", section1SubHeading: "", features1: [], cta1: {text: '', link: ''},
-section2Heading: "Why Choose This Service?", section2SubHeading: "", features2: [], cta2: {text: '', link: ''},
-section3Heading: "Company Workflow", section3SubHeading: "", features3: [], cta3: {text: '', link: ''},
+            section1Heading: "Types of Social Media Marketing Services", section1SubHeading: "", features1: [], cta1: {text: '', link: ''},
+            section2Heading: "Why Choose This Service?", section2SubHeading: "", features2: [], cta2: {text: '', link: ''},
+            section3Heading: "Company Workflow", section3SubHeading: "", features3: [], cta3: {text: '', link: ''},
             whyBestSection: {heading: '', desc: '', image: '', cta: {text: '', link: ''}, highlights: ''},
             serviceFaqs: [], relatedBlogCategory: ''
         }); 
@@ -1545,8 +1545,8 @@ section3Heading: "Company Workflow", section3SubHeading: "", features3: [], cta3
                 if (!s.section2Heading) s.section2Heading = "Why Choose This Service?";
                 if (!s.section3Heading) s.section3Heading = "Company Workflow";
                 if (!s.section1SubHeading) s.section1SubHeading = "";
-if (!s.section2SubHeading) s.section2SubHeading = "";
-if (!s.section3SubHeading) s.section3SubHeading = "";
+                if (!s.section2SubHeading) s.section2SubHeading = "";
+                if (!s.section3SubHeading) s.section3SubHeading = "";
                 if (!s.heroImage) s.heroImage = "";
                 if (!s.heroCta) s.heroCta = {text: '', link: ''};
                 if (!s.relatedBlogCategory) s.relatedBlogCategory = '';
