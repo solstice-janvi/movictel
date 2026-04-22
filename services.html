@@ -763,8 +763,8 @@
     document.getElementById('catalog-view').style.display = 'none';
     document.getElementById('detail-view').style.display = 'block';
 
-    document.getElementById('detail-title').innerText = data.title || '';
-    document.getElementById('detail-description').innerText = data.description || '';
+    document.getElementById('detail-title').innerHTML = data.title || '';
+document.getElementById('detail-description').innerHTML = data.description || '';
     document.getElementById('form-service-type').value = data.title || 'General Service Request';
 
     // Set dynamic Hero Background & CTA
@@ -800,11 +800,10 @@
        const subtitleEl1 = document.getElementById('detail-set-1-subtitle');
 if (hasHeading1) {
     titleEl1.style.display = 'block';
-    titleEl1.innerText = data.section1Heading;
-    
-    if (data.section1SubHeading && data.section1SubHeading.trim() !== "") {
-        subtitleEl1.style.display = 'block';
-        subtitleEl1.innerText = data.section1SubHeading;
+    titleEl1.innerHTML = data.section1Heading;
+if (data.section1SubHeading && data.section1SubHeading.trim() !== "") {
+    subtitleEl1.style.display = 'block';
+    subtitleEl1.innerHTML = data.section1SubHeading;
         titleEl1.style.marginBottom = '15px'; // tighten gap if subtitle exists
     } else {
         subtitleEl1.style.display = 'none';
@@ -853,11 +852,10 @@ if (hasHeading1) {
        const subtitleEl2 = document.getElementById('detail-set-2-subtitle');
 if (hasHeading2) {
     titleEl2.style.display = 'block';
-    titleEl2.innerText = data.section2Heading;
-    
-    if (data.section2SubHeading && data.section2SubHeading.trim() !== "") {
-        subtitleEl2.style.display = 'block';
-        subtitleEl2.innerText = data.section2SubHeading;
+    titleEl2.innerHTML = data.section2Heading;
+if (data.section2SubHeading && data.section2SubHeading.trim() !== "") {
+    subtitleEl2.style.display = 'block';
+    subtitleEl2.innerHTML = data.section2SubHeading;
         titleEl2.style.marginBottom = '15px';
     } else {
         subtitleEl2.style.display = 'none';
@@ -905,11 +903,10 @@ if (hasHeading2) {
        const subtitleEl3 = document.getElementById('detail-set-3-subtitle');
 if (hasHeading3) {
     titleEl3.style.display = 'block';
-    titleEl3.innerText = data.section3Heading;
-    
-    if (data.section3SubHeading && data.section3SubHeading.trim() !== "") {
-        subtitleEl3.style.display = 'block';
-        subtitleEl3.innerText = data.section3SubHeading;
+    titleEl3.innerHTML = data.section3Heading;
+if (data.section3SubHeading && data.section3SubHeading.trim() !== "") {
+    subtitleEl3.style.display = 'block';
+    subtitleEl3.innerHTML = data.section3SubHeading;
         titleEl3.style.marginBottom = '15px';
     } else {
         subtitleEl3.style.display = 'none';
@@ -953,13 +950,13 @@ if (hasHeading3) {
         imgWrapper.style.display = 'flex';
         
         const headingEl = document.getElementById('detail-section-heading');
-        if (hasBestHeading) { headingEl.style.display = 'block'; headingEl.innerText = bestData.heading; } else { headingEl.style.display = 'none'; }
+       if (hasBestHeading) { headingEl.style.display = 'block'; headingEl.innerHTML = bestData.heading; } else { headingEl.style.display = 'none'; }
         
         const imgEl = document.getElementById('detail-section-img');
         if (hasBestImage) { imgEl.style.display = 'block'; imgEl.src = bestData.image; } else { imgEl.style.display = 'none'; }
         
         const descEl = document.getElementById('detail-section-desc');
-        if (hasBestDesc) { descEl.style.display = 'block'; descEl.innerText = bestData.desc; } else { descEl.style.display = 'none'; }
+       if (hasBestDesc) { descEl.style.display = 'block'; descEl.innerHTML = bestData.desc; } else { descEl.style.display = 'none'; }
         
         const hlContainer = document.getElementById('detail-section-highlights');
         hlContainer.innerHTML = '';
